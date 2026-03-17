@@ -1,0 +1,36 @@
+services:
+  web:
+    build: .
+    image: cyberaspis-web:latest
+    container_name: cyber-aspis-website
+    ports:
+      - "80:80"
+    restart: unless-stopped
+
+  # Option B: Caddy für automatisches HTTPS (Let's Encrypt)
+  # Auskommentieren wenn Hostinger kein SSL-Termination anbietet
+  # caddy:
+  #   image: caddy:alpine
+  #   container_name: cyber-aspis-caddy
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   volumes:
+  #     - ./Caddyfile:/etc/caddy/Caddyfile:ro
+  #     - caddy_data:/data
+  #     - caddy_config:/config
+  #   restart: unless-stopped
+  #   depends_on:
+  #     - web
+
+  # web (mit Caddy):
+  #   build: .
+  #   image: cyberaspis-web:latest
+  #   container_name: cyber-aspis-website
+  #   expose:
+  #     - "80"
+  #   restart: unless-stopped
+
+# volumes:
+#   caddy_data:
+#   caddy_config:

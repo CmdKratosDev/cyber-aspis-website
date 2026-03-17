@@ -1,0 +1,7 @@
+# Caddyfile – nur nötig wenn Option B (Caddy + automatisches HTTPS) gewählt wird
+# cyber-aspis.de muss auf die VPS-IP zeigen, bevor Caddy Let's Encrypt holen kann
+
+cyber-aspis.de, www.cyber-aspis.de {
+    reverse_proxy web:80
+    encode gzip
+}
