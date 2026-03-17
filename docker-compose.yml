@@ -1,11 +1,22 @@
 services:
   web:
-    build: .
-    image: cyberaspis-web:latest
+    image: nginx:alpine
     container_name: cyber-aspis-website
     expose:
       - "80"
     restart: unless-stopped
+    # Beim Start: Dateien von GitHub klonen und nginx starten
+    # → kein manuelles Upload nötig, Updates automatisch bei Neustart
+    entrypoint: >
+      sh -c "
+        apk add --no-cache git &&
+        git clone --depth 1 https://github.com/CmdKratosDev/cyber-aspis-website.git /tmp/ca-repo &&
+        cp /tmp/ca-repo/nginx.conf /etc/nginx/conf.d/default.conf &&
+        cp /tmp/ca-repo/index.html /usr/share/nginx/html/index.html &&
+        cp -r /tmp/ca-repo/assets /usr/share/nginx/html/assets &&
+        rm -rf /tmp/ca-repo &&
+        nginx -g 'daemon off;'
+      "
     labels:
       - traefik.enable=true
       - traefik.http.routers.cyberaspis.rule=Host(`cyber-aspis.de`) || Host(`www.cyber-aspis.de`)
@@ -24,4 +35,4 @@ services:
 networks:
   traefik_net:
     external: true
-    name: n8n_default   # ← ggf. anpassen, siehe unten
+    name: n8n_default
