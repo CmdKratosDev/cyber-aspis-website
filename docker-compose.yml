@@ -3,34 +3,25 @@ services:
     build: .
     image: cyberaspis-web:latest
     container_name: cyber-aspis-website
-    ports:
-      - "8080:80"
+    expose:
+      - "80"
     restart: unless-stopped
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.cyberaspis.rule=Host(`cyber-aspis.de`) || Host(`www.cyber-aspis.de`)
+      - traefik.http.routers.cyberaspis.entrypoints=websecure
+      - traefik.http.routers.cyberaspis.tls=true
+      - traefik.http.routers.cyberaspis.tls.certresolver=mytlschallenge
+      - traefik.http.services.cyberaspis.loadbalancer.server.port=80
+      # www → apex redirect
+      - traefik.http.middlewares.cyberaspis-www.redirectregex.regex=^https://www\.cyber-aspis\.de/(.*)
+      - traefik.http.middlewares.cyberaspis-www.redirectregex.replacement=https://cyber-aspis.de/$${1}
+      - traefik.http.middlewares.cyberaspis-www.redirectregex.permanent=true
+      - traefik.http.routers.cyberaspis.middlewares=cyberaspis-www@docker
+    networks:
+      - traefik_net
 
-  # Option B: Caddy für automatisches HTTPS (Let's Encrypt)
-  # Auskommentieren wenn Hostinger kein SSL-Termination anbietet
-  # caddy:
-  #   image: caddy:alpine
-  #   container_name: cyber-aspis-caddy
-  #   ports:
-  #     - "80:80"
-  #     - "443:443"
-  #   volumes:
-  #     - ./Caddyfile:/etc/caddy/Caddyfile:ro
-  #     - caddy_data:/data
-  #     - caddy_config:/config
-  #   restart: unless-stopped
-  #   depends_on:
-  #     - web
-
-  # web (mit Caddy):
-  #   build: .
-  #   image: cyberaspis-web:latest
-  #   container_name: cyber-aspis-website
-  #   expose:
-  #     - "80"
-  #   restart: unless-stopped
-
-# volumes:
-#   caddy_data:
-#   caddy_config:
+networks:
+  traefik_net:
+    external: true
+    name: n8n_default   # ← ggf. anpassen, siehe unten
