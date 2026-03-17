@@ -4,7 +4,7 @@ services:
     image: cyberaspis-web:latest
     container_name: cyber-aspis-website
     ports:
-      - "80:80"
+      - "8080:80"
     restart: unless-stopped
 
   # Option B: Caddy für automatisches HTTPS (Let's Encrypt)
