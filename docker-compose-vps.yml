@@ -1,0 +1,33 @@
+services:
+  web:
+    image: nginx:alpine
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.cyberaspis.rule=Host(`cyber-aspis.de`)"
+      - "traefik.http.routers.cyberaspis.tls=true"
+      - "traefik.http.routers.cyberaspis.entrypoints=web,websecure"
+      - "traefik.http.routers.cyberaspis.tls.certresolver=mytlschallenge"
+      - "traefik.http.services.cyberaspis.loadbalancer.server.port=80"
+      - "traefik.http.routers.cyberaspis-www.rule=Host(`www.cyber-aspis.de`)"
+      - "traefik.http.routers.cyberaspis-www.tls=true"
+      - "traefik.http.routers.cyberaspis-www.entrypoints=web,websecure"
+      - "traefik.http.routers.cyberaspis-www.tls.certresolver=mytlschallenge"
+      - "traefik.http.routers.cyberaspis-www.service=cyberaspis"
+      - "traefik.http.routers.cyberaspis-www.middlewares=redirect-www@docker"
+      - "traefik.http.middlewares.redirect-www.redirectregex.regex=^https://www\\.cyber-aspis\\.de/(.*)"
+      - "traefik.http.middlewares.redirect-www.redirectregex.replacement=https://cyber-aspis.de/$${1}"
+      - "traefik.http.middlewares.redirect-www.redirectregex.permanent=true"
+      # HSTS via Traefik
+      - "traefik.http.middlewares.hsts.headers.stsSeconds=31536000"
+      - "traefik.http.middlewares.hsts.headers.stsIncludeSubdomains=true"
+      - "traefik.http.middlewares.hsts.headers.stsPreload=true"
+      - "traefik.http.middlewares.hsts.headers.forceSTSHeader=true"
+      - "traefik.http.routers.cyberaspis.middlewares=hsts@docker"
+    volumes:
+      - ./site:/usr/share/nginx/html:ro
+    networks:
+      - n8n_default
+networks:
+  n8n_default:
+    external: true
