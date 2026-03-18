@@ -613,6 +613,140 @@
             section { padding: 64px 5%; }
             footer { flex-direction: column; text-align: center; }
         }
+
+        /* ===== THREAT INTEL FEED ===== */
+        #threat-feed {
+            background: var(--bg-secondary);
+            position: relative; overflow: hidden;
+        }
+        #threat-feed::before {
+            content: ''; position: absolute; inset: 0;
+            pointer-events: none;
+            background-image: radial-gradient(rgba(0,212,255,0.04) 1px, transparent 1px);
+            background-size: 28px 28px;
+        }
+        .feed-grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 28px; max-width: 1200px; margin: 0 auto;
+            position: relative; z-index: 1;
+        }
+        .feed-col-header {
+            display: flex; align-items: center; gap: 10px;
+            margin-bottom: 16px; padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        .feed-col-title {
+            font-family: var(--font-display); font-size: 0.75rem;
+            font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+        }
+        .feed-col-title.cisa { color: #ff6b35; }
+        .feed-col-title.hn   { color: var(--accent-cyan); }
+        .feed-live-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            animation: tagPulse 2s ease-in-out infinite; flex-shrink: 0;
+        }
+        .feed-live-dot.cisa { background: #ff6b35; }
+        .feed-live-dot.hn   { background: var(--accent-cyan); }
+        .feed-last-updated {
+            margin-left: auto; font-family: var(--font-mono);
+            font-size: 0.65rem; color: var(--text-muted); opacity: 0.7;
+        }
+        .feed-list { display: flex; flex-direction: column; gap: 10px; }
+        .feed-item {
+            background: rgba(255,255,255,0.025);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 10px; padding: 14px 16px;
+            transition: all 0.25s ease;
+            text-decoration: none; display: block;
+        }
+        .feed-item:hover {
+            background: rgba(255,255,255,0.05);
+            transform: translateX(4px);
+        }
+        .feed-item.cisa:hover {
+            border-color: rgba(255,107,53,0.38);
+            box-shadow: 0 0 18px rgba(255,107,53,0.12);
+        }
+        .feed-item.hn:hover {
+            border-color: rgba(0,212,255,0.32);
+            box-shadow: 0 0 18px rgba(0,212,255,0.1);
+        }
+        .feed-severity {
+            display: inline-block; font-family: var(--font-mono);
+            font-size: 0.6rem; font-weight: 700;
+            letter-spacing: 0.12em; text-transform: uppercase;
+            padding: 2px 8px; border-radius: 100px; margin-bottom: 7px;
+        }
+        .feed-severity.ransomware {
+            background: rgba(255,59,48,0.18); color: #ff3b30;
+            border: 1px solid rgba(255,59,48,0.35);
+        }
+        .feed-severity.exploit {
+            background: rgba(255,107,53,0.15); color: #ff6b35;
+            border: 1px solid rgba(255,107,53,0.32);
+        }
+        .feed-hn-meta {
+            display: flex; align-items: center;
+            gap: 12px; margin-bottom: 7px;
+        }
+        .feed-hn-stat {
+            font-family: var(--font-mono); font-size: 0.65rem;
+            color: var(--accent-cyan); opacity: 0.7;
+            display: flex; align-items: center; gap: 3px;
+        }
+        .feed-item-title {
+            font-size: 0.83rem; font-weight: 600;
+            color: var(--text-primary); line-height: 1.4; margin-bottom: 6px;
+        }
+        .feed-item-sub {
+            font-family: var(--font-mono); font-size: 0.68rem;
+            color: var(--text-muted);
+            display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+        }
+        .feed-item-vendor { color: #ff9a5c; font-weight: 700; }
+        .feed-item-time   { opacity: 0.65; }
+        /* Skeleton loader */
+        .skeleton-item {
+            background: rgba(255,255,255,0.025);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 10px; padding: 14px 16px; overflow: hidden;
+        }
+        .skeleton-line {
+            height: 10px; border-radius: 5px;
+            background: linear-gradient(90deg,
+                rgba(255,255,255,0.04) 0%,
+                rgba(255,255,255,0.10) 50%,
+                rgba(255,255,255,0.04) 100%);
+            background-size: 200% 100%;
+            animation: shimmer 1.6s ease infinite;
+            margin-bottom: 8px;
+        }
+        .skeleton-line:last-child { margin-bottom: 0; }
+        .skeleton-line.w-full          { width: 100%; }
+        .skeleton-line.w-three-quarters{ width: 75%; }
+        .skeleton-line.w-half          { width: 50%; }
+        .skeleton-line.w-third         { width: 35%; }
+        @keyframes shimmer {
+            0%   { background-position: -200% 0; }
+            100% { background-position:  200% 0; }
+        }
+        /* Error state */
+        .feed-error {
+            background: rgba(255,59,48,0.06);
+            border: 1px solid rgba(255,59,48,0.22);
+            border-radius: 10px; padding: 20px; text-align: center;
+        }
+        .feed-error-icon { font-size: 1.6rem; display: block; margin-bottom: 8px; }
+        .feed-error-msg  { font-family: var(--font-mono); font-size: 0.75rem; color: #ff6b6b; }
+        .feed-error-retry {
+            display: inline-block; margin-top: 10px;
+            font-family: var(--font-mono); font-size: 0.72rem;
+            color: var(--accent-cyan); text-decoration: underline;
+            cursor: pointer; background: none; border: none; padding: 0;
+        }
+        @media (max-width: 960px) {
+            .feed-grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
@@ -638,6 +772,7 @@
         <li><a href="#about">Über uns</a></li>
         <li><a href="#services">Leistungen</a></li>
         <li><a href="#faq">FAQ</a></li>
+        <li><a href="#threat-feed">Intel</a></li>
         <li><a href="#contact">Kontakt</a></li>
     </ul>
 </nav>
@@ -918,6 +1053,46 @@
     </div>
 </section>
 
+<!-- ═══ THREAT INTEL FEED ═══ -->
+<section id="threat-feed">
+    <h2 class="section-title">Aktuelle Bedrohungslage</h2>
+    <div class="feed-grid">
+
+        <!-- Linke Spalte: CISA Known Exploited Vulnerabilities -->
+        <div class="feed-col">
+            <div class="feed-col-header">
+                <span class="feed-live-dot cisa"></span>
+                <span class="feed-col-title cisa">CISA Active Exploits</span>
+                <span class="feed-last-updated" id="feed-updated-cisa"></span>
+            </div>
+            <div id="feed-cisa" class="feed-list">
+                <div class="skeleton-item"><div class="skeleton-line w-third"></div><div class="skeleton-line w-full"></div><div class="skeleton-line w-three-quarters"></div><div class="skeleton-line w-half"></div></div>
+                <div class="skeleton-item"><div class="skeleton-line w-third"></div><div class="skeleton-line w-full"></div><div class="skeleton-line w-three-quarters"></div><div class="skeleton-line w-half"></div></div>
+                <div class="skeleton-item"><div class="skeleton-line w-third"></div><div class="skeleton-line w-full"></div><div class="skeleton-line w-three-quarters"></div><div class="skeleton-line w-half"></div></div>
+                <div class="skeleton-item"><div class="skeleton-line w-third"></div><div class="skeleton-line w-full"></div><div class="skeleton-line w-three-quarters"></div><div class="skeleton-line w-half"></div></div>
+                <div class="skeleton-item"><div class="skeleton-line w-third"></div><div class="skeleton-line w-full"></div><div class="skeleton-line w-three-quarters"></div><div class="skeleton-line w-half"></div></div>
+            </div>
+        </div>
+
+        <!-- Rechte Spalte: HackerNews Security Stories -->
+        <div class="feed-col">
+            <div class="feed-col-header">
+                <span class="feed-live-dot hn"></span>
+                <span class="feed-col-title hn">Security News (HN)</span>
+                <span class="feed-last-updated" id="feed-updated-hn"></span>
+            </div>
+            <div id="feed-hn" class="feed-list">
+                <div class="skeleton-item"><div class="skeleton-line w-half"></div><div class="skeleton-line w-full"></div><div class="skeleton-line w-three-quarters"></div><div class="skeleton-line w-third"></div></div>
+                <div class="skeleton-item"><div class="skeleton-line w-half"></div><div class="skeleton-line w-full"></div><div class="skeleton-line w-three-quarters"></div><div class="skeleton-line w-third"></div></div>
+                <div class="skeleton-item"><div class="skeleton-line w-half"></div><div class="skeleton-line w-full"></div><div class="skeleton-line w-three-quarters"></div><div class="skeleton-line w-third"></div></div>
+                <div class="skeleton-item"><div class="skeleton-line w-half"></div><div class="skeleton-line w-full"></div><div class="skeleton-line w-three-quarters"></div><div class="skeleton-line w-third"></div></div>
+                <div class="skeleton-item"><div class="skeleton-line w-half"></div><div class="skeleton-line w-full"></div><div class="skeleton-line w-three-quarters"></div><div class="skeleton-line w-third"></div></div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
 <!-- ═══ CONTACT ═══ -->
 <section id="contact">
     <div class="contact-blobs">
@@ -1023,6 +1198,7 @@
         <p>
             Diese Website erhebt keine personenbezogenen Daten über Tracking-Dienste, Cookies oder eingebettete Drittanbieter-Inhalte.
             Alle Schriftarten (Fonts) werden lokal vom eigenen Server ausgeliefert — es findet keine Verbindung zu Google-Servern statt.
+            Mit Ausnahme der unter Punkt 7 beschriebenen API-Aufrufe für den Threat-Intelligence-Feed werden keine Daten an Dritte übermittelt.
         </p>
 
         <p><strong>3. Kontaktaufnahme per E-Mail</strong></p>
@@ -1047,6 +1223,38 @@
         <p><strong>6. Keine Cookies, kein Tracking</strong></p>
         <p>
             Diese Website verwendet keine Tracking-Cookies. Der einzige im Browser gespeicherte Wert ist ein lokales Flag (<code>ca-banner-closed</code> im localStorage), das Ihre Einstellung zum Info-Banner speichert. Es enthält keine personenbezogenen Daten.
+        </p>
+
+        <p><strong>7. Externe API-Aufrufe – Threat Intelligence Feed</strong></p>
+        <p>
+            Die Seite ruft beim Laden automatisch Daten von zwei externen Diensten ab,
+            um den Abschnitt „Aktuelle Bedrohungslage" zu befüllen:
+        </p>
+        <p>
+            <strong>CISA Known Exploited Vulnerabilities (KEV)</strong><br>
+            Anbieter: U.S. Cybersecurity and Infrastructure Security Agency (CISA), USA<br>
+            URL: <code>https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json</code><br>
+            Verarbeitete Daten: Öffentliche Schwachstellendaten (keine personenbezogenen Daten).
+            Bei diesem Abruf wird Ihre IP-Adresse an die Server der CISA übermittelt.
+            Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der Darstellung
+            aktueller Sicherheitsinformationen für Besucher einer IT-Security-Website).
+        </p>
+        <p>
+            <strong>HackerNews Algolia Search API</strong><br>
+            Anbieter: Algolia, Inc., 55 2nd St., 4th Floor, San Francisco, CA 94105, USA<br>
+            URL: <code>https://hn.algolia.com/api/v1/search_by_date?...</code><br>
+            Verarbeitete Daten: Öffentliche News-Metadaten (keine personenbezogenen Daten).
+            Bei diesem Abruf wird Ihre IP-Adresse an die Server von Algolia übermittelt.
+            Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der Darstellung
+            tagesaktueller Security-Nachrichten).
+        </p>
+        <p>
+            Die abgerufenen Daten werden ausschließlich im <code>sessionStorage</code> Ihres Browsers
+            für maximal 5 Minuten zwischengespeichert und bei Tab-Schließung automatisch gelöscht.
+            Es werden keine personenbezogenen Daten an Dritte übertragen.
+            Datenschutzerklärungen der Anbieter:
+            <a href="https://www.cisa.gov/privacy-policy" target="_blank" rel="noopener noreferrer">cisa.gov/privacy-policy</a>
+            und <a href="https://www.algolia.com/policies/privacy/" target="_blank" rel="noopener noreferrer">algolia.com/policies/privacy</a>.
         </p>
 
         <p style="margin-top:1.5rem; color: var(--text-muted); font-size: 0.85rem;">
@@ -1093,6 +1301,170 @@
             hamburger.classList.remove('active');
             navLinks.classList.remove('open');
         });
+    });
+
+    // ===== THREAT INTEL FEED =====
+
+    // XSS-Escaping für alle externen Daten
+    function escHtml(str) {
+        if (!str) return '';
+        return str
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+    }
+
+    // Deutsche Zeitangaben
+    function timeAgo(dateInput) {
+        var now  = Date.now();
+        var then = new Date(dateInput).getTime();
+        var diff = Math.floor((now - then) / 1000);
+        if (diff < 60)   return 'gerade eben';
+        if (diff < 3600) { var m = Math.floor(diff / 60);   return 'vor ' + m + ' Minute'  + (m === 1 ? '' : 'n'); }
+        if (diff < 86400){ var h = Math.floor(diff / 3600); return 'vor ' + h + ' Stunde'  + (h === 1 ? '' : 'n'); }
+        var d = Math.floor(diff / 86400);
+        if (d < 30)      return 'vor ' + d + ' Tag'    + (d  === 1 ? '' : 'en');
+        var mo = Math.floor(d / 30);
+        if (mo < 12)     return 'vor ' + mo + ' Monat' + (mo === 1 ? '' : 'en');
+        var y = Math.floor(d / 365);
+        return 'vor ' + y + ' Jahr' + (y === 1 ? '' : 'en');
+    }
+
+    // sessionStorage-Cache (5-Minuten-TTL)
+    var CACHE_TTL = 5 * 60 * 1000;
+
+    function cacheSet(key, data) {
+        try { sessionStorage.setItem(key, JSON.stringify({ data: data, ts: Date.now() })); } catch(e) {}
+    }
+    function cacheGet(key) {
+        try {
+            var raw = sessionStorage.getItem(key);
+            if (!raw) return null;
+            var entry = JSON.parse(raw);
+            if (Date.now() - entry.ts < CACHE_TTL) return entry.data;
+            sessionStorage.removeItem(key);
+        } catch(e) {}
+        return null;
+    }
+
+    // --- CISA Known Exploited Vulnerabilities ---
+    var CISA_URL = 'https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json';
+    var CISA_KEY = 'ca-feed-cisa';
+
+    function fetchCISA(callback) {
+        var cached = cacheGet(CISA_KEY);
+        if (cached) { callback(null, cached); return; }
+        fetch(CISA_URL)
+            .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+            .then(function(json) {
+                var sorted = json.vulnerabilities.slice().sort(function(a, b) {
+                    return b.dateAdded.localeCompare(a.dateAdded);
+                });
+                var top5 = sorted.slice(0, 5);
+                cacheSet(CISA_KEY, top5);
+                callback(null, top5);
+            })
+            .catch(function(err) { callback(err, null); });
+    }
+
+    function renderCISA(items) {
+        var html = '';
+        items.forEach(function(item) {
+            var isRansomware = item.knownRansomwareCampaignUse === 'Known';
+            var badgeClass   = isRansomware ? 'ransomware' : 'exploit';
+            var badgeLabel   = isRansomware ? '⚠ Ransomware' : 'Exploit';
+            var href = 'https://nvd.nist.gov/vuln/detail/' + encodeURIComponent(item.cveID);
+            html += '<a href="' + escHtml(href) + '" target="_blank" rel="noopener noreferrer" class="feed-item cisa">';
+            html += '<span class="feed-severity ' + badgeClass + '">' + badgeLabel + '</span>';
+            html += '<div class="feed-item-title">' + escHtml(item.vulnerabilityName) + '</div>';
+            html += '<div class="feed-item-sub">';
+            html += '<span class="feed-item-vendor">' + escHtml(item.vendorProject) + ' – ' + escHtml(item.product) + '</span>';
+            html += '<span class="feed-item-time">' + timeAgo(item.dateAdded) + '</span>';
+            html += '</div></a>';
+        });
+        document.getElementById('feed-cisa').innerHTML = html;
+        var ts = document.getElementById('feed-updated-cisa');
+        if (ts) ts.textContent = 'aktualisiert ' + new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function renderCISAError() {
+        document.getElementById('feed-cisa').innerHTML =
+            '<div class="feed-error"><span class="feed-error-icon">⚠️</span>' +
+            '<p class="feed-error-msg">CISA-Feed konnte nicht geladen werden.</p>' +
+            '<button class="feed-error-retry" onclick="loadCISA()">Erneut versuchen</button></div>';
+    }
+
+    function loadCISA() {
+        fetchCISA(function(err, data) {
+            if (err) { renderCISAError(); return; }
+            renderCISA(data);
+        });
+    }
+
+    // --- HackerNews Algolia ---
+    var HN_URL = 'https://hn.algolia.com/api/v1/search_by_date?tags=story&query=cybersecurity+security+breach+vulnerability&hitsPerPage=5';
+    var HN_KEY = 'ca-feed-hn';
+
+    function fetchHN(callback) {
+        var cached = cacheGet(HN_KEY);
+        if (cached) { callback(null, cached); return; }
+        fetch(HN_URL)
+            .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+            .then(function(json) {
+                var items = (json.hits || []).slice(0, 5);
+                cacheSet(HN_KEY, items);
+                callback(null, items);
+            })
+            .catch(function(err) { callback(err, null); });
+    }
+
+    function renderHN(items) {
+        var html = '';
+        items.forEach(function(item) {
+            var href = item.url || ('https://news.ycombinator.com/item?id=' + item.story_id);
+            html += '<a href="' + escHtml(href) + '" target="_blank" rel="noopener noreferrer" class="feed-item hn">';
+            html += '<div class="feed-hn-meta">';
+            html += '<span class="feed-hn-stat">▲ ' + (item.points || 0) + '</span>';
+            html += '<span class="feed-hn-stat">💬 ' + (item.num_comments || 0) + '</span>';
+            html += '</div>';
+            html += '<div class="feed-item-title">' + escHtml(item.title) + '</div>';
+            html += '<div class="feed-item-sub">';
+            html += '<span>' + escHtml(item.author || '') + '</span>';
+            html += '<span class="feed-item-time">' + timeAgo(item.created_at) + '</span>';
+            html += '</div></a>';
+        });
+        document.getElementById('feed-hn').innerHTML = html;
+        var ts = document.getElementById('feed-updated-hn');
+        if (ts) ts.textContent = 'aktualisiert ' + new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function renderHNError() {
+        document.getElementById('feed-hn').innerHTML =
+            '<div class="feed-error"><span class="feed-error-icon">⚠️</span>' +
+            '<p class="feed-error-msg">HN-Feed konnte nicht geladen werden.</p>' +
+            '<button class="feed-error-retry" onclick="loadHN()">Erneut versuchen</button></div>';
+    }
+
+    function loadHN() {
+        fetchHN(function(err, data) {
+            if (err) { renderHNError(); return; }
+            renderHN(data);
+        });
+    }
+
+    // Bootstrap: parallel laden + alle 5 Minuten aktualisieren
+    document.addEventListener('DOMContentLoaded', function() {
+        loadCISA();
+        loadHN();
+        setInterval(function() {
+            try {
+                sessionStorage.removeItem(CISA_KEY);
+                sessionStorage.removeItem(HN_KEY);
+            } catch(e) {}
+            loadCISA();
+            loadHN();
+        }, CACHE_TTL);
     });
 </script>
 </body>
