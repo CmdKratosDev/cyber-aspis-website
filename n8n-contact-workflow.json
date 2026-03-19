@@ -1,0 +1,137 @@
+{
+  "name": "Cyber Aspis — Kontaktformular",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "contact",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "webhookId": "cyber-aspis-contact"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": false },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.body.website }}",
+              "rightValue": "",
+              "operator": { "type": "string", "operation": "equals" }
+            }
+          ]
+        }
+      },
+      "id": "honeypot-check",
+      "name": "Honeypot Check",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            { "id": "1", "name": "name",      "value": "={{ $json.body.name }}",      "type": "string" },
+            { "id": "2", "name": "email",     "value": "={{ $json.body.email }}",     "type": "string" },
+            { "id": "3", "name": "service",   "value": "={{ $json.body.service }}",   "type": "string" },
+            { "id": "4", "name": "message",   "value": "={{ $json.body.message }}",   "type": "string" },
+            { "id": "5", "name": "source",    "value": "={{ $json.body.source }}",    "type": "string" },
+            { "id": "6", "name": "timestamp", "value": "={{ $json.body.timestamp }}", "type": "string" },
+            { "id": "7", "name": "received_at","value": "={{ $now.toISO() }}",        "type": "string" }
+          ]
+        }
+      },
+      "id": "set-fields",
+      "name": "Felder normalisieren",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [680, 240]
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "dataMode": "autoMapInputData",
+        "options": {}
+      },
+      "id": "save-to-db",
+      "name": "In Datenbank speichern",
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [900, 240],
+      "notes": "ALTERNATIV: Google Sheets Node oder n8n 'Append to Sheet' — je nach präferiertem Storage. Baserow läuft self-hosted. Bei Bedarf durch anderen Node ersetzen."
+    },
+    {
+      "parameters": {
+        "fromEmail": "kontakt@cyber-aspis.de",
+        "toEmail": "DEINE-PRIVATE@EMAIL.DE",
+        "subject": "[cyber-aspis] Neue Kontaktanfrage von {{ $json.name }}",
+        "emailType": "text",
+        "message": "=Neue Anfrage über cyber-aspis.de\n\n---\nName:      {{ $json.name }}\nE-Mail:    {{ $json.email }}\nLeistung:  {{ $json.service }}\nEingegangen: {{ $json.received_at }}\n\nNachricht:\n{{ $json.message }}\n\n---\nQuelle: {{ $json.source }}"
+      },
+      "id": "send-email",
+      "name": "E-Mail an mich",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [1120, 240],
+      "notes": "SMTP-Credentials in n8n hinterlegen: Hostinger SMTP (smtp.hostinger.com, Port 465/587)"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={ \"success\": true }",
+        "options": { "responseCode": 200 }
+      },
+      "id": "respond-ok",
+      "name": "Response OK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1340, 240]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={ \"success\": false, \"reason\": \"spam\" }",
+        "options": { "responseCode": 200 }
+      },
+      "id": "respond-spam",
+      "name": "Response Spam (silent)",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [680, 400],
+      "notes": "Silent drop — Bots bekommen 200 OK ohne echte Verarbeitung"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [[{ "node": "Honeypot Check", "type": "main", "index": 0 }]]
+    },
+    "Honeypot Check": {
+      "main": [
+        [{ "node": "Felder normalisieren",   "type": "main", "index": 0 }],
+        [{ "node": "Response Spam (silent)", "type": "main", "index": 0 }]
+      ]
+    },
+    "Felder normalisieren": {
+      "main": [[{ "node": "In Datenbank speichern", "type": "main", "index": 0 }]]
+    },
+    "In Datenbank speichern": {
+      "main": [[{ "node": "E-Mail an mich", "type": "main", "index": 0 }]]
+    },
+    "E-Mail an mich": {
+      "main": [[{ "node": "Response OK", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "saveExecutionProgress": true
+  },
+  "tags": ["contact-form", "cyber-aspis"]
+}
