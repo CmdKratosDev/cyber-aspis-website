@@ -1475,6 +1475,7 @@
     <div class="footer-links">
         <a href="#" onclick="openModal('modal-impressum'); return false;">Impressum</a>
         <a href="#" onclick="openModal('modal-datenschutz'); return false;">Datenschutzerklärung</a>
+        <a href="#" onclick="openModal('modal-agb'); return false;">AGB</a>
     </div>
 </footer>
 
@@ -1508,6 +1509,60 @@
         </p>
         <p style="margin-top:1.5rem; color: var(--text-muted); font-size: 0.85rem;">
             <em>Hinweis: Dieses Impressum befindet sich im Aufbau. Vor Go-Live sind alle Pflichtangaben gemäß § 5 TMG zu vervollständigen.</em>
+        </p>
+    </div>
+</div>
+
+<!-- ═══ MODAL: AGB ═══ -->
+<div id="modal-agb" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-agb')">
+    <div class="modal-box">
+        <button class="modal-close" onclick="closeModal('modal-agb')">✕</button>
+        <h2>Allgemeine Geschäftsbedingungen</h2>
+        <p style="color: var(--text-muted); font-size: 0.85rem;">Cyber Aspis IT-Security · Georgios Papagiannis · Stand: März 2026</p>
+
+        <h3>§ 1 Geltungsbereich</h3>
+        <p>(1) Diese AGB gelten für alle Verträge zwischen Cyber Aspis IT-Security, Georgios Papagiannis, Peinerstraße 77, 30519 Hannover (nachfolgend „Auftragnehmer") und seinen Kunden (nachfolgend „Auftraggeber") über die Erbringung von IT-Sicherheitsdienstleistungen.</p>
+        <p>(2) Abweichende Bedingungen des Auftraggebers werden nicht anerkannt, es sei denn, der Auftragnehmer stimmt ihrer Geltung ausdrücklich schriftlich zu.</p>
+
+        <h3>§ 2 Leistungsumfang &amp; Autorisierung</h3>
+        <p>(1) Der Auftragnehmer erbringt ausschließlich die im jeweiligen Angebot oder Auftrag beschriebenen Leistungen (Penetrationstests, Sicherheitsberatung, Vulnerability Assessments, Malware-Analyse, Backup-Konzepte u.ä.).</p>
+        <p>(2) <strong>Autorisierungspflicht:</strong> Alle Tests, Scans und technischen Prüfungen erfolgen ausschließlich auf Systemen, für die der Auftraggeber vorab eine ausdrückliche schriftliche Genehmigung erteilt hat.</p>
+        <p>(3) Der Auftraggeber sichert zu, dass er für alle im Scope genannten Systeme berechtigt ist, diese testen zu lassen.</p>
+        <p>(4) Änderungen des Leistungsumfangs bedürfen der schriftlichen Vereinbarung.</p>
+
+        <h3>§ 3 Mitwirkungspflichten des Auftraggebers</h3>
+        <p>(1) Der Auftraggeber stellt rechtzeitig alle erforderlichen Informationen, Zugänge und Unterlagen zur Verfügung und benennt einen erreichbaren Ansprechpartner.</p>
+        <p>(2) Verzögerungen durch fehlende Mitwirkung gehen nicht zu Lasten des Auftragnehmers.</p>
+
+        <h3>§ 4 Vergütung &amp; Zahlungsbedingungen</h3>
+        <p>(1) Die vereinbarte Vergütung ergibt sich aus dem jeweiligen Angebot. Preise zzgl. gesetzlicher MwSt., sofern diese anfällt.</p>
+        <p>(2) <strong>Zahlungsplan:</strong> 50 % bei Auftragserteilung, 50 % bei Lieferung. Zahlungsfrist: 14 Tage nach Rechnungsdatum.</p>
+        <p>(3) Bei Zahlungsverzug sind Verzugszinsen in gesetzlicher Höhe (§ 288 BGB) fällig.</p>
+
+        <h3>§ 5 Lieferzeit &amp; Fristen</h3>
+        <p>Standard-Lieferzeit: 5–10 Werktage nach Auftragserteilung und Eingang der Anzahlung, sofern nicht anders vereinbart.</p>
+
+        <h3>§ 6 Vertraulichkeit &amp; Datenschutz</h3>
+        <p>(1) Beide Parteien behandeln alle vertraulichen Informationen dauerhaft vertraulich. Auf Wunsch wird vor Beginn ein NDA unterzeichnet.</p>
+        <p>(2) Personenbezogene Daten werden ausschließlich zur Vertragserfüllung gemäß Art. 6 Abs. 1 lit. b DSGVO verarbeitet.</p>
+        <p>(3) Sicherheitsberichte werden ausschließlich an den Auftraggeber übermittelt und nicht veröffentlicht.</p>
+
+        <h3>§ 7 Haftung &amp; Haftungsausschluss</h3>
+        <p>(1) Haftung nur bei Vorsatz und grober Fahrlässigkeit sowie bei Verletzung von Leben, Körper und Gesundheit.</p>
+        <p>(2) <strong>Kein Vollständigkeitsversprechen:</strong> IT-Sicherheitstests können nie eine vollständige Abwesenheit von Schwachstellen garantieren.</p>
+        <p>(3) Die Haftung ist der Höhe nach auf den Auftragswert begrenzt, soweit keine Haftpflichtversicherung greift.</p>
+
+        <h3>§ 8 Urheberrecht &amp; Nutzungsrechte</h3>
+        <p>Erstellte Berichte und Dokumentationen bleiben bis zur vollständigen Bezahlung Eigentum des Auftragnehmers. Nach Bezahlung erhält der Auftraggeber ein einfaches Nutzungsrecht für den internen Gebrauch.</p>
+
+        <h3>§ 9 Stornierung &amp; Rücktritt</h3>
+        <p>Kostenfreie Stornierung bis 48 Stunden vor Projektstart. Bei späterer Stornierung werden 50 % des Gesamtbetrags als Stornogebühr fällig.</p>
+
+        <h3>§ 10 Schlussbestimmungen</h3>
+        <p>Es gilt deutsches Recht. Gerichtsstand ist Hannover. Sollten einzelne Bestimmungen unwirksam sein, bleibt die Wirksamkeit der übrigen Bestimmungen unberührt.</p>
+
+        <p style="margin-top:1.5rem; color: var(--text-muted); font-size: 0.85rem;">
+            <em>Stand: März 2026 · Version 1.0</em>
         </p>
     </div>
 </div>
