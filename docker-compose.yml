@@ -6,7 +6,6 @@ services:
       - "80"
     restart: unless-stopped
     # Beim Start: Dateien von GitHub klonen und nginx starten
-    # → kein manuelles Upload nötig, Updates automatisch bei Neustart
     entrypoint: >
       sh -c "
         apk add --no-cache git &&
@@ -29,6 +28,31 @@ services:
       - traefik.http.middlewares.cyberaspis-www.redirectregex.replacement=https://cyber-aspis.de/$${1}
       - traefik.http.middlewares.cyberaspis-www.redirectregex.permanent=true
       - traefik.http.routers.cyberaspis.middlewares=cyberaspis-www@docker
+    networks:
+      - traefik_net
+    depends_on:
+      - php
+
+  php:
+    image: php:8.3-fpm-alpine
+    container_name: cyber-aspis-php
+    restart: unless-stopped
+    # Beim Start: contact.php von GitHub klonen, PHPMailer installieren
+    entrypoint: >
+      sh -c "
+        apk add --no-cache git unzip curl &&
+        curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer &&
+        git clone --depth 1 https://github.com/CmdKratosDev/cyber-aspis-website.git /tmp/ca-repo &&
+        mkdir -p /var/www/html &&
+        cp /tmp/ca-repo/contact.php /var/www/html/contact.php &&
+        cp /tmp/ca-repo/composer.json /var/www/html/composer.json &&
+        rm -rf /tmp/ca-repo &&
+        cd /var/www/html &&
+        composer install --no-dev --optimize-autoloader --no-interaction &&
+        php-fpm
+      "
+    environment:
+      - SMTP_PASS=${SMTP_PASS}
     networks:
       - traefik_net
 

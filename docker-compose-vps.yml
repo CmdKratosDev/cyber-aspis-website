@@ -26,8 +26,22 @@ services:
       - "traefik.http.routers.cyberaspis.middlewares=hsts@docker"
     volumes:
       - ./site:/usr/share/nginx/html:ro
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
     networks:
-      - n8n_default
+      - webnet
+
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile.php
+    restart: always
+    volumes:
+      - ./contact.php:/var/www/html/contact.php:ro
+    environment:
+      - SMTP_PASS=${SMTP_PASS}
+    networks:
+      - webnet
+
 networks:
-  n8n_default:
-    external: true
+  webnet:
+    driver: bridge

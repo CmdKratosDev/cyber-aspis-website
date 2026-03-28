@@ -5,9 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cyber Aspis IT-Security – IT-Sicherheit für jeden</title>
     <meta name="description" content="IT-Sicherheit für KMU — Penetrationstests, Vulnerability Assessments und Security-Beratung aus Deutschland. Jetzt kostenloses Erstgespräch anfragen.">
-    <!-- noindex: Seite noch nicht für Suchmaschinen freigeben (vor offiziellem Launch entfernen) -->
-    <meta name="robots" content="noindex, nofollow">
-
     <!-- ═══ OpenGraph (LinkedIn, WhatsApp, Facebook, Slack) ═══ -->
     <meta property="og:type"        content="website">
     <meta property="og:url"         content="https://cyber-aspis.de/">
@@ -944,7 +941,7 @@
 
 <!-- ═══ CONSTRUCTION BANNER ═══ -->
 <div id="construction-banner">
-    🚧&nbsp;&nbsp;Cyber Aspis IT-Security befindet sich im Aufbau – Launch geplant Q2 2026
+    🚧&nbsp;&nbsp;Cyber Aspis IT-Security befindet sich im Aufbau – Launch geplant Ende Q2 / Anfang Q3 2026
     <button id="close-banner" aria-label="Banner schließen">✕</button>
 </div>
 
@@ -1009,7 +1006,7 @@
             verständlich erklärt, schnell umgesetzt, fair berechnet.
         </p>
         <div class="hero-ctas">
-            <a href="mailto:georg@cyber-aspis.de?subject=Kostenloses%20Erstgespräch" class="btn-primary">
+            <a href="mailto:kontakt@cyber-aspis.de?subject=Kostenloses%20Erstgespräch" class="btn-primary">
                 Kostenloses Erstgespräch →
             </a>
             <a href="#services" class="btn-secondary">
@@ -1496,7 +1493,7 @@
             <strong>Kontakt</strong><br>
             <!-- TODO: Telefonnummer eintragen sobald vorhanden -->
             Telefon: [wird ergänzt]<br>
-            E-Mail: <a href="mailto:georg@cyber-aspis.de">georg@cyber-aspis.de</a>
+            E-Mail: <a href="mailto:kontakt@cyber-aspis.de">kontakt@cyber-aspis.de</a>
         </p>
         <p>
             <strong>Umsatzsteuer-Identifikationsnummer</strong><br>
@@ -1506,9 +1503,6 @@
         <p>
             <strong>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</strong><br>
             Georgios Papagiannis (Anschrift wie oben)
-        </p>
-        <p style="margin-top:1.5rem; color: var(--text-muted); font-size: 0.85rem;">
-            <em>Hinweis: Dieses Impressum befindet sich im Aufbau. Vor Go-Live sind alle Pflichtangaben gemäß § 5 TMG zu vervollständigen.</em>
         </p>
     </div>
 </div>
@@ -1575,7 +1569,7 @@
         <p><strong>1. Verantwortlicher</strong></p>
         <p>
             Georgios Papagiannis · Cyber Aspis IT-Security<br>
-            E-Mail: <a href="mailto:georg@cyber-aspis.de">georg@cyber-aspis.de</a>
+            E-Mail: <a href="mailto:kontakt@cyber-aspis.de">kontakt@cyber-aspis.de</a>
         </p>
 
         <p><strong>2. Erhebung und Verarbeitung personenbezogener Daten</strong></p>
@@ -1691,8 +1685,8 @@
 
     // ===== CONTACT FORM =====
 
-    // n8n Webhook-URL (nach n8n-Setup eintragen)
-    var CONTACT_WEBHOOK = '/api/contact';
+    // PHPMailer via Hostinger SMTP
+    var CONTACT_WEBHOOK = '/contact.php';
 
     // Dropdown vorbelegen (z.B. von Bundle-CTA)
     function prefillService(value) {
