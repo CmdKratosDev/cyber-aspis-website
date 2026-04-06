@@ -13,3 +13,8 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Node (lokal, nicht Teil der Website)
+package.json
+package-lock.json
+node_modules/
