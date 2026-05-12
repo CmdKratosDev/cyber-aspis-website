@@ -12,6 +12,27 @@
 
 ---
 
+## Surface-Profiles — Übersicht
+
+Cyber-Aspis hat historisch drei eigenständige visuelle Systeme, die parallel produktiv sind. Sie teilen die **Defensive-Cyber-Tonalität**, divergieren aber in Fonts und Farb-Nuancen weil jede Surface andere Render-/Lese-Anforderungen hat. **Diese Datei dokumentiert alle drei — keine wird "vereinheitlicht", existierende Designs bleiben so wie sie sind.**
+
+| Profile | Quelle | Fonts | Renderer | Format |
+|---------|--------|-------|----------|--------|
+| **A — Web** (Source-of-Truth dieser Datei) | `cyber-aspis-website/index.html` | Orbitron · Exo 2 · Space Mono | Browser | responsive Web |
+| **B — Social-Cards** (LinkedIn-Carousels) | `Claude-cowork/Cyber-Aspis/cowork-pipeline/templates/` | Bebas Neue · Manrope · JetBrains Mono | WeasyPrint (PDF→PNG) | 1080×1350 portrait |
+| **C — PDF-Reports** (Audit-Output) | `Cyber-Aspis/toolkit/backend/templates/report_*.html.j2` | Helvetica Neue · Courier New | WeasyPrint (PDF) | A4 (210×297mm) |
+
+**Wann welches Profile verwenden:**
+- Web-Komponente, Landing-Sektion, Web-App-UI → **Profile A**
+- LinkedIn-Carousel, Instagram-Post, Social-Card → **Profile B**
+- Audit-Bericht, Quick-Check-Report, Investor-Dokument → **Profile C**
+
+---
+
+## PROFILE A — Web
+
+> Tokens unten gelten ausschließlich für Web-Surfaces. Für Social/Reports → Profile B/C unten.
+
 ## Farb-Token
 
 ### Backgrounds (dark theme, primary)
@@ -245,14 +266,297 @@ background: rgba(224,64,251,0.13);
 
 ---
 
-## Konsumenten dieser Konvention
+---
 
-| Wo verwendet | Status |
-|--------------|--------|
-| `cyber-aspis-website/index.html` | ✅ Source-of-Truth (extrahiert aus hier) |
-| `Cyber-Aspis/toolkit/frontend/` (React + Tailwind) | ⚠️ Tailwind-Config noch nicht auf Brand-Tokens gemappt — TD |
-| Audit-Reports (PDF via WeasyPrint) | ⚠️ Eigenes Stylesheet, sollte Token-Subset übernehmen — TD |
-| Slides / Pitch-Decks | ❌ Nicht standardisiert — bei Bedarf hier ergänzen |
+## PROFILE B — Social-Cards (LinkedIn-Carousels)
+
+> Quelle: `Claude-cowork/Cyber-Aspis/cowork-pipeline/templates/base.css` + `slide-{1-4}.html`. **Bewusst eigenes System** — Bebas Neue + Manrope rendern auf Social-Plattformen kompakter und scannbarer als Orbitron + Exo 2.
+
+### Format & Renderer
+
+- **Größe:** 1080×1350 px (LinkedIn Portrait, 4:5)
+- **Padding:** `72px 80px` (außen)
+- **Renderer:** WeasyPrint via Python-Pipeline (`render.py`), PDF→PNG-Export
+- **Fonts:** lokal in `cowork-pipeline/fonts/` (.deb-Packages)
+
+### Farb-Token (Profile B)
+
+```css
+:root {
+  --bg-deep:       #0a0e1a;   /* tieferes Schwarz als Web */
+  --bg-mid:        #0f1729;
+  --brand-cyan:    #00d9ff;   /* Achtung: ≠ Web (#00d4ff) */
+  --brand-cyan-d:  #00a8c4;   /* dunklere Cyan-Variante */
+  --alarm-red:     #ff3c3c;   /* eigene Akzent-Farbe für Mythos/Warnung */
+  --alarm-red-d:   #c92a2a;
+  --text-primary:  #f0f4f8;   /* leicht off-white statt #ffffff */
+  --text-muted:    #8b95a8;
+  --text-subtle:   #4a5568;
+}
+```
+
+### Background-Komposition (Signature)
+
+```css
+background:
+  radial-gradient(circle at 85% 15%, rgba(255,60,60,0.12), transparent 45%),
+  radial-gradient(circle at 15% 90%, rgba(0,217,255,0.08), transparent 45%),
+  linear-gradient(135deg, #0a0e1a 0%, #0f1729 100%);
+```
+
+**Plus subtiler 50px-Grid-Overlay** (`rgba(0,217,255,0.04)` Linien):
+
+```css
+.slide::before {
+  background-image:
+    linear-gradient(rgba(0,217,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,217,255,0.04) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+```
+
+### Typografie (Profile B)
+
+| Element | Font | Size | Weight | Letter-Spacing |
+|---------|------|------|--------|----------------|
+| **Headline-1 (Hook)** | Bebas Neue | 138px | 400 | 0.005em |
+| **Headline-2/3/4** | Bebas Neue | 84px | 400 | 0.005em |
+| **CTA-Headline** | Bebas Neue | 36px | 400 | 0.04em |
+| **Brand-Title** | Bebas Neue | 24px | 400 | 0.12em |
+| **Logo-Text "CA"** | Bebas Neue | 24px | 400 | 0.05em |
+| **Subline** | Manrope | 20–22px | 400 | default |
+| **Verdict-Text** | Manrope | 22px | 400 | default |
+| **Option-Text** | Manrope | 19px | 400 | default |
+| **Terminal-Cmd** (Header) | JetBrains Mono | 16px | 400 | default |
+| **Slide-Counter / Footer-Marker** | JetBrains Mono | 14px | 400 | 0.10em |
+| **Mono-Label** | JetBrains Mono | 14px | 400 | 0.08em (lowercase) |
+| **Badge** | JetBrains Mono | 14px | 600 | 0.18em (uppercase) |
+| **Brand-Tagline** | JetBrains Mono | 11px | 400 | 0.18em (uppercase) |
+
+**Display-Regel:** Bebas Neue IMMER `text-transform: uppercase` + `line-height: 1.02`.
+
+### Komponenten-Patterns (Profile B)
+
+#### Slide-Header (Terminal-Style)
+```html
+<header class="slide-header">
+  <span class="terminal-cmd">$ scope --target "..." --framework bsi-grundschutz</span>
+  <span class="slide-counter">01 / 04</span>
+</header>
+```
+JetBrains-Mono, Cyan-Command + grauer Counter — referenziert Pentest-Tool-Vibe.
+
+#### Brand-Block (Footer)
+```html
+<div class="brand">
+  <div class="ca-logo">CA</div>            <!-- 48×48 cyan-border -->
+  <div class="brand-name">
+    <div class="brand-title">Cyber Aspis</div>
+    <div class="brand-tagline">IT-Sicherheit für jeden</div>
+  </div>
+</div>
+```
+
+#### Badges (Mythos/Basis)
+```css
+.badge.mythos { color: #ff3c3c; border: 1px solid #ff3c3c; }   /* Warn-Akzent */
+.badge.basis  { color: #00d9ff; border: 1px solid #00d9ff; }   /* Defensive-Akzent */
+```
+
+#### Verdict-Box (Hero-Statement)
+```css
+.verdict-box       { background: rgba(255,60,60,0.10); border: 1px solid rgba(255,60,60,0.45); }   /* Warning */
+.verdict-box.cyan  { background: rgba(0,217,255,0.08); border: 1px solid rgba(0,217,255,0.45); }   /* Defensive */
+```
+Padding `24px 28px`, Icon links, Text mit `<span class="highlight">` für Akzent-Wörter.
+
+#### Basis-Row (Numbered List)
+```html
+<div class="basis-row">
+  <span class="basis-num">[ 01 ]</span>
+  <span class="basis-label">MFA für Admin-Zugänge</span>
+</div>
+```
+Cyan-Border-Left 3px, Bebas-Label 34px, JetBrains-Nummer 14px in cyan-border-Box.
+
+#### CTA-Box
+```css
+.cta-box {
+  border-left: 4px solid #00d9ff;
+  background: rgba(0, 217, 255, 0.06);
+  padding: 28px 32px;
+}
+```
+
+### Slide-Architektur (4-Slide-Carousel)
+
+| Slide | Zweck | Hauptelement |
+|-------|-------|--------------|
+| **01** Hook | Provokante Headline | `headline-1` 138px + Verdict-Box |
+| **02** Liste | 5 Punkte / Maßnahmen | `basis-list` aus 5 `basis-row` |
+| **03** Hebel | Aufwand vs. Wirkung | `lever-row` Grid (Effort 220px, Arrow 24px, Text 1fr) |
+| **04** CTA | Frage an Community + Action | `options-grid` 2×2 + CTA-Box |
+
+### Don'ts (Profile B)
+
+- ❌ Orbitron oder Exo 2 (Web-Fonts) — komplett anderes Profile
+- ❌ Magenta `#e040fb` (Web-CTA-Farbe) — Profile B benutzt Cyan oder Alarm-Red
+- ❌ Glow-Shadows wie Web — Carousel-Look ist matter, mit Border+Background-Tint statt Glow
+- ❌ Über 4 Slides ohne Reason — LinkedIn-Engagement bricht ab Slide 5
+
+---
+
+## PROFILE C — PDF-Reports (Toolkit Audit-Output)
+
+> Quelle: `Cyber-Aspis/toolkit/backend/templates/report_{quick_check,interim,final,professional}.html.j2`. **Bewusst Print-optimiert** — Helvetica Neue + Light-Theme weil Reports gedruckt + an Steuerberater/Anwälte/KMU-Geschäftsführer geschickt werden, die kein Cyberpunk-Theme erwarten.
+
+### Format & Renderer
+
+- **Größe:** A4 (210×297mm)
+- **Margin:** `2cm 2.5cm` (Standard) oder `0` für Cover-Page (Professional)
+- **Renderer:** WeasyPrint via Jinja2 (`backend/app/services/report.py`)
+- **Page-Numbering:** automatisch via `@bottom-right { content: "Seite " counter(page) " von " counter(pages); }`
+
+### Sub-Variant C1 — Quick-Check Report
+
+**Use-Case:** €99-299 KMU-Quick-Check, kompakt, lesbar, severity-fokussiert.
+
+#### Farb-Token (C1)
+
+```css
+/* Brand */
+--brand-navy:      #1e3a5f;     /* Primary — Header-Underline, Title-Block-BG, h2-Color */
+--brand-purple:    #7c3aed;     /* Akzent — Brand-Span, h2-Border-Left */
+
+/* Text */
+--text-body:       #1f2937;
+--text-meta:       #6b7280;
+--text-strong:     #374151;
+
+/* Severity-Skala (3-stufig) */
+--sev-high:        #dc2626;     /* + box: bg #fef2f2, border #ef4444 */
+--sev-medium:      #d97706;     /* + box: bg #fffbeb, border #f59e0b */
+--sev-low:         #059669;     /* + box: bg #ecfdf5, border #10b981 */
+--sev-total:       #374151;     /* + box: bg #f9fafb, border #6b7280 */
+
+/* Layout */
+--rule:            #e5e7eb;     /* Tabellen-Borders */
+--scope-bg:        #f8fafc;
+--scope-border:    #e2e8f0;
+```
+
+#### Typografie (C1)
+
+| Element | Size | Weight |
+|---------|------|--------|
+| Body | 10.5pt | 400 |
+| Brand (Header) | 18pt | 700 (navy + purple span) |
+| Title-Block H1 | 16pt | 700 (white auf navy) |
+| H2 | 12pt | 700 (navy, purple border-left 4px) |
+| Summary-Box-Count | 24pt | 700 |
+| Summary-Box-Label | 8pt | 600 (uppercase, letter-spacing 0.05em) |
+| Tabellen-Header | 9.5pt | 600 (white auf navy) |
+| Page-Footer | 9pt | 400 (meta-grau) |
+
+**Font-Stack:** `"Helvetica Neue", Arial, sans-serif` für alles, `monospace` nur für CVSS-Werte.
+
+#### Komponenten-Patterns (C1)
+
+- **Title-Block:** Navy-Background `#1e3a5f`, weißer Text, padding `18px 20px`, border-radius 4px
+- **Summary-Grid:** 4 Boxen flex-row mit count + label, severity-coded
+- **Severity-Badge:** pill-shape (border-radius 10px), padding 2px 8px, severity-coded background+border
+- **Recommendation-Item:** colored border-left 4px (sev-coded), pastel background, padding 10px 14px
+- **Scope-Box:** light-grey `#f8fafc`, border `#e2e8f0`, font-size 9.5pt
+
+### Sub-Variant C2 — Professional Report
+
+**Use-Case:** Größere Engagements (€500+), Cover-Page, 5-stufige Severity-Skala (mit Critical + Info), refinierter Look.
+
+#### Farb-Token (C2)
+
+```css
+/* Cover (eigene Farbwelt — dark) */
+--cover-bg:         #0f172a;
+--cover-text:       #f8fafc;
+--cover-meta:       #e2e8f0;
+--cover-meta-lbl:   #64748b;
+--cover-divider:    #334155;
+--cover-footer-rule:#1e293b;
+
+/* Brand (Content-Pages) */
+--brand-indigo:     #818cf8;    /* Primary-Akzent — h2-border-left, brand-span, subtitle */
+--brand-deep:       #0f172a;    /* H2-Color */
+
+/* Severity-Skala (5-stufig) */
+--sev-critical:     #7c3aed;    /* + box: bg #f5f3ff, border #a78bfa */
+--sev-high:         #dc2626;    /* + box: bg #fef2f2, border #fca5a5 */
+--sev-medium:       #d97706;    /* + box: bg #fffbeb, border #fcd34d */
+--sev-low:          #059669;    /* + box: bg #ecfdf5, border #6ee7b7 */
+--sev-info:         #2563eb;    /* + box: bg #eff6ff, border #93c5fd */
+--sev-total:        #374151;    /* + box: bg #f9fafb, border #d1d5db */
+```
+
+#### Typografie (C2)
+
+| Element | Size | Weight |
+|---------|------|--------|
+| Cover-Title | 26pt | 700 |
+| Cover-Logo | 22pt | 800 (white + indigo span) |
+| Cover-Subtitle | 13pt | 500 (indigo) |
+| Cover-Tagline | 8.5pt | 400 (uppercase, letter-spacing 0.08em) |
+| Cover-Meta-Label | 7.5pt | 400 (uppercase, letter-spacing 0.1em) |
+| Cover-Meta-Value | 11pt | 600 |
+| Content-H2 | 13pt | 700 (deep, indigo border-left) |
+| Content-H3 | 10.5pt | 700 |
+| Severity-Box-Num | 22pt+ | 700 |
+| Severity-Label | 7.5pt | 600 (uppercase, letter-spacing 0.05em) |
+
+#### Cover-Page-Pattern
+
+```css
+@page cover {
+  size: A4;
+  margin: 0;
+  background: #0f172a;
+}
+.cover-logo span    { color: #818cf8; }       /* "Cyber" weiß, "Aspis" indigo */
+.cover-divider      { border-top: 1px solid #334155; }
+.cover-meta-label   { color: #64748b; uppercase; }
+.cover-meta-value   { color: #e2e8f0; }
+.cover-footer       { border-top: 1px solid #1e293b; color: #475569; }
+```
+
+### Don'ts (Profile C)
+
+- ❌ Cyan/Magenta-Neon (Web-Profile) — wirkt unprofessionell auf Audit-Reports
+- ❌ Orbitron/Bebas Neue — Display-Fonts auf Print-Body unleserlich
+- ❌ Glow-Shadows — auf Print kein Effekt, nur Druckkosten
+- ❌ Severity-Farben mischen zwischen C1 (3-stufig) und C2 (5-stufig) — pro Report-Typ konsistent
+
+---
+
+## Cross-Profile Konventionen
+
+Trotz divergierender Tokens gelten überall:
+
+- **Sprache:** Deutsch (Sie-Form Marketing/Reports, Du-Form intern, Content-Tonalität siehe `Brand-Identität` oben)
+- **Logo:** `cyber-aspis-website/assets/logo.png` (Web) bzw. CA-Glyph in Bebas Neue + Cyan-Border (Carousel) bzw. Wortmarke "Cyber **Aspis**" mit accent-span (Reports). Nie verändern, nur skalieren.
+- **Tagline:** "IT-Sicherheit für jeden" (auf allen Surfaces wo Tagline existiert)
+- **DSGVO-Fonts:** Alle Fonts lokal eingebunden, kein Google CDN, in keiner Surface
+
+---
+
+## Konsumenten-Tabelle (aktualisiert)
+
+| Wo verwendet | Profile | Status |
+|--------------|---------|--------|
+| `cyber-aspis-website/index.html` | A — Web | ✅ canonical |
+| `Claude-cowork/Cyber-Aspis/cowork-pipeline/` | B — Social | ✅ canonical (4-Slide-Carousel) |
+| `Cyber-Aspis/toolkit/backend/templates/report_quick_check.html.j2` | C1 — Quick-Check | ✅ canonical |
+| `Cyber-Aspis/toolkit/backend/templates/report_professional.html.j2` | C2 — Professional | ✅ canonical |
+| `Cyber-Aspis/toolkit/backend/templates/report_{interim,final}.html.j2` | C-Familie | ⚠️ noch nicht im Detail dokumentiert — sollten C1 oder C2 folgen |
+| `Cyber-Aspis/toolkit/frontend/` (React + Tailwind) | A-Web (TD) | ⚠️ Tailwind-Config noch nicht auf Profile-A-Tokens gemappt |
+| Slides / Pitch-Decks | — | ❌ nicht standardisiert — bei Bedarf neues Profile D |
 
 ---
 
@@ -260,4 +564,6 @@ background: rgba(224,64,251,0.13);
 
 | Datum | Änderung | Autor |
 |-------|----------|-------|
-| 2026-05-12 | Initial — extrahiert aus `index.html` | Claude (Session) |
+| 2026-05-12 | Initial — Profile A (Web) extrahiert aus `index.html` | Claude (Session) |
+| 2026-05-12 | + Profile B (Social-Cards/Carousels) extrahiert aus `cowork-pipeline/` | Claude (Session) |
+| 2026-05-12 | + Profile C1+C2 (PDF-Reports Quick-Check + Professional) extrahiert aus `toolkit/backend/templates/` | Claude (Session) |
