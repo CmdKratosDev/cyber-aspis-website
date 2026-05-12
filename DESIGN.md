@@ -546,6 +546,41 @@ Trotz divergierender Tokens gelten überall:
 
 ---
 
+## Surface-Drifts — bewusst akzeptiert
+
+Drei minimale Abweichungen zwischen Profile-A/B/C-Tokens sind nach Phase-4-Review
+(2026-05-12) bewusst beibehalten worden — keine Harmonisierung geplant. Diese
+Sektion dokumentiert sie als nicht-zu-„fixende" Surface-Optimierungen.
+
+### Drift 1 · Cyan-Akzent (Web vs Social)
+
+| Surface | Wert | Rationale |
+|---------|------|-----------|
+| Profile A (Web) | `#00d4ff` | Browser-nativ, sRGB-Display |
+| Profile B (Social) | `#00d9ff` | Kompensiert WeasyPrint→PNG + LinkedIn-Re-Kompression |
+
+**Owner-Decision (2026-05-12):** Beibehalten. Render-Pfad-Optimierung > Single-Token-Konsistenz.
+
+### Drift 2 · Text-Primary (Web vs Social)
+
+| Surface | Wert | Rationale |
+|---------|------|-----------|
+| Profile A (Web) | `#ffffff` | Maximaler Web-Kontrast |
+| Profile B (Social) | `#f0f4f8` | Editorial-Off-White, reduziert Blendung bei Mobile-OLED-Konsum |
+
+**Owner-Decision (2026-05-12):** Beibehalten als bewusste Editorial-Wahl für Social-Surface.
+
+### Drift 3 · Severity-Stufen (C1 vs C2)
+
+| Profile | Skala | Rationale |
+|---------|-------|-----------|
+| C1 Quick-Check | 3-stufig (High/Medium/Low) | Triage-Produkt, kein „Critical"-Eskalations-Druck |
+| C2 Professional | 5-stufig (Critical/High/Medium/Low/Info) | Vollanalyse, saubere Priorisierung großer Findings-Listen |
+
+**Owner-Decision (2026-05-12):** Kein Drift sondern bewusste Produkt-Differenzierung. Severity-Skala = Produkt-Sprache, nicht Brand-Sprache.
+
+---
+
 ## Konsumenten-Tabelle (aktualisiert)
 
 | Wo verwendet | Profile | Status |
@@ -567,3 +602,4 @@ Trotz divergierender Tokens gelten überall:
 | 2026-05-12 | Initial — Profile A (Web) extrahiert aus `index.html` | Claude (Session) |
 | 2026-05-12 | + Profile B (Social-Cards/Carousels) extrahiert aus `cowork-pipeline/` | Claude (Session) |
 | 2026-05-12 | + Profile C1+C2 (PDF-Reports Quick-Check + Professional) extrahiert aus `toolkit/backend/templates/` | Claude (Session) |
+| 2026-05-12 | Phase-4 Drift-Review abgeschlossen — alle 3 Drifts beibehalten + als Surface-Optimierungen dokumentiert (Sektion „Surface-Drifts — bewusst akzeptiert") | Owner-Decision |
