@@ -234,14 +234,29 @@ background: rgba(224,64,251,0.13);
 
 | Asset | Pfad | Use-Case |
 |-------|------|----------|
-| Logo | `assets/logo.png` | Header, Reports |
+| Full-Stamp | `assets/logo.png` | Primär-Logo, Header ≥120px, Cover-Pages, Print |
+| Aspis-Seal | `assets/logo-mark.svg` | Sekundär-Mark, Header ≤64px, Favicon, App-Icons, Social-Avatar |
 | OG-Image | `assets/og-image.png` + `assets/og-image.svg` | Social-Sharing, Meta-Tags |
-| Fonts (woff2) | `assets/fonts/` | Lokale Font-Loads, DSGVO-konform |
+| Fonts (woff2) | `assets/fonts/` | Profile A · DSGVO-konform |
+| Fonts Social | `assets/fonts/social/` | Profile B · Bebas Neue, Manrope, JetBrains Mono |
 
-**Logo-Regeln:**
-- Mindestgröße: 32px Höhe (ab Header)
-- Kein Re-Coloring — immer Original-PNG/SVG
-- Auf hellen Backgrounds: ggf. Dark-Variante anlegen (TODO: existiert noch nicht)
+### Logo-System · Zwei Marken
+
+Cyber Aspis hat zwei komplementäre Logo-Assets, jeweils für unterschiedliche Größen-Bereiche und Surface-Kontexte:
+
+**1. Full-Stamp · `assets/logo.png`**
+Hand-gestempelter Original-Mark. **Primäres Logo.** Verwendung ab **120px** Höhe (Header-Hero, Cover-Pages, Print-Cover, Pitch-Decks). Repräsentiert die handwerklich-vertrauensvolle Brand-Seite (Brand-Dualität gegenüber dark-cyber-Frontend).
+
+**2. Aspis-Seal · `assets/logo-mark.svg`**
+Reduzierter griechischer Aspis (Hopliten-Schild) mit Dory (Speer) und zentralem A-Emblem. **Sekundäres Wahrzeichen.** Verwendung **≤64px** (Header-Navigation, Favicon, App-Icons, Social-Avatar, Touch-Icon). Greift die wörtliche Bedeutung des Markennamens auf — griechisch ἀσπίς (aspís) = „Schild". Repräsentiert die technisch-defensive Brand-Seite.
+
+**Verwendungs-Regeln:**
+- Pro Surface IMMER nur einer der beiden Marks, nicht beide gleichzeitig
+- Übergang zwischen 64-120px ist Ermessen — meistens Aspis-Seal, außer Cover-Material
+- Kein Re-Coloring der Original-Files. Auf dark Backgrounds via CSS-Filter invertieren: `filter: brightness(0) invert(0.96) sepia(0.08);`
+- Aspis-Seal-Farbe ist Brand-Ink `#3a2e26` (matches Full-Stamp-Ink) — nicht Profile-A-Cyan oder -Magenta
+
+**Status Aspis-Seal:** Aktuelle SVG ist Konzept-Sketch vom 2026-05-12. Production-Quality-Iteration durch externen Vektor-Designer geplant (Phase 5+, außerhalb des Brand-Unification-Scopes).
 
 ---
 
@@ -619,3 +634,4 @@ Sektion dokumentiert sie als nicht-zu-„fixende" Surface-Optimierungen.
 | 2026-05-12 | Phase-4 Drift-Review abgeschlossen — alle 3 Drifts beibehalten + als Surface-Optimierungen dokumentiert (Sektion „Surface-Drifts — bewusst akzeptiert") | Owner-Decision |
 | 2026-05-12 | Phase-5 Ticket 1 — `prefers-reduced-motion` in index.html implementiert (alle dekorativen Animationen + Skeleton-Shimmer-Reduktion) | Phase-5 |
 | 2026-05-12 | Phase-5 Ticket 3 — C2-Familie vollständig dokumentiert: report_interim als C2-Interim (Orange) und report_final als C2-Final (Green) eingeordnet. State-Color-Coding-Pattern dokumentiert (Professional Indigo / Interim Orange / Final Green — sonst identisch zu C2-Professional) | Phase-5 |
+| 2026-05-12 | Phase-5 Ticket 2 — Aspis-Seal (`assets/logo-mark.svg`) als sekundäres Brand-Asset eingeführt; Two-Marks-System (Full-Stamp + Aspis-Seal) in DESIGN.md dokumentiert | Phase-5 |
