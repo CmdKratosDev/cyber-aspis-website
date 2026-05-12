@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<style>
+@page {
+  size: A4;
+  margin: 2.2cm 2.5cm;
+  @bottom-center { content: "VORLÄUFIG — Cyber Aspis IT-Security — Zwischenbericht"; font-size: 8pt; color: #b45309; }
+  @bottom-right  { content: "Seite " counter(page) " von " counter(pages); font-size: 8pt; color: #9ca3af; }
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'><text x='50%' y='50%' font-size='60' font-family='Arial' font-weight='bold' fill='%23f59e0b' fill-opacity='0.06' text-anchor='middle' dominant-baseline='middle' transform='rotate(-35 200 150)'>VORLÄUFIG</text></svg>");
+}
+@page cover { margin: 0; @bottom-center { content: none; } @bottom-right { content: none; } }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: "Helvetica Neue", Arial, sans-serif; font-size: 10.5pt; color: #1f2937; line-height: 1.55; }
+
+/* Cover */
+.cover { page: cover; page-break-after: always; background: #0f172a; color: #f8fafc; width: 21cm; height: 29.7cm; padding: 3cm 3cm 2.5cm 3cm; }
+.cover-logo { font-size: 22pt; font-weight: 800; color: #f8fafc; }
+.cover-logo span { color: #f59e0b; }
+.cover-tagline { font-size: 8.5pt; color: #94a3b8; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.08em; }
+.cover-title-area { padding-top: 5cm; }
+.cover-badge { display: inline-block; background: #78350f; color: #fcd34d; border: 1px solid #f59e0b; font-size: 8.5pt; font-weight: 700; padding: 3px 10px; border-radius: 12px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
+.cover-title { font-size: 28pt; font-weight: 700; color: #f8fafc; line-height: 1.1; margin-bottom: 8px; }
+.cover-subtitle { font-size: 14pt; color: #f59e0b; font-weight: 600; margin-bottom: 16px; }
+.cover-interim-notice { background: #78350f; border: 1px solid #f59e0b; border-radius: 6px; padding: 10px 16px; margin-bottom: 22px; font-size: 9pt; color: #fde68a; line-height: 1.5; }
+.cover-divider { border: none; border-top: 1px solid #334155; margin-bottom: 22px; }
+.cover-meta-table { width: 100%; border-collapse: collapse; }
+.cover-meta-table td { padding: 0 20px 0 0; vertical-align: top; }
+.cover-meta-label { font-size: 7.5pt; color: #64748b; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 3px; }
+.cover-meta-value { font-size: 11pt; color: #e2e8f0; font-weight: 600; }
+.cover-footer { margin-top: 3cm; padding-top: 14px; border-top: 1px solid #1e293b; font-size: 8pt; color: #475569; line-height: 1.5; }
+
+/* Headings */
+h2 { font-size: 13pt; font-weight: 700; color: #0f172a; border-left: 4px solid #f59e0b; padding-left: 10px; margin: 26px 0 12px; page-break-after: avoid; }
+h3 { font-size: 10.5pt; font-weight: 700; color: #1e293b; margin: 14px 0 6px; page-break-after: avoid; }
+
+/* Tables */
+.info-table { width: 100%; border-collapse: collapse; margin-bottom: 14px; }
+.info-table td { padding: 5px 8px; border-bottom: 1px solid #e5e7eb; font-size: 10pt; vertical-align: top; }
+.info-table td:first-child { font-weight: 600; width: 36%; color: #374151; white-space: nowrap; }
+
+/* Status Boxes */
+.sev-table { width: 100%; border-collapse: separate; border-spacing: 6px; margin: 14px 0; }
+.sev-table td { text-align: center; padding: 10px 4px; border-radius: 6px; border: 1px solid #e5e7eb; }
+.sev-num { font-size: 20pt; font-weight: 800; line-height: 1.1; }
+.sev-lbl { font-size: 7.5pt; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7280; margin-top: 2px; }
+.box-green  { border-color: #6ee7b7 !important; background: #ecfdf5; }
+.box-green .sev-num  { color: #059669; }
+.box-yellow { border-color: #fcd34d !important; background: #fffbeb; }
+.box-yellow .sev-num { color: #d97706; }
+.box-red    { border-color: #fca5a5 !important; background: #fef2f2; }
+.box-red .sev-num    { color: #dc2626; }
+.box-gray   { border-color: #d1d5db !important; background: #f9fafb; }
+.box-gray .sev-num   { color: #6b7280; }
+.box-purple { border-color: #a78bfa !important; background: #f5f3ff; }
+.box-purple .sev-num { color: #7c3aed; }
+.box-orange { border-color: #fbbf24 !important; background: #fffbeb; }
+.box-orange .sev-num { color: #b45309; }
+
+/* Badges */
+.badge { display: inline-block; padding: 2px 7px; border-radius: 10px; font-size: 7.5pt; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap; }
+.badge-critical { background: #f5f3ff; color: #7c3aed; border: 1px solid #a78bfa; }
+.badge-high     { background: #fef2f2; color: #dc2626; border: 1px solid #fca5a5; }
+.badge-medium   { background: #fffbeb; color: #d97706; border: 1px solid #fcd34d; }
+.badge-low      { background: #ecfdf5; color: #059669; border: 1px solid #6ee7b7; }
+.badge-info     { background: #eff6ff; color: #2563eb; border: 1px solid #93c5fd; }
+.badge-open     { background: #fef2f2; color: #dc2626; border: 1px solid #fca5a5; }
+.badge-progress { background: #fffbeb; color: #d97706; border: 1px solid #fcd34d; }
+.badge-resolved { background: #ecfdf5; color: #059669; border: 1px solid #6ee7b7; }
+
+/* Notice boxes */
+.interim-banner { background: #fffbeb; border: 1px solid #f59e0b; border-left: 4px solid #f59e0b; padding: 10px 14px; font-size: 9.5pt; color: #92400e; margin-bottom: 18px; line-height: 1.6; }
+.interim-banner strong { color: #78350f; }
+.success-bar  { background: #ecfdf5; border: 1px solid #6ee7b7; border-left: 4px solid #10b981; padding: 10px 14px; font-size: 9.5pt; color: #065f46; margin-bottom: 14px; }
+.warning-box  { background: #fffbeb; border: 1px solid #fcd34d; border-left: 4px solid #f59e0b; padding: 10px 14px; font-size: 9.5pt; color: #92400e; margin-bottom: 14px; }
+
+/* Finding cards */
+.finding-card  { border: 1px solid #e2e8f0; border-radius: 4px; margin-bottom: 12px; }
+.finding-header-table { width: 100%; border-collapse: collapse; }
+.finding-header-table td { padding: 8px 12px; vertical-align: middle; }
+.fch-critical { background: #f5f3ff; border-bottom: 2px solid #a78bfa; }
+.fch-high     { background: #fef2f2; border-bottom: 2px solid #fca5a5; }
+.fch-medium   { background: #fffbeb; border-bottom: 2px solid #fcd34d; }
+.fch-low      { background: #ecfdf5; border-bottom: 2px solid #6ee7b7; }
+.fch-info     { background: #eff6ff; border-bottom: 2px solid #93c5fd; }
+.finding-title { font-size: 10.5pt; font-weight: 700; color: #0f172a; }
+.finding-card-body { padding: 10px 12px; font-size: 9.5pt; }
+.finding-meta  { font-size: 8.5pt; color: #6b7280; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid #f1f5f9; }
+.finding-meta strong { color: #374151; }
+.field-label   { font-size: 8pt; font-weight: 700; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2px; margin-top: 6px; }
+.field-value   { color: #374151; line-height: 1.5; }
+.field-mono    { font-family: "Courier New", monospace; font-size: 8.5pt; background: #f8fafc; border: 1px solid #e2e8f0; padding: 5px 9px; border-radius: 3px; white-space: pre-wrap; word-break: break-word; color: #1e293b; }
+.cvss-val { font-size: 8pt; font-weight: 700; font-family: monospace; }
+.color-critical { color: #7c3aed; }
+.color-high     { color: #dc2626; }
+.color-medium   { color: #d97706; }
+.color-low      { color: #059669; }
+.color-info     { color: #2563eb; }
+
+/* Roadmap */
+.roadmap-title  { font-size: 10pt; font-weight: 700; padding: 7px 12px; }
+.roadmap-sofort { background: #fef2f2; color: #991b1b; border: 1px solid #fca5a5; }
+.roadmap-30     { background: #fffbeb; color: #92400e; border: 1px solid #fcd34d; }
+.roadmap-90     { background: #eff6ff; color: #1e40af; border: 1px solid #93c5fd; }
+.roadmap-table  { width: 100%; border-collapse: collapse; border: 1px solid #e5e7eb; border-top: none; margin-bottom: 14px; }
+.roadmap-table td { padding: 7px 10px; border-bottom: 1px solid #f1f5f9; font-size: 9.5pt; vertical-align: top; }
+.roadmap-table tr:last-child td { border-bottom: none; }
+.roadmap-item-title { font-weight: 600; color: #1e293b; }
+.roadmap-item-rec   { color: #4b5563; font-size: 9pt; margin-top: 2px; }
+
+/* Progress table */
+.progress-table { width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: 9.5pt; }
+.progress-table th { background: #f1f5f9; color: #374151; padding: 6px 10px; text-align: left; font-weight: 600; font-size: 8.5pt; border-bottom: 2px solid #e2e8f0; }
+.progress-table td { padding: 6px 10px; border-bottom: 1px solid #f1f5f9; vertical-align: top; }
+.progress-table tr:last-child td { border-bottom: none; }
+
+.page-break { page-break-before: always; }
+.no-data { color: #9ca3af; font-style: italic; font-size: 9.5pt; }
+.summary-text { font-size: 10.5pt; color: #374151; line-height: 1.65; margin-bottom: 14px; }
+</style>
+</head>
+<body>
+
+{# ═══════════════════════ DECKBLATT ═══════════════════════════════════════ #}
+<div class="cover">
+  <div class="cover-logo">Cyber <span>Aspis</span> IT-Security</div>
+  <div class="cover-tagline">Your Digital Shield</div>
+
+  <div class="cover-title-area">
+    <div class="cover-badge">⚠ Zwischenbericht — Vorläufig</div>
+    <div class="cover-title">Security Assessment<br>Zwischenbericht</div>
+    <div class="cover-subtitle">{{ customer.company_name }}</div>
+
+    <div class="cover-interim-notice">
+      <strong>Hinweis:</strong> Dieses Dokument ist ein vorläufiger Zwischenbericht.
+      Die Analyse ist noch nicht abgeschlossen. Findings können sich ändern,
+      neue Schwachstellen können noch identifiziert werden. Dieser Bericht
+      dient der laufenden Abstimmung und ersetzt nicht den finalen Abschlussbericht.
+    </div>
+
+    <hr class="cover-divider">
+    <table class="cover-meta-table">
+      <tr>
+        <td>
+          <div class="cover-meta-label">Auftraggeber</div>
+          <div class="cover-meta-value">{{ customer.company_name }}</div>
+        </td>
+        <td>
+          <div class="cover-meta-label">Ansprechpartner</div>
+          <div class="cover-meta-value">{{ customer.contact_person or '—' }}</div>
+        </td>
+        <td>
+          <div class="cover-meta-label">Stand</div>
+          <div class="cover-meta-value">{{ generated_at }}</div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="cover-footer">
+    Cyber Aspis IT-Security &nbsp;·&nbsp; Vertraulich &nbsp;·&nbsp;
+    Nur für interne Zwecke und autorisierte Empfänger &nbsp;·&nbsp;
+    Vorläufiger Bericht — kein Abschlussdokument
+  </div>
+</div>
+
+{# ═══════════════════════ AKTUELLER STAND ══════════════════════════════════ #}
+<h2>1. Aktueller Prüfungsstand</h2>
+
+<div class="interim-banner">
+  <strong>Analyse läuft noch.</strong> Der folgende Bericht zeigt den aktuellen Zwischenstand
+  der Sicherheitsanalyse. Offene und in Bearbeitung befindliche Findings sind hervorgehoben.
+  Bereits behobene Maßnahmen sind separat aufgeführt.
+</div>
+
+<table class="info-table">
+  <tr><td>Unternehmen</td><td>{{ customer.company_name }}</td></tr>
+  <tr><td>Ansprechpartner</td><td>{{ customer.contact_person or '—' }}</td></tr>
+  <tr><td>E-Mail</td><td>{{ customer.email }}</td></tr>
+  <tr><td>Auftragsnummer</td><td>{{ customer.quote_number or '—' }}</td></tr>
+  <tr><td>Projekt-Status</td><td>{{ customer.status }}</td></tr>
+  <tr><td>Analysierte Assets</td><td>{{ assets|length }}</td></tr>
+  <tr><td>Abgeschlossene Scans</td><td>{{ scans|length }}</td></tr>
+  <tr><td>Berichtstand</td><td>{{ generated_at }}</td></tr>
+</table>
+
+{# ═══════════════════════ KENNZAHLEN ══════════════════════════════════════ #}
+<h2>2. Bisherige Erkenntnisse — Übersicht</h2>
+
+<table class="sev-table">
+  <tr>
+    <td class="box-purple">
+      <div class="sev-num">{{ counts.critical }}</div>
+      <div class="sev-lbl">Critical</div>
+    </td>
+    <td class="box-red">
+      <div class="sev-num">{{ counts.high }}</div>
+      <div class="sev-lbl">High</div>
+    </td>
+    <td class="box-yellow">
+      <div class="sev-num">{{ counts.medium }}</div>
+      <div class="sev-lbl">Medium</div>
+    </td>
+    <td class="box-green">
+      <div class="sev-num">{{ counts.low }}</div>
+      <div class="sev-lbl">Low</div>
+    </td>
+    <td class="box-gray">
+      <div class="sev-num">{{ counts.open }}</div>
+      <div class="sev-lbl">Offen</div>
+    </td>
+    <td class="box-orange">
+      <div class="sev-num">{{ counts.in_progress }}</div>
+      <div class="sev-lbl">In Arbeit</div>
+    </td>
+    <td class="box-green">
+      <div class="sev-num">{{ counts.resolved }}</div>
+      <div class="sev-lbl">Behoben</div>
+    </td>
+  </tr>
+</table>
+
+{% if counts.resolved > 0 %}
+<div class="success-bar">
+  ✓ {{ counts.resolved }} Finding{{ 's' if counts.resolved != 1 else '' }} wurde{{ 'n' if counts.resolved != 1 else '' }} bereits behoben — gute Fortschritte.
+</div>
+{% endif %}
+
+{% if counts.critical > 0 or counts.high > 0 %}
+<div class="warning-box">
+  ⚠ {{ counts.critical + counts.high }} kritische/hohe Finding{{ 's' if (counts.critical + counts.high) != 1 else '' }}
+  noch offen — sofortige Maßnahmen empfohlen.
+</div>
+{% endif %}
+
+{# ═══════════════════════ OFFENE FINDINGS ══════════════════════════════════ #}
+<h2>3. Offene Findings (Handlungsbedarf)</h2>
+
+{% if open_findings %}
+  {% for f in open_findings %}
+  <div class="finding-card">
+    <table class="finding-header-table">
+      <tr class="fch-{{ f.severity }}">
+        <td style="width:auto;">
+          <span class="finding-title">{{ f.title }}</span>
+        </td>
+        <td style="width:80px; text-align:right; white-space:nowrap;">
+          <span class="badge badge-{{ f.severity }}">{{ f.severity }}</span>
+        </td>
+        <td style="width:90px; text-align:right; white-space:nowrap;">
+          <span class="badge badge-{{ 'progress' if f.status == 'in_progress' else f.status }}">
+            {{ 'In Arbeit' if f.status == 'in_progress' else 'Offen' }}
+          </span>
+        </td>
+        {% if f.cvss_score is not none %}
+        <td style="width:50px; text-align:right;">
+          <span class="cvss-val color-{{ f.severity }}">{{ "%.1f"|format(f.cvss_score) }}</span>
+        </td>
+        {% endif %}
+      </tr>
+    </table>
+    <div class="finding-card-body">
+      <div class="finding-meta">
+        <strong>Quelle:</strong> {{ f.source }}
+        {% if f.cve_id %} &nbsp;·&nbsp; <strong>CVE:</strong> {{ f.cve_id }}{% endif %}
+        {% if f.remediation_priority %}
+          &nbsp;·&nbsp; <strong>Priorität:</strong>
+          {% if f.remediation_priority == 'SOFORT' %}<span style="color:#dc2626;font-weight:700;">Sofort</span>
+          {% elif f.remediation_priority == '30_TAGE' %}<span style="color:#d97706;">30 Tage</span>
+          {% elif f.remediation_priority == '90_TAGE' %}<span style="color:#2563eb;">90 Tage</span>{% endif %}
+        {% endif %}
+        &nbsp;·&nbsp; Erstmals: {{ f.first_seen_at.strftime('%d.%m.%Y') }}
+      </div>
+
+      {% if f.impact %}
+      <div class="field-label">Auswirkung</div>
+      <div class="field-value">{{ f.impact }}</div>
+      {% elif f.description %}
+      <div class="field-label">Beschreibung</div>
+      <div class="field-value">{{ f.description }}</div>
+      {% endif %}
+
+      {% if f.recommendation %}
+      <div class="field-label">Empfehlung</div>
+      <div class="field-value">{{ f.recommendation }}</div>
+      {% endif %}
+
+      {% if f.notes %}
+      <div class="field-label">Notizen</div>
+      <div class="field-value">{{ f.notes }}</div>
+      {% endif %}
+    </div>
+  </div>
+  {% endfor %}
+{% else %}
+  <p class="no-data">Keine offenen Findings — alle bisherigen Findings wurden bearbeitet.</p>
+{% endif %}
+
+{# ═══════════════════════ MASSNAHMENPLAN ══════════════════════════════════ #}
+{% if roadmap_sofort or roadmap_30 or roadmap_90 %}
+<div class="page-break"></div>
+<h2>4. Empfohlene Maßnahmen (vorläufig)</h2>
+
+{% if roadmap_sofort %}
+<div class="roadmap-title roadmap-sofort">🔴 Sofortmaßnahmen</div>
+<table class="roadmap-table">
+  {% for f in roadmap_sofort %}
+  <tr>
+    <td style="width:20px;" class="roadmap-num">{{ loop.index }}</td>
+    <td>
+      <div class="roadmap-item-title">{{ f.title }}</div>
+      {% if f.recommendation %}<div class="roadmap-item-rec">{{ f.recommendation }}</div>{% endif %}
+    </td>
+    <td style="width:80px; text-align:right;"><span class="badge badge-{{ f.severity }}">{{ f.severity }}</span></td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
+
+{% if roadmap_30 %}
+<div class="roadmap-title roadmap-30">🟡 Innerhalb 30 Tage</div>
+<table class="roadmap-table">
+  {% for f in roadmap_30 %}
+  <tr>
+    <td style="width:20px;" class="roadmap-num">{{ loop.index }}</td>
+    <td>
+      <div class="roadmap-item-title">{{ f.title }}</div>
+      {% if f.recommendation %}<div class="roadmap-item-rec">{{ f.recommendation }}</div>{% endif %}
+    </td>
+    <td style="width:80px; text-align:right;"><span class="badge badge-{{ f.severity }}">{{ f.severity }}</span></td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
+
+{% if roadmap_90 %}
+<div class="roadmap-title roadmap-90">🔵 Innerhalb 90 Tage</div>
+<table class="roadmap-table">
+  {% for f in roadmap_90 %}
+  <tr>
+    <td style="width:20px;" class="roadmap-num">{{ loop.index }}</td>
+    <td>
+      <div class="roadmap-item-title">{{ f.title }}</div>
+      {% if f.recommendation %}<div class="roadmap-item-rec">{{ f.recommendation }}</div>{% endif %}
+    </td>
+    <td style="width:80px; text-align:right;"><span class="badge badge-{{ f.severity }}">{{ f.severity }}</span></td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
+{% endif %}
+
+{# ═══════════════════════ FORTSCHRITT ══════════════════════════════════════ #}
+{% if resolved_so_far or accepted_so_far %}
+<h2>{{ '5' if (roadmap_sofort or roadmap_30 or roadmap_90) else '4' }}. Bereits erledigte Maßnahmen</h2>
+
+<table class="progress-table">
+  <tr>
+    <th>Finding</th>
+    <th style="width:80px;">Severity</th>
+    <th style="width:90px;">Status</th>
+  </tr>
+  {% for f in resolved_so_far %}
+  <tr>
+    <td>{{ f.title }}</td>
+    <td><span class="badge badge-{{ f.severity }}">{{ f.severity }}</span></td>
+    <td><span class="badge badge-resolved">Behoben</span></td>
+  </tr>
+  {% endfor %}
+  {% for f in accepted_so_far %}
+  <tr>
+    <td>{{ f.title }}</td>
+    <td><span class="badge badge-{{ f.severity }}">{{ f.severity }}</span></td>
+    <td><span class="badge" style="background:#f9fafb;color:#6b7280;border:1px solid #d1d5db;">Akzeptiert</span></td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
+
+{# ═══════════════════════ FOOTER-HINWEIS ══════════════════════════════════ #}
+<div style="margin-top: 2cm; padding-top: 14px; border-top: 1px solid #e5e7eb;">
+  <p style="font-size:8.5pt; color:#9ca3af; line-height:1.6;">
+    <strong style="color:#b45309;">VORLÄUFIGER BERICHT</strong> —
+    Dieser Zwischenbericht stellt den Stand zum {{ generated_at }} dar und ist nicht als
+    abschließendes Dokument zu verstehen. Der finale Abschlussbericht wird nach Abschluss
+    aller Prüfungsschritte erstellt und ersetzt diesen Bericht vollständig.<br>
+    Cyber Aspis IT-Security &nbsp;·&nbsp; Vertraulich &nbsp;·&nbsp; Nur für autorisierte Empfänger
+  </p>
+</div>
+
+</body>
+</html>

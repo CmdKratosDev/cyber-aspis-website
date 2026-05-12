@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<style>
+@page {
+  size: A4;
+  margin: 2.2cm 2.5cm;
+  @bottom-center { content: "Vertraulich — Cyber Aspis IT-Security"; font-size: 8pt; color: #9ca3af; }
+  @bottom-right  { content: "Seite " counter(page) " von " counter(pages); font-size: 8pt; color: #9ca3af; }
+}
+@page cover { margin: 0; @bottom-center { content: none; } @bottom-right { content: none; } }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: "Helvetica Neue", Arial, sans-serif; font-size: 10.5pt; color: #1f2937; line-height: 1.55; }
+
+/* Cover */
+.cover { page: cover; page-break-after: always; background: #0f172a; color: #f8fafc; width: 21cm; height: 29.7cm; padding: 3cm 3cm 2.5cm 3cm; }
+.cover-logo { font-size: 22pt; font-weight: 800; color: #f8fafc; }
+.cover-logo span { color: #34d399; }
+.cover-tagline { font-size: 8.5pt; color: #94a3b8; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.08em; }
+.cover-title-area { padding-top: 6cm; }
+.cover-badge { display: inline-block; background: #064e3b; color: #34d399; border: 1px solid #34d399; font-size: 8.5pt; font-weight: 700; padding: 3px 10px; border-radius: 12px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
+.cover-title { font-size: 28pt; font-weight: 700; color: #f8fafc; line-height: 1.1; margin-bottom: 8px; }
+.cover-subtitle { font-size: 14pt; color: #34d399; font-weight: 600; margin-bottom: 28px; }
+.cover-divider { border: none; border-top: 1px solid #334155; margin-bottom: 22px; }
+.cover-meta-table { width: 100%; border-collapse: collapse; }
+.cover-meta-table td { padding: 0 20px 0 0; vertical-align: top; }
+.cover-meta-label { font-size: 7.5pt; color: #64748b; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 3px; }
+.cover-meta-value { font-size: 11pt; color: #e2e8f0; font-weight: 600; }
+.cover-footer { margin-top: 3.5cm; padding-top: 14px; border-top: 1px solid #1e293b; font-size: 8pt; color: #475569; line-height: 1.5; }
+
+/* Headings */
+h2 { font-size: 13pt; font-weight: 700; color: #0f172a; border-left: 4px solid #34d399; padding-left: 10px; margin: 26px 0 12px; page-break-after: avoid; }
+h3 { font-size: 10.5pt; font-weight: 700; color: #1e293b; margin: 14px 0 6px; page-break-after: avoid; }
+
+/* Tables */
+.info-table { width: 100%; border-collapse: collapse; margin-bottom: 14px; }
+.info-table td { padding: 5px 8px; border-bottom: 1px solid #e5e7eb; font-size: 10pt; vertical-align: top; }
+.info-table td:first-child { font-weight: 600; width: 36%; color: #374151; white-space: nowrap; }
+
+/* Status Boxes */
+.sev-table { width: 100%; border-collapse: separate; border-spacing: 6px; margin: 14px 0; }
+.sev-table td { text-align: center; padding: 10px 4px; border-radius: 6px; border: 1px solid #e5e7eb; }
+.sev-num { font-size: 20pt; font-weight: 800; line-height: 1.1; }
+.sev-lbl { font-size: 7.5pt; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7280; margin-top: 2px; }
+.box-green  { border-color: #6ee7b7 !important; background: #ecfdf5; }
+.box-green .sev-num  { color: #059669; }
+.box-yellow { border-color: #fcd34d !important; background: #fffbeb; }
+.box-yellow .sev-num { color: #d97706; }
+.box-red    { border-color: #fca5a5 !important; background: #fef2f2; }
+.box-red .sev-num    { color: #dc2626; }
+.box-gray   { border-color: #d1d5db !important; background: #f9fafb; }
+.box-gray .sev-num   { color: #6b7280; }
+.box-purple { border-color: #a78bfa !important; background: #f5f3ff; }
+.box-purple .sev-num { color: #7c3aed; }
+.box-blue   { border-color: #93c5fd !important; background: #eff6ff; }
+.box-blue .sev-num   { color: #2563eb; }
+
+/* Badges */
+.badge { display: inline-block; padding: 2px 7px; border-radius: 10px; font-size: 7.5pt; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap; }
+.badge-critical { background: #f5f3ff; color: #7c3aed; border: 1px solid #a78bfa; }
+.badge-high     { background: #fef2f2; color: #dc2626; border: 1px solid #fca5a5; }
+.badge-medium   { background: #fffbeb; color: #d97706; border: 1px solid #fcd34d; }
+.badge-low      { background: #ecfdf5; color: #059669; border: 1px solid #6ee7b7; }
+.badge-info     { background: #eff6ff; color: #2563eb; border: 1px solid #93c5fd; }
+.badge-resolved { background: #ecfdf5; color: #059669; border: 1px solid #6ee7b7; }
+.badge-open     { background: #fef2f2; color: #dc2626; border: 1px solid #fca5a5; }
+.badge-accepted { background: #f9fafb; color: #6b7280; border: 1px solid #d1d5db; }
+
+/* Summary text */
+.summary-text { font-size: 10.5pt; color: #374151; line-height: 1.65; margin-bottom: 14px; }
+
+/* Asset card */
+.asset-card { border: 1px solid #e2e8f0; border-radius: 4px; margin-bottom: 10px; overflow: hidden; }
+.asset-card-header { background: #f8fafc; padding: 8px 12px; border-bottom: 1px solid #e2e8f0; }
+.asset-card-header strong { font-size: 10pt; color: #0f172a; }
+.asset-card-body { padding: 8px 12px; font-size: 9.5pt; color: #4b5563; }
+
+/* Finding rows in tables */
+.findings-table { width: 100%; border-collapse: collapse; font-size: 9pt; margin-bottom: 14px; }
+.findings-table th { background: #0f172a; color: #f1f5f9; padding: 7px 9px; text-align: left; font-weight: 600; font-size: 8.5pt; }
+.findings-table td { padding: 6px 9px; border-bottom: 1px solid #e5e7eb; vertical-align: top; }
+.findings-table tr:nth-child(even) td { background: #f9fafb; }
+
+/* Section boxes */
+.section-box { border: 1px solid #e2e8f0; border-radius: 4px; margin-bottom: 14px; overflow: hidden; }
+.section-box-header { padding: 8px 12px; font-size: 10pt; font-weight: 700; }
+.header-green  { background: #ecfdf5; color: #065f46; border-bottom: 2px solid #6ee7b7; }
+.header-yellow { background: #fffbeb; color: #92400e; border-bottom: 2px solid #fcd34d; }
+.header-red    { background: #fef2f2; color: #991b1b; border-bottom: 2px solid #fca5a5; }
+.header-gray   { background: #f9fafb; color: #374151; border-bottom: 2px solid #d1d5db; }
+
+/* Roadmap */
+.roadmap-title { font-size: 10pt; font-weight: 700; padding: 7px 12px; }
+.roadmap-sofort { background: #fef2f2; color: #991b1b; border: 1px solid #fca5a5; }
+.roadmap-30     { background: #fffbeb; color: #92400e; border: 1px solid #fcd34d; }
+.roadmap-90     { background: #eff6ff; color: #1e40af; border: 1px solid #93c5fd; }
+.roadmap-table  { width: 100%; border-collapse: collapse; border: 1px solid #e5e7eb; border-top: none; margin-bottom: 14px; }
+.roadmap-table td { padding: 7px 10px; border-bottom: 1px solid #f1f5f9; font-size: 9.5pt; vertical-align: top; }
+.roadmap-table tr:last-child td { border-bottom: none; }
+.roadmap-table tr:nth-child(even) td { background: #fafafa; }
+.roadmap-num { font-weight: 700; color: #6b7280; font-size: 9pt; width: 24px; white-space: nowrap; }
+.roadmap-item-title { font-weight: 600; color: #1e293b; }
+.roadmap-item-rec   { color: #4b5563; font-size: 9pt; margin-top: 2px; }
+
+/* Misc */
+.page-break    { page-break-before: always; }
+.no-data       { color: #9ca3af; font-style: italic; font-size: 9.5pt; }
+.appendix-text { font-size: 9.5pt; color: #4b5563; line-height: 1.65; margin-bottom: 10px; }
+.success-bar   { background: #ecfdf5; border: 1px solid #6ee7b7; border-left: 4px solid #10b981; padding: 10px 14px; font-size: 9.5pt; color: #065f46; margin-bottom: 14px; }
+.warning-box   { background: #fffbeb; border: 1px solid #fcd34d; border-left: 4px solid #f59e0b; padding: 10px 14px; font-size: 9.5pt; color: #92400e; margin-bottom: 14px; }
+.field-label   { font-size: 8pt; font-weight: 700; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2px; margin-top: 6px; }
+.field-value   { color: #374151; line-height: 1.5; }
+.field-mono    { font-family: "Courier New", monospace; font-size: 8.5pt; background: #f8fafc; border: 1px solid #e2e8f0; padding: 5px 9px; border-radius: 3px; white-space: pre-wrap; word-break: break-word; color: #1e293b; }
+.finding-card  { border: 1px solid #e2e8f0; border-radius: 4px; margin-bottom: 12px; }
+.finding-header-table { width: 100%; border-collapse: collapse; }
+.finding-header-table td { padding: 8px 12px; vertical-align: middle; }
+.fch-critical { background: #f5f3ff; border-bottom: 2px solid #a78bfa; }
+.fch-high     { background: #fef2f2; border-bottom: 2px solid #fca5a5; }
+.fch-medium   { background: #fffbeb; border-bottom: 2px solid #fcd34d; }
+.fch-low      { background: #ecfdf5; border-bottom: 2px solid #6ee7b7; }
+.fch-info     { background: #eff6ff; border-bottom: 2px solid #93c5fd; }
+.finding-title { font-size: 10.5pt; font-weight: 700; color: #0f172a; }
+.finding-card-body { padding: 10px 12px; font-size: 9.5pt; }
+.finding-meta  { font-size: 8.5pt; color: #6b7280; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid #f1f5f9; }
+.finding-meta strong { color: #374151; }
+.verified-badge { display: inline-block; font-size: 7.5pt; padding: 1px 6px; border-radius: 10px; background: #ecfeff; color: #0e7490; border: 1px solid #67e8f9; font-weight: 600; }
+.cvss-val { font-size: 8pt; font-weight: 700; font-family: monospace; }
+.color-critical { color: #7c3aed; }
+.color-high     { color: #dc2626; }
+.color-medium   { color: #d97706; }
+.color-low      { color: #059669; }
+.color-info     { color: #2563eb; }
+</style>
+</head>
+<body>
+
+{# ═══════════════════════ DECKBLATT ═══════════════════════════════════════ #}
+<div class="cover">
+  <div class="cover-logo">Cyber <span>Aspis</span> IT-Security</div>
+  <div class="cover-tagline">Your Digital Shield</div>
+
+  <div class="cover-title-area">
+    <div class="cover-badge">Abschlussbericht</div>
+    <div class="cover-title">Security Assessment<br>Abschlussbericht</div>
+    <div class="cover-subtitle">{{ customer.company_name }}</div>
+    <hr class="cover-divider">
+    <table class="cover-meta-table">
+      <tr>
+        <td>
+          <div class="cover-meta-label">Auftraggeber</div>
+          <div class="cover-meta-value">{{ customer.company_name }}</div>
+        </td>
+        <td>
+          <div class="cover-meta-label">Ansprechpartner</div>
+          <div class="cover-meta-value">{{ customer.contact_person or '—' }}</div>
+        </td>
+        <td>
+          <div class="cover-meta-label">Assets geprüft</div>
+          <div class="cover-meta-value">{{ assets|length }}</div>
+        </td>
+        <td>
+          <div class="cover-meta-label">Erstellt am</div>
+          <div class="cover-meta-value">{{ generated_at }}</div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="cover-footer">
+    Dieses Dokument enthält vertrauliche Sicherheitsinformationen und ist ausschließlich
+    für den Auftraggeber bestimmt.<br>
+    {% if customer.quote_number %}Angebotsnummer: {{ customer.quote_number }} &nbsp;·&nbsp; {% endif %}
+    Projekt-Status: {{ customer.status }}
+    {% if scans %}
+     &nbsp;·&nbsp; Projektzeitraum: {{ scans[0].started_at.strftime('%d.%m.%Y') if scans[0].started_at else '—' }}
+     – {{ scans[-1].completed_at.strftime('%d.%m.%Y') if scans[-1].completed_at else '—' }}
+    {% endif %}
+  </div>
+</div>
+
+
+{# ═══════════════════════ 1. EXECUTIVE SUMMARY ════════════════════════════ #}
+<h2>1. Executive Summary</h2>
+
+{% set open_count = counts.open + counts.in_progress %}
+<p class="summary-text">
+  Im Rahmen des Security Assessments für <strong>{{ customer.company_name }}</strong>
+  wurden <strong>{{ assets|length }} Asset(s)</strong> über <strong>{{ scans|length }} Scan(s)</strong>
+  geprüft. Dabei wurden insgesamt <strong>{{ counts.total }} Findings</strong> identifiziert
+  ({{ counts.false_positives }} Falsch-Positive ausgeschlossen).
+
+  {% if counts.resolved > 0 %}
+  <strong style="color:#059669;">{{ counts.resolved }} Findings wurden behoben</strong> —
+  {% endif %}
+  {% if open_count == 0 and counts.accepted_risk == 0 %}
+  das System ist vollständig abgesichert.
+  {% elif open_count == 0 %}
+  alle verbleibenden Risiken sind dokumentiert und akzeptiert.
+  {% else %}
+  <strong style="color:#dc2626;">{{ open_count }} Finding(s) sind noch offen</strong> und erfordern weitere Maßnahmen.
+  {% endif %}
+</p>
+
+<table class="sev-table">
+  <tr>
+    <td class="box-green" ><div class="sev-num">{{ counts.resolved }}</div>     <div class="sev-lbl">Behoben</div></td>
+    <td class="box-red"   ><div class="sev-num">{{ open_count }}</div>          <div class="sev-lbl">Noch offen</div></td>
+    <td class="box-gray"  ><div class="sev-num">{{ counts.accepted_risk }}</div><div class="sev-lbl">Akzeptiert</div></td>
+    <td class="box-purple"><div class="sev-num">{{ counts.critical }}</div>     <div class="sev-lbl">Critical</div></td>
+    <td class="box-red"   ><div class="sev-num">{{ counts.high }}</div>         <div class="sev-lbl">High</div></td>
+    <td class="box-yellow"><div class="sev-num">{{ counts.medium }}</div>       <div class="sev-lbl">Medium</div></td>
+  </tr>
+</table>
+
+{% if open_count == 0 %}
+<div class="success-bar">
+  ✓ Alle aktiven Findings wurden behoben oder als akzeptiertes Risiko dokumentiert.
+  Das System ist gemäß dem vereinbarten Scope abgesichert.
+</div>
+{% elif open_count > 0 %}
+<div class="warning-box">
+  <strong>Hinweis:</strong> Es sind noch {{ open_count }} Finding(s) offen.
+  Bitte die Remediation Roadmap in Abschnitt 5 beachten.
+</div>
+{% endif %}
+
+
+{# ═══════════════════════ 2. PROJEKT-ÜBERSICHT ═══════════════════════════ #}
+<h2>2. Projekt-Übersicht</h2>
+
+<table class="info-table">
+  <tr><td>Auftraggeber</td>    <td>{{ customer.company_name }}</td></tr>
+  {% if customer.contact_person %}<tr><td>Ansprechpartner</td><td>{{ customer.contact_person }}</td></tr>{% endif %}
+  {% if customer.email          %}<tr><td>E-Mail</td>          <td>{{ customer.email }}</td></tr>{% endif %}
+  {% if customer.quote_number   %}<tr><td>Angebotsnummer</td>  <td>{{ customer.quote_number }}</td></tr>{% endif %}
+  <tr><td>Projekt-Status</td>  <td>{{ customer.status }}</td></tr>
+  {% if scans %}
+  <tr><td>Erster Scan</td>     <td>{{ scans[0].started_at.strftime('%d.%m.%Y') if scans[0].started_at else '—' }}</td></tr>
+  <tr><td>Letzter Scan</td>    <td>{{ scans[-1].completed_at.strftime('%d.%m.%Y') if scans[-1].completed_at else '—' }}</td></tr>
+  <tr><td>Anzahl Scans</td>    <td>{{ scans|length }}</td></tr>
+  {% endif %}
+  <tr><td>Assets geprüft</td>  <td>{{ assets|length }}</td></tr>
+  <tr><td>Report erstellt</td> <td>{{ generated_at }}</td></tr>
+</table>
+
+
+{# ═══════════════════════ 3. GEPRÜFTE ASSETS & SCANS ════════════════════ #}
+<h2>3. Geprüfte Assets &amp; Scans</h2>
+
+{% for asset in assets %}
+{% set asset_scans    = scans    | selectattr('asset_id', 'equalto', asset.id) | list %}
+{% set asset_findings = findings | selectattr('asset_id', 'equalto', asset.id) | list %}
+{% set asset_active   = asset_findings | rejectattr('false_positive') | list %}
+<div class="asset-card">
+  <div class="asset-card-header">
+    <strong>{{ asset.value }}</strong>
+    <span style="font-size:9pt; color:#6b7280; font-weight:normal;"> — {{ asset.asset_type }}</span>
+    {% if asset.scope_authorized_by %}
+    <span style="font-size:8.5pt; color:#059669; margin-left:8px;">✓ Autorisiert</span>
+    {% else %}
+    <span style="font-size:8.5pt; color:#d97706; margin-left:8px;">⚠ Kein Autorisierungsnachweis</span>
+    {% endif %}
+  </div>
+  <div class="asset-card-body">
+    <table style="width:100%; border-collapse:collapse; font-size:9pt;">
+
+      {# Scope-Informationen #}
+      {% if asset.scope_authorized_by %}
+      <tr>
+        <td style="padding:3px 12px 3px 0; color:#6b7280; white-space:nowrap; width:30%;">Autorisiert von</td>
+        <td style="padding:3px 0; color:#374151;">
+          {{ asset.scope_authorized_by }}
+          {% if asset.scope_authorized_at %} am {{ asset.scope_authorized_at.strftime('%d.%m.%Y') }}{% endif %}
+        </td>
+      </tr>
+      {% endif %}
+      {% if asset.scope_valid_from and asset.scope_valid_until %}
+      <tr>
+        <td style="padding:3px 12px 3px 0; color:#6b7280;">Testzeitraum</td>
+        <td style="padding:3px 0; color:#374151;">
+          {{ asset.scope_valid_from.strftime('%d.%m.%Y') }} – {{ asset.scope_valid_until.strftime('%d.%m.%Y') }}
+        </td>
+      </tr>
+      {% endif %}
+      {% if asset.scope_notes %}
+      <tr>
+        <td style="padding:3px 12px 3px 0; color:#6b7280; vertical-align:top;">Scope-Vereinbarung</td>
+        <td style="padding:3px 0; color:#374151;">{{ asset.scope_notes }}</td>
+      </tr>
+      {% endif %}
+
+      {# Trennlinie zwischen Scope und Scan-Infos #}
+      <tr><td colspan="2" style="padding:4px 0;"><hr style="border:none; border-top:1px solid #e5e7eb;"></td></tr>
+
+      {# Scan-Übersicht #}
+      <tr>
+        <td style="padding:3px 12px 3px 0; color:#6b7280;">Scans</td>
+        <td style="padding:3px 0; color:#374151;">{{ asset_scans|length }} abgeschlossen</td>
+      </tr>
+      <tr>
+        <td style="padding:3px 12px 3px 0; color:#6b7280;">Findings</td>
+        <td style="padding:3px 0;">
+          {{ asset_active|length }} gesamt —
+          <span style="color:#059669;">{{ asset_active | selectattr('status', 'equalto', 'resolved') | list | length }} behoben</span>,
+          <span style="color:#dc2626;">{{ asset_active | selectattr('status', 'in', ['open', 'in_progress']) | list | length }} offen</span>,
+          <span style="color:#6b7280;">{{ asset_active | selectattr('status', 'equalto', 'accepted_risk') | list | length }} akzeptiert</span>
+        </td>
+      </tr>
+      {% for s in asset_scans %}
+      <tr>
+        <td style="padding:2px 12px 2px 0; color:#9ca3af; font-size:8.5pt;">Scan #{{ s.id }}</td>
+        <td style="padding:2px 0; font-size:8.5pt; color:#6b7280;">
+          {{ s.scan_type }}
+          {% if s.completed_at %} · {{ s.completed_at.strftime('%d.%m.%Y') }}{% endif %}
+          {% if s.custom_ports %} · Ports: {{ s.custom_ports }}{% endif %}
+          {% if s.scan_intensity %} · Intensität: {{ s.scan_intensity }}{% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+</div>
+{% endfor %}
+
+
+{# ═══════════════════════ 4. ALLE FINDINGS ═══════════════════════════════ #}
+<h2>4. Findings — Gesamtübersicht</h2>
+
+{% if findings %}
+
+{# Behoben #}
+{% if resolved %}
+<div class="section-box">
+  <div class="section-box-header header-green">✓ Behobene Findings ({{ resolved|length }})</div>
+  <table class="findings-table">
+    <thead><tr>
+      <th style="width:36%">Titel</th>
+      <th style="width:12%">Severity</th>
+      <th style="width:30%">Asset</th>
+      <th style="width:22%">Verifiziert von</th>
+    </tr></thead>
+    <tbody>
+      {% for f in resolved %}
+      <tr>
+        <td style="font-weight:500;">{{ f.title }}{% if f.cve_id %} <span style="font-size:8pt;color:#9ca3af;">({{ f.cve_id }})</span>{% endif %}</td>
+        <td><span class="badge badge-{{ f.severity }}">{{ f.severity }}</span></td>
+        <td style="font-size:9pt; color:#6b7280;">{{ asset_map[f.asset_id].value if f.asset_id in asset_map else '—' }}</td>
+        <td style="font-size:9pt;">
+          {% if f.verified_manually %}
+          <span style="color:#059669;">✓ {{ f.verified_by or 'verifiziert' }}</span>
+          {% else %}—{% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+
+{# Akzeptiertes Risiko #}
+{% if accepted %}
+<div class="section-box">
+  <div class="section-box-header header-gray">◎ Akzeptierte Risiken ({{ accepted|length }})</div>
+  <table class="findings-table">
+    <thead><tr>
+      <th style="width:38%">Titel</th>
+      <th style="width:12%">Severity</th>
+      <th style="width:50%">Begründung / Notizen</th>
+    </tr></thead>
+    <tbody>
+      {% for f in accepted %}
+      <tr>
+        <td style="font-weight:500;">{{ f.title }}</td>
+        <td><span class="badge badge-{{ f.severity }}">{{ f.severity }}</span></td>
+        <td style="font-size:9pt; color:#6b7280; font-style:italic;">{{ f.notes or f.impact or '—' }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+
+{# Noch offen #}
+{% if still_open %}
+<div class="section-box">
+  <div class="section-box-header header-red">⚠ Noch offene Findings ({{ still_open|length }})</div>
+  <table class="findings-table">
+    <thead><tr>
+      <th style="width:36%">Titel</th>
+      <th style="width:12%">Severity</th>
+      <th style="width:18%">Asset</th>
+      <th style="width:14%">Priorität</th>
+      <th style="width:20%">Empfehlung (Kurzform)</th>
+    </tr></thead>
+    <tbody>
+      {% for f in still_open %}
+      <tr>
+        <td style="font-weight:500;">{{ f.title }}</td>
+        <td><span class="badge badge-{{ f.severity }}">{{ f.severity }}</span></td>
+        <td style="font-size:9pt; color:#6b7280;">{{ asset_map[f.asset_id].value if f.asset_id in asset_map else '—' }}</td>
+        <td style="font-size:9pt;">
+          {% if f.remediation_priority == 'SOFORT'   %}<span style="color:#dc2626;font-weight:700;">Sofort</span>
+          {% elif f.remediation_priority == '30_TAGE' %}<span style="color:#d97706;">30 Tage</span>
+          {% elif f.remediation_priority == '90_TAGE' %}<span style="color:#2563eb;">90 Tage</span>
+          {% else %}—{% endif %}
+        </td>
+        <td style="font-size:8.5pt; color:#6b7280;">{{ (f.recommendation or '')[:80] }}{% if f.recommendation and f.recommendation|length > 80 %}…{% endif %}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+
+{% else %}
+<p class="no-data">Keine Findings für diesen Kunden.</p>
+{% endif %}
+
+
+{# ═══════════════════════ 5. FINDINGS DETAIL ═════════════════════════════ #}
+{% if findings %}
+<div class="page-break"></div>
+<h2>5. Findings Detail</h2>
+
+{% macro finding_card(f) %}
+<div class="finding-card">
+  <table class="finding-header-table fch-{{ f.severity }}">
+    <tr>
+      <td style="width:auto; padding-right:6px;"><span class="badge badge-{{ f.severity }}">{{ f.severity }}</span></td>
+      <td style="width:100%;"><div class="finding-title">{{ f.title }}</div></td>
+      {% if f.cvss_score is not none %}
+      <td style="text-align:right; white-space:nowrap; padding-left:8px;">
+        <span class="cvss-val color-{{ f.severity }}" style="font-size:13pt;">{{ "%.1f"|format(f.cvss_score) }}</span>
+        <span style="font-size:7.5pt; color:#6b7280; display:block;">CVSS</span>
+      </td>
+      {% endif %}
+    </tr>
+  </table>
+  <div class="finding-card-body">
+    <div class="finding-meta">
+      <strong>Asset:</strong> {{ asset_map[f.asset_id].value if f.asset_id in asset_map else '—' }} &nbsp;·&nbsp;
+      <strong>Quelle:</strong> {{ f.source }} &nbsp;·&nbsp;
+      <strong>Status:</strong>
+      {% if f.status == 'open' %}Offen
+      {% elif f.status == 'in_progress' %}In Bearbeitung
+      {% elif f.status == 'resolved' %}Behoben
+      {% elif f.status == 'accepted_risk' %}Akzeptiertes Risiko{% endif %}
+      {% if f.cve_id %} &nbsp;·&nbsp; <strong>CVE:</strong> {{ f.cve_id }}{% endif %}
+      {% if f.remediation_priority %} &nbsp;·&nbsp;
+        <strong>Priorität:</strong>
+        {% if f.remediation_priority == 'SOFORT' %}Sofort
+        {% elif f.remediation_priority == '30_TAGE' %}30 Tage
+        {% elif f.remediation_priority == '90_TAGE' %}90 Tage{% endif %}
+      {% endif %}
+      {% if f.verified_manually %}
+       &nbsp;·&nbsp; <span class="verified-badge">✓ Verifiziert{% if f.verified_by %} von {{ f.verified_by }}{% endif %}</span>
+      {% endif %}
+    </div>
+    {% if f.description and not f.impact %}
+    <div class="field-label">Beschreibung</div><div class="field-value">{{ f.description }}</div>
+    {% endif %}
+    {% if f.impact %}
+    <div class="field-label">Auswirkung</div><div class="field-value">{{ f.impact }}</div>
+    {% endif %}
+    {% if f.recommendation %}
+    <div class="field-label">Empfehlung</div><div class="field-value">{{ f.recommendation }}</div>
+    {% endif %}
+    {% if f.evidence %}
+    <div class="field-label">Nachweis</div><div class="field-mono">{{ f.evidence }}</div>
+    {% endif %}
+    {% if f.notes %}
+    <div class="field-label">Notizen</div>
+    <div class="field-value" style="color:#6b7280; font-style:italic;">{{ f.notes }}</div>
+    {% endif %}
+  </div>
+</div>
+{% endmacro %}
+
+{% if still_open %}
+<h3 style="color:#dc2626;">⚠ Noch offene Findings</h3>
+{% for f in still_open %}{{ finding_card(f) }}{% endfor %}
+{% endif %}
+
+{% if resolved %}
+<h3 style="color:#059669; margin-top:20px;">✓ Behobene Findings</h3>
+{% for f in resolved %}{{ finding_card(f) }}{% endfor %}
+{% endif %}
+
+{% if accepted %}
+<h3 style="color:#6b7280; margin-top:20px;">◎ Akzeptierte Risiken</h3>
+{% for f in accepted %}{{ finding_card(f) }}{% endfor %}
+{% endif %}
+
+{% endif %}
+
+
+{# ═══════════════════════ 7. REMEDIATION ROADMAP ═════════════════════════ #}
+{% if roadmap_sofort or roadmap_30 or roadmap_90 %}
+<div class="page-break"></div>
+<h2>6. Remediation Roadmap — Noch offene Maßnahmen</h2>
+
+<p class="summary-text">
+  Die folgenden Maßnahmen sind noch ausstehend und sollten nach Priorität umgesetzt werden.
+</p>
+
+{% macro roadmap_block(items, css_class, label) %}
+{% if items %}
+<div class="roadmap-title {{ css_class }}">{{ label }} ({{ items|length }})</div>
+<table class="roadmap-table">
+  {% for f in items %}
+  <tr>
+    <td class="roadmap-num">{{ loop.index }}.</td>
+    <td>
+      <div class="roadmap-item-title">
+        <span class="badge badge-{{ f.severity }}">{{ f.severity }}</span>
+        &nbsp;{{ f.title }}
+        <span style="font-size:8.5pt; color:#6b7280;"> — {{ asset_map[f.asset_id].value if f.asset_id in asset_map else '' }}</span>
+      </div>
+      {% if f.recommendation %}
+      <div class="roadmap-item-rec">{{ f.recommendation }}</div>
+      {% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
+{% endmacro %}
+
+{{ roadmap_block(roadmap_sofort, "roadmap-sofort", "⚡ Sofort — innerhalb 48 Stunden") }}
+{{ roadmap_block(roadmap_30,     "roadmap-30",     "▲ Innerhalb 30 Tage") }}
+{{ roadmap_block(roadmap_90,     "roadmap-90",     "● Innerhalb 90 Tage") }}
+{% endif %}
+
+
+{# ═══════════════════════ 8. ANHANG ══════════════════════════════════════ #}
+<div class="page-break"></div>
+<h2>7. Anhang</h2>
+
+<h3>Projekthistorie — Scan-Übersicht</h3>
+{% if scans %}
+<table class="info-table">
+  <tr>
+    <td style="font-weight:700; background:#f8fafc;">Scan-ID</td>
+    <td style="font-weight:700; background:#f8fafc;">Asset</td>
+    <td style="font-weight:700; background:#f8fafc;">Typ</td>
+    <td style="font-weight:700; background:#f8fafc;">Datum</td>
+  </tr>
+  {% for s in scans %}
+  <tr>
+    <td>#{{ s.id }}</td>
+    <td>{{ asset_map[s.asset_id].value if s.asset_id in asset_map else '—' }}</td>
+    <td>{{ s.scan_type }}</td>
+    <td>{{ s.completed_at.strftime('%d.%m.%Y') if s.completed_at else '—' }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% else %}
+<p class="no-data">Keine abgeschlossenen Scans.</p>
+{% endif %}
+
+<h3>Verwendete Tools</h3>
+<table class="info-table">
+  <tr><td>Netzwerk-Scan</td>  <td>nmap — Portscanning, Service-Erkennung, OS-Fingerprinting</td></tr>
+  <tr><td>Web-Analyse</td>    <td>nikto — HTTP-Server Schwachstellenscanner</td></tr>
+  <tr><td>SSL/TLS-Analyse</td><td>testssl.sh — SSL/TLS-Konfiguration und Zertifikatsprüfung</td></tr>
+  <tr><td>CVSS-Bewertung</td> <td>CVSS v3.1 — Manuelle Einstufung durch Analyst</td></tr>
+</table>
+
+<h3>Haftungsausschluss</h3>
+<p class="appendix-text">
+  Dieser Abschlussbericht dokumentiert den Stand der Sicherheitsanalyse zum Zeitpunkt der
+  letzten Prüfung. Neue Schwachstellen können jederzeit bekannt werden. Empfohlen wird
+  eine regelmäßige Wiederholung (mindestens quartalsweise) sowie manuelle Penetrationstests
+  für kritische Systeme. Cyber Aspis IT-Security übernimmt keine Haftung für Schäden durch
+  die Implementierung der empfohlenen Maßnahmen.
+</p>
+
+</body>
+</html>
