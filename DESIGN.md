@@ -468,14 +468,27 @@ Cyan-Border-Left 3px, Bebas-Label 34px, JetBrains-Nummer 14px in cyan-border-Box
 - **Recommendation-Item:** colored border-left 4px (sev-coded), pastel background, padding 10px 14px
 - **Scope-Box:** light-grey `#f8fafc`, border `#e2e8f0`, font-size 9.5pt
 
-### Sub-Variant C2 — Professional Report
+### Sub-Variant C2 — Professional / Interim / Final Reports
 
 **Use-Case:** Größere Engagements (€500+), Cover-Page, 5-stufige Severity-Skala (mit Critical + Info), refinierter Look.
+
+**State-Color-Coding (3 Varianten):** Die C2-Familie unterscheidet sich in **EINEM Token**
+(`--brand-accent` für h2-border-left), das den Report-Status semantisch farb-codiert. Cover,
+Severity-Skala, Typografie, alles andere ist identisch.
+
+| C2-Variante | Source | Accent (h2-border) | Semantik |
+|-------------|--------|-------------------|----------|
+| **Professional** | `report_professional.html.j2` | `#818cf8` Indigo | formaler Vollbericht, neutral |
+| **Interim** | `report_interim.html.j2` | `#f59e0b` Orange | Zwischenbericht, work-in-progress / Achtung |
+| **Final** | `report_final.html.j2` | `#34d399` Green | Abschlussbericht, completion / closed |
+
+→ Beim Erzeugen einer neuen C2-Variante: nur `--brand-accent` setzen, alles andere von der
+Professional-Variante erben.
 
 #### Farb-Token (C2)
 
 ```css
-/* Cover (eigene Farbwelt — dark) */
+/* Cover (eigene Farbwelt — dark) — IDENTISCH in allen 3 Varianten */
 --cover-bg:         #0f172a;
 --cover-text:       #f8fafc;
 --cover-meta:       #e2e8f0;
@@ -588,8 +601,9 @@ Sektion dokumentiert sie als nicht-zu-„fixende" Surface-Optimierungen.
 | `cyber-aspis-website/index.html` | A — Web | ✅ canonical |
 | `Claude-cowork/Cyber-Aspis/cowork-pipeline/` | B — Social | ✅ canonical (4-Slide-Carousel) |
 | `Cyber-Aspis/toolkit/backend/templates/report_quick_check.html.j2` | C1 — Quick-Check | ✅ canonical |
-| `Cyber-Aspis/toolkit/backend/templates/report_professional.html.j2` | C2 — Professional | ✅ canonical |
-| `Cyber-Aspis/toolkit/backend/templates/report_{interim,final}.html.j2` | C-Familie | ⚠️ noch nicht im Detail dokumentiert — sollten C1 oder C2 folgen |
+| `Cyber-Aspis/toolkit/backend/templates/report_professional.html.j2` | C2 — Professional (Indigo) | ✅ canonical |
+| `Cyber-Aspis/toolkit/backend/templates/report_interim.html.j2` | C2 — Interim (Orange) | ✅ canonical |
+| `Cyber-Aspis/toolkit/backend/templates/report_final.html.j2` | C2 — Final (Green) | ✅ canonical |
 | `Cyber-Aspis/toolkit/frontend/` (React + Tailwind) | A-Web (TD) | ⚠️ Tailwind-Config noch nicht auf Profile-A-Tokens gemappt |
 | Slides / Pitch-Decks | — | ❌ nicht standardisiert — bei Bedarf neues Profile D |
 
@@ -604,3 +618,4 @@ Sektion dokumentiert sie als nicht-zu-„fixende" Surface-Optimierungen.
 | 2026-05-12 | + Profile C1+C2 (PDF-Reports Quick-Check + Professional) extrahiert aus `toolkit/backend/templates/` | Claude (Session) |
 | 2026-05-12 | Phase-4 Drift-Review abgeschlossen — alle 3 Drifts beibehalten + als Surface-Optimierungen dokumentiert (Sektion „Surface-Drifts — bewusst akzeptiert") | Owner-Decision |
 | 2026-05-12 | Phase-5 Ticket 1 — `prefers-reduced-motion` in index.html implementiert (alle dekorativen Animationen + Skeleton-Shimmer-Reduktion) | Phase-5 |
+| 2026-05-12 | Phase-5 Ticket 3 — C2-Familie vollständig dokumentiert: report_interim als C2-Interim (Orange) und report_final als C2-Final (Green) eingeordnet. State-Color-Coding-Pattern dokumentiert (Professional Indigo / Interim Orange / Final Green — sonst identisch zu C2-Professional) | Phase-5 |
