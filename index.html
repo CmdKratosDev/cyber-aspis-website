@@ -469,6 +469,17 @@
             letter-spacing: 0.05em;
         }
 
+        /* ===== CARD LINK ===== */
+        .card-link {
+            display: inline-flex; align-items: center; gap: 5px;
+            margin-top: 10px;
+            font-family: var(--font-display); font-size: 0.68rem;
+            font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+            color: var(--accent-magenta); text-decoration: none;
+            transition: gap 0.2s ease, opacity 0.2s;
+        }
+        .card-link:hover { gap: 9px; opacity: 0.85; }
+
         /* ===== FAQ ===== */
         #faq {
             background: var(--bg-secondary); position: relative; overflow: hidden;
@@ -802,6 +813,105 @@
             footer { flex-direction: column; text-align: center; }
         }
 
+        /* ===== TESTIMONIALS ===== */
+        #testimonials {
+            background: var(--bg-secondary);
+            position: relative; overflow: hidden;
+        }
+        #testimonials::before {
+            content: ''; position: absolute; inset: 0;
+            pointer-events: none;
+            background-image: radial-gradient(rgba(224,64,251,0.05) 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+            max-width: 1100px; margin: 0 auto;
+            position: relative; z-index: 1;
+        }
+        .testimonial-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px; padding: 2rem;
+            display: flex; flex-direction: column; gap: 1.2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 18px 55px rgba(0,0,0,0.4), 0 0 28px rgba(224,64,251,0.12);
+            border-color: rgba(224,64,251,0.25);
+        }
+        .testimonial-quote-icon {
+            font-family: var(--font-display);
+            font-size: 2.8rem; line-height: 1;
+            color: var(--accent-magenta); opacity: 0.45;
+            user-select: none; display: block;
+        }
+        .testimonial-text {
+            font-family: var(--font-body);
+            font-size: 0.92rem; line-height: 1.75;
+            color: var(--text-muted);
+            flex: 1;
+            /* blockquote default-reset */
+            margin: 0; padding: 0;
+        }
+        .testimonial-text em {
+            color: var(--accent-cyan); font-style: normal; font-weight: 600;
+        }
+        .testimonial-divider {
+            height: 1px;
+            background: linear-gradient(90deg, rgba(224,64,251,0.3) 0%, transparent 100%);
+        }
+        .testimonial-footer {
+            display: flex; align-items: center; gap: 14px;
+        }
+        .testimonial-avatar {
+            width: 46px; height: 46px; border-radius: 50%; flex-shrink: 0;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-magenta));
+            display: flex; align-items: center; justify-content: center;
+            font-family: var(--font-display); font-size: 0.75rem; font-weight: 700;
+            color: white; letter-spacing: 0.05em;
+            border: 2px solid rgba(224,64,251,0.35);
+        }
+        .testimonial-meta { display: flex; flex-direction: column; gap: 2px; }
+        .testimonial-name {
+            font-family: var(--font-body); font-size: 0.88rem; font-weight: 700;
+            color: var(--text-primary);
+            /* h3 default-reset */
+            margin: 0;
+        }
+        .testimonial-branch-tag {
+            display: inline-block;
+            background: rgba(0,212,255,0.1);
+            border: 1px solid rgba(0,212,255,0.25);
+            color: var(--accent-cyan);
+            border-radius: 100px; padding: 2px 10px;
+            font-family: var(--font-display); font-size: 0.56rem; font-weight: 700;
+            letter-spacing: 0.14em; text-transform: uppercase;
+        }
+        .testimonials-notice {
+            text-align: center;
+            margin-top: 2.8rem;
+            position: relative; z-index: 1;
+        }
+        .testimonials-notice p {
+            font-family: var(--font-mono); font-size: 0.73rem;
+            color: var(--text-muted); opacity: 0.7;
+            display: inline-flex; align-items: center; gap: 7px;
+        }
+        .testimonials-notice p::before {
+            content: '🔒';
+            font-size: 0.8rem;
+        }
+        @media (max-width: 960px) {
+            .testimonials-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 640px) {
+            .testimonials-grid { grid-template-columns: 1fr; }
+        }
+
         /* ===== THREAT INTEL FEED ===== */
         #threat-feed {
             background: var(--bg-secondary);
@@ -934,6 +1044,45 @@
         }
         @media (max-width: 960px) {
             .feed-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ─────────────────────────────────────────────────────────
+           A11y · prefers-reduced-motion
+           Stoppt dekorative Animationen (Banner, Blobs, Pulse).
+           Skeleton-Shimmer wird abgeschwächt statt entfernt, weil
+           Loading-Bewegung als Status-Signal funktional ist.
+           ───────────────────────────────────────────────────────── */
+        @media (prefers-reduced-motion: reduce) {
+            /* Dekorative Animations komplett stoppen */
+            #construction-banner,
+            .blob,
+            .blob-1, .blob-2, .blob-3,
+            .hero-tag-dot,
+            .feed-live-dot {
+                animation: none !important;
+            }
+
+            /* Skeleton-Shimmer: Bewegung reduzieren, Opacity-Pulse
+               als Loading-Signal beibehalten */
+            .skeleton-line {
+                animation: skeletonPulseReduced 1.6s ease-in-out infinite !important;
+                background: rgba(255,255,255,0.06) !important;
+            }
+
+            @keyframes skeletonPulseReduced {
+                0%, 100% { opacity: 0.6; }
+                50%      { opacity: 0.9; }
+            }
+
+            /* Universeller Fallback für alle weiteren CSS-Transitions */
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
         }
     </style>
 </head>
@@ -1100,6 +1249,7 @@
                     <li>PDF-Report + Review-Call</li>
                 </ul>
                 <span class="card-price">299 € Pauschal</span>
+                <a class="card-link" href="#contact">Jetzt anfragen →</a>
             </div>
         </div>
 
@@ -1116,6 +1266,7 @@
                     <li>Wiederholungs-Scan nach 30 Tagen</li>
                 </ul>
                 <span class="card-price">ab 760 € (8h-Paket)</span>
+                <a class="card-link" href="services/vulnerability-assessment.html">Mehr erfahren →</a>
             </div>
         </div>
 
@@ -1164,6 +1315,7 @@
                     <li>Umsetzungs-Roadmap</li>
                 </ul>
                 <span class="card-price">95 €/Stunde</span>
+                <a class="card-link" href="services/compliance-audit.html">Mehr erfahren →</a>
             </div>
         </div>
 
@@ -1322,6 +1474,71 @@
     </div>
 </section>
 
+<!-- ═══ TESTIMONIALS ═══ -->
+<section id="testimonials" aria-labelledby="testimonials-heading">
+    <h2 id="testimonials-heading" class="section-title">Kundenstimmen</h2>
+    <div class="testimonials-grid">
+
+        <!-- Karte 1: Anwaltskanzlei -->
+        <div class="testimonial-card">
+            <span class="testimonial-quote-icon">"</span>
+            <blockquote class="testimonial-text">
+                <em>[Coming Soon — Beta-Audit Q2/2026]</em><br><br>
+                Hier wird die Stimme unseres ersten Beta-Kunden aus dem Bereich Rechtswesen stehen —
+                nach expliziter Einwilligung und Abschluss des Audits.
+            </blockquote>
+            <div class="testimonial-divider"></div>
+            <div class="testimonial-footer">
+                <div class="testimonial-avatar" aria-hidden="true">M.B.</div>
+                <div class="testimonial-meta">
+                    <h3 class="testimonial-name">M.B., Anwaltskanzlei</h3>
+                    <span class="testimonial-branch-tag">Rechtswesen</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Karte 2: Steuerberatung -->
+        <div class="testimonial-card">
+            <span class="testimonial-quote-icon">"</span>
+            <blockquote class="testimonial-text">
+                <em>[Coming Soon — Beta-Audit Q2/2026]</em><br><br>
+                Hier wird die Stimme unseres ersten Beta-Kunden aus dem Bereich Steuerberatung stehen —
+                nach expliziter Einwilligung und Abschluss des Audits.
+            </blockquote>
+            <div class="testimonial-divider"></div>
+            <div class="testimonial-footer">
+                <div class="testimonial-avatar" aria-hidden="true">T.S.</div>
+                <div class="testimonial-meta">
+                    <h3 class="testimonial-name">T.S., Steuerberatungskanzlei</h3>
+                    <span class="testimonial-branch-tag">Steuerberatung</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Karte 3: Gesundheitswesen -->
+        <div class="testimonial-card">
+            <span class="testimonial-quote-icon">"</span>
+            <blockquote class="testimonial-text">
+                <em>[Coming Soon — Beta-Audit Q2/2026]</em><br><br>
+                Hier wird die Stimme unseres ersten Beta-Kunden aus dem Gesundheitswesen stehen —
+                nach expliziter Einwilligung und Abschluss des Audits.
+            </blockquote>
+            <div class="testimonial-divider"></div>
+            <div class="testimonial-footer">
+                <div class="testimonial-avatar" aria-hidden="true">C.D.</div>
+                <div class="testimonial-meta">
+                    <h3 class="testimonial-name">C.D., Dental-Praxis</h3>
+                    <span class="testimonial-branch-tag">Gesundheitswesen</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="testimonials-notice">
+        <p>Alle echten Stimmen werden nach expliziter Einwilligung der Mandanten veröffentlicht (Art. 6 Abs. 1 lit. a DSGVO)</p>
+    </div>
+</section>
+
 <!-- ═══ THREAT INTEL FEED ═══ -->
 <section id="threat-feed">
     <h2 class="section-title">Aktuelle Bedrohungslage</h2>
@@ -1388,7 +1605,7 @@
                 <div>
                     <span class="contact-lbl">Telefon</span>
                     <!-- TODO: Echte Telefonnummer eintragen -->
-                    <a href="tel:+49" class="contact-val">[Telefonnummer folgt]</a>
+                    <span class="contact-val">[Telefonnummer folgt]</span>
                 </div>
                 <div>
                     <span class="contact-lbl">E-Mail</span>

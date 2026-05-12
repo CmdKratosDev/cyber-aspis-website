@@ -226,7 +226,7 @@ background: rgba(224,64,251,0.13);
 | `blobFloat` | (siehe index.html) | infinite | Hero-Background-Blobs |
 | `tagPulse` | (siehe index.html) | infinite | Status-Dot in Pills |
 
-**Regel:** Animations IMMER mit `prefers-reduced-motion`-Fallback (TODO: in index.html ergänzen).
+**Regel:** Animations IMMER mit `prefers-reduced-motion`-Fallback. ✅ Implementiert in `index.html` (alle dekorativen Animationen gestoppt, Skeleton-Shimmer auf Opacity-Pulse reduziert).
 
 ---
 
@@ -262,7 +262,7 @@ background: rgba(224,64,251,0.13);
 - ✅ Kontrast Muted-Text (#9090b8 auf #0d0d1a): ~6:1 (AA für Normal-Text)
 - ⚠️ Cyan auf bg-primary (#00d4ff auf #0d0d1a): ~10:1, OK — aber NICHT für kleinen Text auf bg-secondary (#12082e) verwenden ohne Re-Check
 - ⚠️ Magenta-CTA-Hover (#cc00ff): Kontrast prüfen bei kleineren Button-Sizes
-- ❌ `prefers-reduced-motion` noch nicht implementiert (TODO)
+- ✅ `prefers-reduced-motion` implementiert — dekorative Animationen gestoppt, Skeleton-Shimmer auf Opacity-Pulse reduziert
 
 ---
 
@@ -603,3 +603,4 @@ Sektion dokumentiert sie als nicht-zu-„fixende" Surface-Optimierungen.
 | 2026-05-12 | + Profile B (Social-Cards/Carousels) extrahiert aus `cowork-pipeline/` | Claude (Session) |
 | 2026-05-12 | + Profile C1+C2 (PDF-Reports Quick-Check + Professional) extrahiert aus `toolkit/backend/templates/` | Claude (Session) |
 | 2026-05-12 | Phase-4 Drift-Review abgeschlossen — alle 3 Drifts beibehalten + als Surface-Optimierungen dokumentiert (Sektion „Surface-Drifts — bewusst akzeptiert") | Owner-Decision |
+| 2026-05-12 | Phase-5 Ticket 1 — `prefers-reduced-motion` in index.html implementiert (alle dekorativen Animationen + Skeleton-Shimmer-Reduktion) | Phase-5 |
