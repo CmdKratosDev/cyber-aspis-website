@@ -359,8 +359,8 @@
     gap: 8px;
   }
   .demo-a .terminal-dot {
-    width: 12px;
-    height: 12px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
   }
   .demo-a .terminal-dot.r { background: #ff5f57; }
@@ -578,7 +578,7 @@
     width: 595px;
     margin: 0 auto 16px;
     font-family: 'Helvetica Neue', Arial, sans-serif;
-    font-size: 11pt;
+    font-size: 10.5pt;
     color: #1f2937;
     line-height: 1.5;
     padding: 36px 48px;
@@ -682,7 +682,7 @@
     border: 1px solid #e5e7eb; border-radius: 4px;
     text-align: center; padding: 10px;
   }
-  .c2 .c2-sev-box .num { font-size: 18pt; font-weight: 700; }
+  .c2 .c2-sev-box .num { font-size: 22pt; font-weight: 700; }
   .c2 .c2-sev-box .lbl { font-size: 7.5pt; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7280; margin-top: 2px; }
   .c2 .c2-sev-box.critical { border-color: #a78bfa; background: #f5f3ff; }
   .c2 .c2-sev-box.critical .num { color: #7c3aed; }
@@ -885,8 +885,7 @@
       content: " (Details in HTML-Version)";
       font-size: 0.75rem;
     }
-    /* expand details for print */
-    details.token-table { open: true; }
+    /* details.token-table — force-open via JS-Listener (siehe vor </body>) */
     details.token-table > * { display: block !important; }
   }
 
@@ -1662,6 +1661,16 @@
     Diese Showcase: <code>brand.html</code> @ Commit f772a42 · Generiert 2026-05-12 · DESIGN.md v3
   </div>
 </footer>
+
+<script>
+  window.addEventListener('beforeprint', () => {
+    document.querySelectorAll('details.token-table').forEach(d => d.dataset.wasOpen = d.open ? '1' : '0');
+    document.querySelectorAll('details.token-table').forEach(d => d.open = true);
+  });
+  window.addEventListener('afterprint', () => {
+    document.querySelectorAll('details.token-table').forEach(d => { if (d.dataset.wasOpen === '0') d.open = false; });
+  });
+</script>
 
 </body>
 </html>
