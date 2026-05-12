@@ -1,0 +1,1667 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cyber Aspis — Brand-Showcase (Profile A · B · C)</title>
+<style>
+  /* ============================================================
+     CYBER ASPIS — BRAND SHOWCASE
+     Commit-Stand: f772a42 (DESIGN.md v3)
+     Phase 2 der Brand-Unification — Visual Inventory aller drei Profile
+     ============================================================ */
+
+  /* ===== FONTS — PROFILE A (Web) ===== */
+  @font-face {
+    font-family: 'Orbitron';
+    src: url('assets/fonts/orbitron.woff2') format('woff2');
+    font-weight: 700 900;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Exo 2';
+    src: url('assets/fonts/exo2.woff2') format('woff2');
+    font-weight: 100 900;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Space Mono';
+    src: url('assets/fonts/spacemono-regular.woff2') format('woff2');
+    font-weight: 400;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Space Mono';
+    src: url('assets/fonts/spacemono-bold.woff2') format('woff2');
+    font-weight: 700;
+    font-display: swap;
+  }
+
+  /* ===== FONTS — PROFILE B (Social-Cards) ===== */
+  @font-face {
+    font-family: 'Bebas Neue';
+    src: url('assets/fonts/social/bebasneue-regular.woff2') format('woff2');
+    font-weight: 400;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Manrope';
+    src: url('assets/fonts/social/manrope-regular.woff2') format('woff2');
+    font-weight: 400;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Manrope';
+    src: url('assets/fonts/social/manrope-medium.woff2') format('woff2');
+    font-weight: 500;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Manrope';
+    src: url('assets/fonts/social/manrope-semibold.woff2') format('woff2');
+    font-weight: 600;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Manrope';
+    src: url('assets/fonts/social/manrope-bold.woff2') format('woff2');
+    font-weight: 700;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'JetBrains Mono';
+    src: url('assets/fonts/social/jetbrainsmono-regular.woff2') format('woff2');
+    font-weight: 400;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'JetBrains Mono';
+    src: url('assets/fonts/social/jetbrainsmono-medium.woff2') format('woff2');
+    font-weight: 500;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'JetBrains Mono';
+    src: url('assets/fonts/social/jetbrainsmono-semibold.woff2') format('woff2');
+    font-weight: 600;
+    font-display: swap;
+  }
+
+  /* ===== SHOWCASE-LAYOUT (eigenes Brand-Neutral-Theme, nicht Teil eines Profiles) ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --showcase-bg:        #f5f3ee;     /* warm off-white, harmoniert mit Logo */
+    --showcase-surface:   #ffffff;
+    --showcase-rule:      #d8d3c7;
+    --showcase-text:      #2d2a24;
+    --showcase-meta:      #6b6457;
+    --showcase-accent:    #5a4a3a;     /* warm dark brown — Logo-Bezug */
+    --showcase-link:      #00586a;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Exo 2', system-ui, sans-serif;
+    background: var(--showcase-bg);
+    color: var(--showcase-text);
+    line-height: 1.6;
+    font-size: 16px;
+  }
+
+  .showcase-header {
+    background: var(--showcase-surface);
+    border-bottom: 2px solid var(--showcase-rule);
+    padding: 32px 6%;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+  .showcase-header img { width: 120px; height: 120px; }
+  .showcase-header h1 {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.8rem;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    color: var(--showcase-text);
+  }
+  .showcase-header .meta {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--showcase-meta);
+    margin-top: 6px;
+    letter-spacing: 0.05em;
+  }
+
+  .toc {
+    background: var(--showcase-surface);
+    border-bottom: 1px solid var(--showcase-rule);
+    padding: 18px 6%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+  }
+  .toc a {
+    color: var(--showcase-link);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--showcase-link);
+  }
+  .toc a:hover { color: var(--showcase-text); border-bottom-style: solid; }
+
+  section.showcase-section {
+    padding: 64px 6%;
+    border-bottom: 1px solid var(--showcase-rule);
+  }
+  section.showcase-section > h2 {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.6rem;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+    color: var(--showcase-text);
+  }
+  section.showcase-section > .section-lead {
+    font-size: 1rem;
+    color: var(--showcase-meta);
+    max-width: 760px;
+    margin-bottom: 40px;
+  }
+  section.showcase-section h3 {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    margin: 36px 0 16px;
+    text-transform: uppercase;
+    color: var(--showcase-accent);
+    border-left: 4px solid var(--showcase-accent);
+    padding-left: 12px;
+  }
+  section.showcase-section h4 {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--showcase-meta);
+    margin: 20px 0 10px;
+  }
+
+  /* ===== COLOR SWATCHES ===== */
+  .swatch-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+  .swatch {
+    background: var(--showcase-surface);
+    border: 1px solid var(--showcase-rule);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .swatch-color {
+    height: 80px;
+    border-bottom: 1px solid var(--showcase-rule);
+  }
+  .swatch-info {
+    padding: 10px 12px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+  }
+  .swatch-info .name { color: var(--showcase-text); font-weight: 700; }
+  .swatch-info .hex { color: var(--showcase-meta); }
+  .swatch-info .use { color: var(--showcase-meta); margin-top: 4px; font-size: 0.72rem; line-height: 1.4; }
+
+  /* ===== TYPE SPECIMENS — embedded scoped boxes ===== */
+  .specimen-box {
+    background: var(--showcase-surface);
+    border: 1px solid var(--showcase-rule);
+    border-radius: 6px;
+    padding: 24px;
+    margin-bottom: 14px;
+  }
+  .specimen-meta {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--showcase-meta);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+  }
+
+  /* ===== DON'TS ===== */
+  .donts {
+    background: #fef2f2;
+    border-left: 4px solid #dc2626;
+    padding: 18px 22px;
+    border-radius: 0 6px 6px 0;
+    margin-top: 20px;
+  }
+  .donts ul { list-style: none; padding: 0; margin-top: 8px; }
+  .donts li {
+    padding: 4px 0 4px 24px;
+    position: relative;
+    font-size: 0.92rem;
+  }
+  .donts li::before {
+    content: "✗";
+    position: absolute;
+    left: 0;
+    color: #dc2626;
+    font-weight: 700;
+  }
+
+  /* ===== PROFILE A DEMO STYLES (1:1 from index.html, scoped) ===== */
+  .demo-a {
+    background: #0d0d1a;
+    color: #ffffff;
+    padding: 32px;
+    border-radius: 8px;
+    margin-bottom: 14px;
+    font-family: 'Exo 2', sans-serif;
+  }
+  .demo-a .hero-headline {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(2.2rem, 5vw, 4.6rem);
+    font-weight: 900;
+    line-height: 1.1;
+  }
+  .demo-a .gradient-text {
+    background: linear-gradient(135deg, #00d4ff 0%, #7b2ff7 50%, #cc00ff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+  .demo-a .section-title {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(1.4rem, 3vw, 2.2rem);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-align: center;
+  }
+  .demo-a .lead {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 1.1rem;
+    color: #9090b8;
+    font-weight: 300;
+    letter-spacing: 0.03em;
+    line-height: 1.7;
+  }
+  .demo-a .btn-primary, .demo-a .btn-secondary {
+    display: inline-block;
+    text-decoration: none;
+    padding: 14px 30px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.93rem;
+    font-family: 'Exo 2', sans-serif;
+    transition: all 0.2s;
+    margin: 8px 8px 0 0;
+  }
+  .demo-a .btn-primary {
+    background: #e040fb;
+    color: white;
+    box-shadow: 0 0 32px rgba(224,64,251,0.42);
+  }
+  .demo-a .btn-primary:hover {
+    background: #cc00ff;
+    box-shadow: 0 0 52px rgba(224,64,251,0.65);
+  }
+  .demo-a .btn-secondary {
+    background: transparent;
+    color: #00d4ff;
+    border: 1.5px solid #00d4ff;
+    font-weight: 600;
+  }
+  .demo-a .btn-secondary:hover {
+    background: rgba(0,212,255,0.08);
+    box-shadow: 0 0 20px rgba(0,212,255,0.2);
+  }
+  .demo-a .card-a {
+    background: #1a1a35;
+    border-radius: 14px;
+    padding: 24px;
+    max-width: 320px;
+  }
+  .demo-a .card-a h5 {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+  }
+  .demo-a .tag-a {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 100px;
+    color: #e040fb;
+    background: rgba(224,64,251,0.13);
+  }
+  .demo-a .terminal {
+    background: #080810;
+    border-radius: 14px;
+    overflow: hidden;
+    max-width: 480px;
+    margin-top: 8px;
+  }
+  .demo-a .terminal-header {
+    background: #14142a;
+    padding: 13px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .demo-a .terminal-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+  .demo-a .terminal-dot.r { background: #ff5f57; }
+  .demo-a .terminal-dot.y { background: #ffbd2e; }
+  .demo-a .terminal-dot.g { background: #28ca41; }
+  .demo-a .terminal-body {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.79rem;
+    padding: 16px 20px;
+    color: #00d4ff;
+    line-height: 1.5;
+  }
+
+  /* ===== PROFILE B DEMO — Carousel-Mock 4 slides ===== */
+  .demo-b-carousel {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    padding: 8px 0 16px;
+  }
+  .b-slide {
+    flex: 0 0 360px;
+    width: 360px;
+    height: 450px;
+    position: relative;
+    padding: 24px 27px;
+    background:
+      radial-gradient(circle at 85% 15%, rgba(255,60,60,0.12), transparent 45%),
+      radial-gradient(circle at 15% 90%, rgba(0,217,255,0.08), transparent 45%),
+      linear-gradient(135deg, #0a0e1a 0%, #0f1729 100%);
+    color: #f0f4f8;
+    font-family: 'Manrope', sans-serif;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 4px;
+  }
+  .b-slide::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,217,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,217,255,0.04) 1px, transparent 1px);
+    background-size: 17px 17px;
+    z-index: 1;
+  }
+  .b-slide > * { position: relative; z-index: 2; }
+  .b-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    color: #00d9ff;
+  }
+  .b-counter { color: #4a5568; letter-spacing: 0.05em; }
+  .b-body { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 12px; }
+  .b-mono-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    color: #8b95a8;
+    letter-spacing: 0.08em;
+    text-transform: lowercase;
+  }
+  .b-display {
+    font-family: 'Bebas Neue', sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.005em;
+    line-height: 1.02;
+    color: #f0f4f8;
+  }
+  .b-display.h1 { font-size: 46px; }
+  .b-display.h2 { font-size: 28px; }
+  .b-cyan { color: #00d9ff; }
+  .b-red { color: #ff3c3c; }
+  .b-badge {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    font-weight: 600;
+    padding: 3px 7px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #00d9ff;
+    border: 1px solid #00d9ff;
+  }
+  .b-badge.mythos { color: #ff3c3c; border-color: #ff3c3c; }
+  .b-verdict {
+    background: rgba(0, 217, 255, 0.08);
+    border: 1px solid rgba(0, 217, 255, 0.45);
+    padding: 10px 12px;
+    font-size: 9px;
+    line-height: 1.35;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .b-verdict .icon { color: #00d9ff; font-size: 14px; }
+  .b-verdict .hl { color: #00d9ff; font-weight: 700; }
+  .b-basis-list { display: flex; flex-direction: column; gap: 7px; }
+  .b-basis-row {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-left: 2px solid #00d9ff;
+    padding: 8px 11px;
+  }
+  .b-basis-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 7px;
+    color: #00d9ff;
+    letter-spacing: 0.14em;
+    border: 1px solid #00d9ff;
+    padding: 3px 5px;
+  }
+  .b-basis-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .b-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 11px;
+    border-top: 1px solid rgba(139, 149, 168, 0.18);
+  }
+  .b-brand { display: flex; align-items: center; gap: 7px; }
+  .b-ca-logo {
+    width: 20px;
+    height: 20px;
+    border: 1px solid #00d9ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11px;
+    color: #00d9ff;
+    letter-spacing: 0.05em;
+  }
+  .b-brand-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    line-height: 1;
+  }
+  .b-brand-tagline {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 5px;
+    color: #4a5568;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+  .b-footer-marker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 7px;
+    color: #8b95a8;
+    letter-spacing: 0.1em;
+  }
+  .b-cta-box {
+    border-left: 2px solid #00d9ff;
+    background: rgba(0, 217, 255, 0.06);
+    padding: 11px 14px;
+  }
+  .b-cta-headline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    letter-spacing: 0.04em;
+    color: #00d9ff;
+    line-height: 1;
+  }
+  .b-cta-url {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 7px;
+    color: #00d9ff;
+    margin-top: 5px;
+  }
+  .b-lever-row {
+    display: grid;
+    grid-template-columns: 80px 12px 1fr;
+    column-gap: 8px;
+    align-items: center;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 9px 12px;
+  }
+  .b-lever-effort {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    color: #00d9ff;
+  }
+  .b-lever-arrow {
+    font-family: 'JetBrains Mono', monospace;
+    color: #00d9ff;
+    font-size: 11px;
+  }
+  .b-lever-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 12px;
+    line-height: 1.1;
+  }
+
+  /* ===== PROFILE C DEMO — A4-Mock (scaled-down) ===== */
+  .c-mock-page {
+    background: #ffffff;
+    border: 1px solid var(--showcase-rule);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    width: 595px;
+    margin: 0 auto 16px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11pt;
+    color: #1f2937;
+    line-height: 1.5;
+    padding: 36px 48px;
+  }
+
+  /* C1 — Quick-Check */
+  .c1 .c1-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 3px solid #1e3a5f;
+    padding-bottom: 12px;
+    margin-bottom: 24px;
+  }
+  .c1 .c1-brand { font-size: 18pt; font-weight: 700; color: #1e3a5f; }
+  .c1 .c1-brand span { color: #7c3aed; }
+  .c1 .c1-meta { text-align: right; font-size: 9pt; color: #6b7280; }
+  .c1 .c1-title-block {
+    background: #1e3a5f;
+    color: #fff;
+    padding: 18px 20px;
+    border-radius: 4px;
+    margin-bottom: 24px;
+  }
+  .c1 .c1-title-block h1 { font-size: 16pt; margin-bottom: 4px; }
+  .c1 .c1-title-block p { font-size: 9pt; opacity: 0.8; }
+  .c1 h2 {
+    font-size: 12pt;
+    color: #1e3a5f;
+    border-left: 4px solid #7c3aed;
+    padding-left: 8px;
+    margin: 20px 0 10px;
+  }
+  .c1 .c1-summary-grid {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .c1 .c1-box {
+    flex: 1;
+    text-align: center;
+    padding: 14px;
+    border-radius: 6px;
+    border: 1px solid #e5e7eb;
+  }
+  .c1 .c1-box .count { font-size: 24pt; font-weight: 700; }
+  .c1 .c1-box .label { font-size: 8pt; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7280; }
+  .c1 .c1-box.high { border-color: #ef4444; background: #fef2f2; }
+  .c1 .c1-box.high .count { color: #dc2626; }
+  .c1 .c1-box.medium { border-color: #f59e0b; background: #fffbeb; }
+  .c1 .c1-box.medium .count { color: #d97706; }
+  .c1 .c1-box.low { border-color: #10b981; background: #ecfdf5; }
+  .c1 .c1-box.low .count { color: #059669; }
+  .c1 .c1-box.total { border-color: #6b7280; background: #f9fafb; }
+  .c1 .c1-box.total .count { color: #374151; }
+  .c1 .c1-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 8pt;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  .c1 .c1-badge.high { background: #fef2f2; color: #dc2626; border: 1px solid #fca5a5; }
+  .c1 .c1-badge.medium { background: #fffbeb; color: #d97706; border: 1px solid #fcd34d; }
+  .c1 .c1-badge.low { background: #ecfdf5; color: #059669; border: 1px solid #6ee7b7; }
+  .c1 .c1-rec {
+    border-left: 4px solid #ef4444;
+    background: #fef2f2;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    border-radius: 0 4px 4px 0;
+    font-size: 9.5pt;
+  }
+
+  /* C2 — Professional (Cover) */
+  .c2-cover {
+    background: #0f172a;
+    color: #f8fafc;
+    padding: 60px 56px;
+  }
+  .c2-cover .logo { font-size: 22pt; font-weight: 800; color: #f8fafc; }
+  .c2-cover .logo span { color: #818cf8; }
+  .c2-cover .tagline { font-size: 8.5pt; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px; }
+  .c2-cover .title { font-size: 26pt; font-weight: 700; line-height: 1.15; margin-top: 80px; }
+  .c2-cover .subtitle { font-size: 13pt; color: #818cf8; font-weight: 500; margin-top: 6px; margin-bottom: 28px; }
+  .c2-cover hr { border: none; border-top: 1px solid #334155; margin-bottom: 24px; }
+  .c2-cover .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .c2-cover .meta-label { font-size: 7.5pt; color: #64748b; text-transform: uppercase; letter-spacing: 0.1em; }
+  .c2-cover .meta-value { font-size: 11pt; color: #e2e8f0; font-weight: 600; margin-top: 3px; }
+  .c2-cover .footer { margin-top: 100px; padding-top: 14px; border-top: 1px solid #1e293b; font-size: 8pt; color: #475569; line-height: 1.5; }
+  .c2 h2 {
+    font-size: 13pt; font-weight: 700; color: #0f172a;
+    border-left: 4px solid #818cf8; padding-left: 10px;
+    margin-top: 20px; margin-bottom: 10px;
+  }
+  .c2 .c2-sev-grid {
+    display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-bottom: 16px;
+  }
+  .c2 .c2-sev-box {
+    border: 1px solid #e5e7eb; border-radius: 4px;
+    text-align: center; padding: 10px;
+  }
+  .c2 .c2-sev-box .num { font-size: 18pt; font-weight: 700; }
+  .c2 .c2-sev-box .lbl { font-size: 7.5pt; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7280; margin-top: 2px; }
+  .c2 .c2-sev-box.critical { border-color: #a78bfa; background: #f5f3ff; }
+  .c2 .c2-sev-box.critical .num { color: #7c3aed; }
+  .c2 .c2-sev-box.high     { border-color: #fca5a5; background: #fef2f2; }
+  .c2 .c2-sev-box.high .num     { color: #dc2626; }
+  .c2 .c2-sev-box.medium   { border-color: #fcd34d; background: #fffbeb; }
+  .c2 .c2-sev-box.medium .num   { color: #d97706; }
+  .c2 .c2-sev-box.low      { border-color: #6ee7b7; background: #ecfdf5; }
+  .c2 .c2-sev-box.low .num      { color: #059669; }
+  .c2 .c2-sev-box.info     { border-color: #93c5fd; background: #eff6ff; }
+  .c2 .c2-sev-box.info .num     { color: #2563eb; }
+  .c2 .c2-sev-box.total    { border-color: #d1d5db; background: #f9fafb; }
+  .c2 .c2-sev-box.total .num    { color: #374151; }
+
+  /* ===== SECTION D — Drift comparisons ===== */
+  .drift-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .drift-side {
+    background: var(--showcase-surface);
+    border: 1px solid var(--showcase-rule);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .drift-side h5 {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 10px 16px;
+    background: #f0ede4;
+    border-bottom: 1px solid var(--showcase-rule);
+    color: var(--showcase-meta);
+  }
+  .drift-demo {
+    padding: 24px;
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .drift-side .meta {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    padding: 8px 16px;
+    color: var(--showcase-meta);
+    border-top: 1px solid var(--showcase-rule);
+    background: #fafafa;
+  }
+  .drift-verdict {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 0.92rem;
+    padding: 12px 16px;
+    background: #fffbe6;
+    border: 1px dashed #d97706;
+    color: #92400e;
+    border-radius: 4px;
+    margin-bottom: 18px;
+  }
+  .drift-verdict strong { color: #78350f; }
+
+  /* ===== SECTION E — Decision Tracker ===== */
+  table.decision-tracker {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--showcase-surface);
+    border: 1px solid var(--showcase-rule);
+    font-size: 0.92rem;
+  }
+  table.decision-tracker th,
+  table.decision-tracker td {
+    padding: 12px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--showcase-rule);
+    border-right: 1px solid var(--showcase-rule);
+  }
+  table.decision-tracker th {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    background: #f0ede4;
+    color: var(--showcase-meta);
+  }
+  table.decision-tracker td:last-child,
+  table.decision-tracker th:last-child { border-right: none; }
+  table.decision-tracker tr:last-child td { border-bottom: none; }
+  table.decision-tracker td.empty { color: #b9b3a4; font-style: italic; }
+
+  /* ===== COLLAPSIBLE TOKEN TABLES ===== */
+  details.token-table {
+    margin-top: 20px;
+    background: var(--showcase-surface);
+    border: 1px solid var(--showcase-rule);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  details.token-table summary {
+    padding: 14px 18px;
+    cursor: pointer;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--showcase-meta);
+    background: #f0ede4;
+    user-select: none;
+  }
+  details.token-table summary:hover { background: #e8e3d4; }
+  details.token-table[open] summary { border-bottom: 1px solid var(--showcase-rule); }
+  details.token-table table { width: 100%; border-collapse: collapse; }
+  details.token-table th, details.token-table td {
+    padding: 8px 14px;
+    border-bottom: 1px solid #ece8de;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    text-align: left;
+  }
+  details.token-table tr:last-child td { border-bottom: none; }
+
+  /* ===== JINJA SOURCE-BLOCK ===== */
+  .jinja-source {
+    background: #1a1d23;
+    color: #c9d1d9;
+    padding: 16px 20px;
+    border-radius: 6px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    overflow-x: auto;
+    line-height: 1.6;
+    margin-bottom: 18px;
+  }
+  .jinja-source .j-var { color: #79c0ff; }
+  .jinja-source .j-stmt { color: #ff7b72; }
+  .jinja-source .j-key { color: #d2a8ff; }
+  .jinja-source .j-comment { color: #8b949e; font-style: italic; }
+
+  /* ===== FOOTER ===== */
+  footer.showcase-footer {
+    background: var(--showcase-surface);
+    padding: 40px 6%;
+    border-top: 2px solid var(--showcase-rule);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.82rem;
+    color: var(--showcase-meta);
+  }
+  footer.showcase-footer h3 {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.95rem;
+    color: var(--showcase-accent);
+    margin-bottom: 12px;
+    letter-spacing: 0.05em;
+  }
+  footer.showcase-footer ul { list-style: none; padding-left: 0; }
+  footer.showcase-footer li { padding: 4px 0; }
+  footer.showcase-footer li::before { content: "▸ "; color: var(--showcase-accent); }
+
+  /* ===== PRINT ===== */
+  @media print {
+    @page {
+      size: A4;
+      margin: 1.5cm;
+      @bottom-left {
+        content: "Cyber Aspis — Brand-Showcase";
+        font-family: 'Space Mono', monospace;
+        font-size: 8pt;
+        color: #6b6457;
+      }
+      @bottom-center {
+        content: "Commit f772a42 · 2026-05-12";
+        font-family: 'Space Mono', monospace;
+        font-size: 8pt;
+        color: #6b6457;
+      }
+      @bottom-right {
+        content: "Seite " counter(page) " / " counter(pages);
+        font-family: 'Space Mono', monospace;
+        font-size: 8pt;
+        color: #6b6457;
+      }
+    }
+    body { background: white; }
+    .toc { display: none; }
+    .showcase-header { border-bottom: 2px solid #2d2a24; padding: 0 0 24px; }
+    section.showcase-section {
+      padding: 24px 0;
+      page-break-before: always;
+      page-break-inside: avoid;
+    }
+    section.showcase-section:first-of-type { page-break-before: avoid; }
+    .demo-a, .b-slide, .c-mock-page, .drift-side {
+      page-break-inside: avoid;
+    }
+    .swatch-grid, .drift-row { page-break-inside: avoid; }
+    details.token-table { page-break-inside: avoid; }
+    details.token-table:not([open]) summary::after {
+      content: " (Details in HTML-Version)";
+      font-size: 0.75rem;
+    }
+    /* expand details for print */
+    details.token-table { open: true; }
+    details.token-table > * { display: block !important; }
+  }
+
+  /* ===== A11Y — REDUCED MOTION ===== */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+    .demo-a .btn-primary { box-shadow: 0 0 0 transparent; }
+    .demo-a .btn-primary:hover { box-shadow: 0 0 8px rgba(224,64,251,0.3); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     HEADER
+     ============================================================ -->
+<header class="showcase-header">
+  <img src="assets/logo.png" alt="Cyber Aspis Logo">
+  <div>
+    <h1>Cyber Aspis — Brand-Showcase</h1>
+    <div class="meta">
+      Profile A · B · C &nbsp;|&nbsp; DESIGN.md v3 @ Commit f772a42 &nbsp;|&nbsp; Erstellt 2026-05-12
+    </div>
+    <div class="meta">
+      Phase 2 der Brand-Unification — Visual Inventory. Keine Design-Änderungen, nur Sichtbar-Machen.
+    </div>
+  </div>
+</header>
+
+<nav class="toc">
+  <a href="#anchor">0 · Cross-Profile Anchor</a>
+  <a href="#profile-a">A · Web</a>
+  <a href="#profile-b">B · Social-Cards</a>
+  <a href="#profile-c">C · PDF-Reports</a>
+  <a href="#drifts">D · Bekannte Drifts</a>
+  <a href="#decisions">E · Decision-Tracker</a>
+</nav>
+
+<!-- ============================================================
+     SECTION 0 — CROSS-PROFILE ANCHOR
+     ============================================================ -->
+<section class="showcase-section" id="anchor">
+  <h2>Cross-Profile Anchor</h2>
+  <p class="section-lead">
+    Cyber-Aspis hat drei eigenständige Brand-Profile, die parallel produktiv sind. Sie teilen
+    Tonalität, Logo und Tagline, divergieren aber in Fonts und Farb-Nuancen weil jede Surface
+    eigene Render- und Lese-Anforderungen hat.
+  </p>
+
+  <h3>Tonalität &amp; Sprache</h3>
+  <p style="max-width: 760px;">
+    <strong>Cyberpunk-Modern, technisch-präzise, KMU-zugänglich.</strong> Defensive Tech mit Neon-Akzenten —
+    kein Hacker-Klischee, kein Matrix-Grün, kein Skull-Logo. Vermittelt Kompetenz + Modernität ohne Bedrohlichkeit.
+  </p>
+  <p style="max-width: 760px; margin-top: 8px;">
+    <strong>Sprache:</strong> Deutsch (Sie-Form Marketing, Du-Form intern). Tech-Begriffe Englisch.
+    Tagline: <em>„IT-Sicherheit für jeden"</em>.
+  </p>
+
+  <h3>Drei Profile auf einen Blick</h3>
+  <table class="decision-tracker">
+    <thead>
+      <tr>
+        <th>Profile</th>
+        <th>Surface</th>
+        <th>Fonts</th>
+        <th>Renderer</th>
+        <th>Format</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>A</strong></td>
+        <td>Web (Landing, Web-App)</td>
+        <td>Orbitron · Exo 2 · Space Mono</td>
+        <td>Browser</td>
+        <td>responsive</td>
+      </tr>
+      <tr>
+        <td><strong>B</strong></td>
+        <td>Social-Cards (LinkedIn)</td>
+        <td>Bebas Neue · Manrope · JetBrains Mono</td>
+        <td>WeasyPrint → PNG</td>
+        <td>1080×1350</td>
+      </tr>
+      <tr>
+        <td><strong>C</strong></td>
+        <td>PDF-Reports (Audit)</td>
+        <td>Helvetica Neue · Courier New</td>
+        <td>WeasyPrint → PDF</td>
+        <td>A4</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Cross-Profile Konventionen</h3>
+  <ul style="margin-left: 20px; line-height: 2;">
+    <li>DSGVO-konform: <strong>alle Fonts lokal</strong> eingebunden, kein Google-CDN, in keiner Surface</li>
+    <li>Logo (warm-handwerklicher Stempel) <strong>bewusste Brand-Dualität</strong> zum dark-cyber-Frontend</li>
+    <li>Tagline „IT-Sicherheit für jeden" überall wo Brand-Block existiert</li>
+    <li>Deutsche Sprache, technische Begriffe Englisch</li>
+  </ul>
+</section>
+
+<!-- ============================================================
+     SECTION A — PROFILE A (WEB)
+     ============================================================ -->
+<section class="showcase-section" id="profile-a">
+  <h2>Profile A — Web</h2>
+  <p class="section-lead">
+    Source-of-Truth dieser Datei. Implementiert in <code>cyber-aspis-website/index.html</code>.
+    Dunkles Indigo-Schwarz + Cyan/Magenta-Neon-Akzente + Orbitron-Display-Font.
+  </p>
+
+  <h3>Farb-Tokens</h3>
+  <h4>Backgrounds</h4>
+  <div class="swatch-grid">
+    <div class="swatch"><div class="swatch-color" style="background:#0d0d1a"></div>
+      <div class="swatch-info"><div class="name">--bg-primary</div><div class="hex">#0d0d1a</div><div class="use">Page-BG, Hero, Services, Trust, Contact</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#12082e"></div>
+      <div class="swatch-info"><div class="name">--bg-secondary</div><div class="hex">#12082e</div><div class="use">About, Process — Sektions-Wechsel</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#1a1a35"></div>
+      <div class="swatch-info"><div class="name">--bg-card</div><div class="hex">#1a1a35</div><div class="use">Service-Cards, Feature-Boxes</div></div></div>
+  </div>
+
+  <h4>Accents (Neon)</h4>
+  <div class="swatch-grid">
+    <div class="swatch"><div class="swatch-color" style="background:#00d4ff"></div>
+      <div class="swatch-info"><div class="name">--accent-cyan</div><div class="hex">#00d4ff</div><div class="use">Hover, Sekundär-Buttons, Tech-Akzente</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#e040fb"></div>
+      <div class="swatch-info"><div class="name">--accent-magenta</div><div class="hex">#e040fb</div><div class="use">Primär-CTAs, Highlights, Kontrast</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#7b2ff7"></div>
+      <div class="swatch-info"><div class="name">--accent-purple</div><div class="hex">#7b2ff7</div><div class="use">Gradient-Mid, Glow-Effekte</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:linear-gradient(135deg,#00d4ff 0%,#7b2ff7 50%,#cc00ff 100%)"></div>
+      <div class="swatch-info"><div class="name">--gradient-wave</div><div class="hex">135deg cyan→purple→magenta</div><div class="use">Hero-Highlight, Section-Underline</div></div></div>
+  </div>
+
+  <h4>Text</h4>
+  <div class="swatch-grid">
+    <div class="swatch"><div class="swatch-color" style="background:#ffffff;border:1px solid #ddd"></div>
+      <div class="swatch-info"><div class="name">--text-primary</div><div class="hex">#ffffff</div><div class="use">Headlines, Body auf dark</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#9090b8"></div>
+      <div class="swatch-info"><div class="name">--text-muted</div><div class="hex">#9090b8</div><div class="use">Sekundär-Text, Lead, Meta</div></div></div>
+  </div>
+
+  <h3>Typografie</h3>
+
+  <div class="specimen-box demo-a">
+    <div class="specimen-meta" style="color:#9090b8">Orbitron 900 · clamp(2.2rem, 5vw, 4.6rem) · line-height 1.1 · Hero-Headline</div>
+    <div class="hero-headline">Sichtbar <span class="gradient-text">geschützt.</span></div>
+  </div>
+
+  <div class="specimen-box demo-a">
+    <div class="specimen-meta" style="color:#9090b8">Orbitron 700 · clamp(1.4rem, 3vw, 2.2rem) · letter-spacing 0.06em · Section-Title</div>
+    <div class="section-title">Unser Auditing-Verfahren</div>
+  </div>
+
+  <div class="specimen-box demo-a">
+    <div class="specimen-meta" style="color:#9090b8">Exo 2 300 · 1.1rem · letter-spacing 0.03em · Lead-Text</div>
+    <div class="lead">KMU-Quick-Checks ab €99 — strukturiert, dokumentiert, BSI-orientiert. Sicherheit ohne Komplexitätsaufschlag.</div>
+  </div>
+
+  <div class="specimen-box demo-a">
+    <div class="specimen-meta" style="color:#9090b8">Exo 2 400 · 1rem · line-height 1.6 · Body</div>
+    <div style="font-family: 'Exo 2', sans-serif;">Cyber Aspis ist ein deutsches IT-Security-Unternehmen mit Fokus auf KMU-Pentests und Compliance-Audits nach BSI-Grundschutz. Unsere Quick-Checks liefern konkret umsetzbare Findings statt 80-Seiten-PDFs.</div>
+  </div>
+
+  <div class="specimen-box demo-a">
+    <div class="specimen-meta" style="color:#9090b8">Space Mono 400 · 0.79rem · Terminal/Code</div>
+    <div style="font-family: 'Space Mono', monospace; color: #00d4ff;">$ aspis scan --target kunde.de --framework bsi-grundschutz</div>
+  </div>
+
+  <h3>Komponenten</h3>
+
+  <div class="specimen-box demo-a">
+    <div class="specimen-meta" style="color:#9090b8">Buttons</div>
+    <a href="#" class="btn-primary">Quick-Check buchen</a>
+    <a href="#" class="btn-secondary">Mehr erfahren</a>
+  </div>
+
+  <div class="specimen-box demo-a">
+    <div class="specimen-meta" style="color:#9090b8">Card + Tag</div>
+    <div style="display:flex; gap: 16px; align-items: flex-start;">
+      <div class="card-a">
+        <span class="tag-a">Quick-Check</span>
+        <h5 style="margin-top: 12px;">€99 Einstieg</h5>
+        <p style="font-family: 'Exo 2', sans-serif; color:#9090b8; font-size: 0.9rem;">5 Findings, dokumentiert, mit Roadmap.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="specimen-box demo-a">
+    <div class="specimen-meta" style="color:#9090b8">Terminal-Mockup</div>
+    <div class="terminal">
+      <div class="terminal-header">
+        <span class="terminal-dot r"></span>
+        <span class="terminal-dot y"></span>
+        <span class="terminal-dot g"></span>
+      </div>
+      <div class="terminal-body">
+        $ aspis scan --customer "müller-gmbh"<br>
+        → 47 Hosts, 3 Findings critical<br>
+        → Report unter /reports/scan_42.pdf
+      </div>
+    </div>
+  </div>
+
+  <h3>Don'ts (Profile A)</h3>
+  <div class="donts">
+    <strong>Niemals auf Profile-A-Surfaces:</strong>
+    <ul>
+      <li>Google-Fonts-CDN — DSGVO-Risiko, alle Fonts lokal in <code>assets/fonts/</code></li>
+      <li>Matrix-Grün <code>#00ff00</code> oder Hacker-Skull — verwässert Defensive-Brand</li>
+      <li>Glow-Shadows auf Body-Text — zerstört Kontrast und Lesbarkeit</li>
+      <li>Orbitron für Body oder Lead — nur Display-Font, ≤3 Worte</li>
+      <li>Cyan-auf-Magenta oder Magenta-auf-Cyan auf großen Flächen — Vibrieren, A11y-Fail</li>
+    </ul>
+  </div>
+
+  <details class="token-table">
+    <summary>Vollständige Token-Tabelle Profile A</summary>
+    <table>
+      <thead><tr><th>Token</th><th>Wert</th><th>Use-Case</th></tr></thead>
+      <tbody>
+        <tr><td>--bg-primary</td><td>#0d0d1a</td><td>Page-BG, Hero</td></tr>
+        <tr><td>--bg-secondary</td><td>#12082e</td><td>Section-Wechsel</td></tr>
+        <tr><td>--bg-card</td><td>#1a1a35</td><td>Cards</td></tr>
+        <tr><td>--text-primary</td><td>#ffffff</td><td>Body, Headlines</td></tr>
+        <tr><td>--text-muted</td><td>#9090b8</td><td>Sekundär</td></tr>
+        <tr><td>--accent-cyan</td><td>#00d4ff</td><td>Hover, Tech</td></tr>
+        <tr><td>--accent-magenta</td><td>#e040fb</td><td>Primary-CTA</td></tr>
+        <tr><td>--accent-purple</td><td>#7b2ff7</td><td>Glow-Mid</td></tr>
+        <tr><td>--font-display</td><td>Orbitron 700-900</td><td>Headlines</td></tr>
+        <tr><td>--font-body</td><td>Exo 2 100-900</td><td>Body, Buttons</td></tr>
+        <tr><td>--font-mono</td><td>Space Mono 400/700</td><td>Code, Tags</td></tr>
+        <tr><td>Section-Padding</td><td>96px 6%</td><td>Vertikal/Horizontal</td></tr>
+        <tr><td>Border-Radius Card</td><td>14px</td><td>Cards, Feature-Boxes</td></tr>
+        <tr><td>Border-Radius Button</td><td>50px</td><td>Pill-Shape</td></tr>
+        <tr><td>Glow Magenta-Medium</td><td>0 0 32px rgba(224,64,251,0.42)</td><td>Primary-Button</td></tr>
+      </tbody>
+    </table>
+  </details>
+</section>
+
+<!-- ============================================================
+     SECTION B — PROFILE B (SOCIAL-CARDS)
+     ============================================================ -->
+<section class="showcase-section" id="profile-b">
+  <h2>Profile B — Social-Cards (LinkedIn-Carousels)</h2>
+  <p class="section-lead">
+    Implementiert in <code>Claude-cowork/Cyber-Aspis/cowork-pipeline/templates/</code>. Format 1080×1350
+    LinkedIn Portrait. Bewusst eigenes System — Bebas Neue + Manrope rendern auf Social-Plattformen
+    kompakter und scannbarer als Orbitron + Exo 2.
+  </p>
+
+  <h3>Original-Carousel (4 Slides, ~⅓ Maßstab — Real-Output)</h3>
+  <p style="color: var(--showcase-meta); font-size: 0.9rem; margin-bottom: 16px;">
+    Exemplarisch: BSI-Grundschutz-Hook „80/20 für KMU". Render aus <code>slide-1.html</code> bis <code>slide-4.html</code>.
+  </p>
+
+  <div class="demo-b-carousel">
+    <!-- Slide 1 — Hook -->
+    <div class="b-slide">
+      <header class="b-header">
+        <span>$ scope --target "10mitarbeiter-kmu" --framework bsi-grundschutz</span>
+        <span class="b-counter">01 / 04</span>
+      </header>
+      <div class="b-body">
+        <div><span class="b-badge">Basis</span></div>
+        <div>
+          <div class="b-mono-label">// bsi-grundschutz-kompendium für ein 10-personen-büro</div>
+          <h1 class="b-display h1" style="margin-top: 6px;">
+            800+ Seiten.<br>
+            Für ein KMU<br>reichen <span class="b-cyan">5.</span>
+          </h1>
+        </div>
+        <div class="b-verdict">
+          <span class="icon">✓</span>
+          <span>Die meisten KMU-Findings drehen sich um <span class="hl">dieselben fünf Punkte</span>.</span>
+        </div>
+      </div>
+      <footer class="b-footer">
+        <div class="b-brand">
+          <div class="b-ca-logo">CA</div>
+          <div>
+            <div class="b-brand-title">Cyber Aspis</div>
+            <div class="b-brand-tagline">IT-Sicherheit für jeden</div>
+          </div>
+        </div>
+        <span class="b-footer-marker">WEITER →</span>
+      </footer>
+    </div>
+
+    <!-- Slide 2 — Liste -->
+    <div class="b-slide">
+      <header class="b-header">
+        <span>$ list --framework bsi --filter "10ma-kmu"</span>
+        <span class="b-counter">02 / 04</span>
+      </header>
+      <div class="b-body">
+        <h2 class="b-display h2">Die fünf,<br>die wirklich tragen.</h2>
+        <div class="b-basis-list">
+          <div class="b-basis-row"><span class="b-basis-num">[ 01 ]</span><span class="b-basis-label">MFA für Admin-Zugänge</span></div>
+          <div class="b-basis-row"><span class="b-basis-num">[ 02 ]</span><span class="b-basis-label">3-2-1-Backup mit Restore-Test</span></div>
+          <div class="b-basis-row"><span class="b-basis-num">[ 03 ]</span><span class="b-basis-label">Patch-Management mit Nachweis</span></div>
+          <div class="b-basis-row"><span class="b-basis-num">[ 04 ]</span><span class="b-basis-label">Phishing-Awareness quartalsweise</span></div>
+          <div class="b-basis-row"><span class="b-basis-num">[ 05 ]</span><span class="b-basis-label">Netzwerk-Segmentierung</span></div>
+        </div>
+      </div>
+      <footer class="b-footer">
+        <div class="b-brand">
+          <div class="b-ca-logo">CA</div>
+          <div>
+            <div class="b-brand-title">Cyber Aspis</div>
+            <div class="b-brand-tagline">IT-Sicherheit für jeden</div>
+          </div>
+        </div>
+        <span class="b-footer-marker">WEITER →</span>
+      </footer>
+    </div>
+
+    <!-- Slide 3 — Hebel -->
+    <div class="b-slide">
+      <header class="b-header">
+        <span>$ measure --effort vs --impact</span>
+        <span class="b-counter">03 / 04</span>
+      </header>
+      <div class="b-body">
+        <h2 class="b-display h2">Aufwand →<br>Wirkung.</h2>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div class="b-lever-row"><span class="b-lever-effort">1H</span><span class="b-lever-arrow">→</span><span class="b-lever-label">MFA aktiviert</span></div>
+          <div class="b-lever-row"><span class="b-lever-effort">1T</span><span class="b-lever-arrow">→</span><span class="b-lever-label">Backup-Test bestanden</span></div>
+          <div class="b-lever-row"><span class="b-lever-effort">1W</span><span class="b-lever-arrow">→</span><span class="b-lever-label">Patch-Routine etabliert</span></div>
+        </div>
+      </div>
+      <footer class="b-footer">
+        <div class="b-brand">
+          <div class="b-ca-logo">CA</div>
+          <div>
+            <div class="b-brand-title">Cyber Aspis</div>
+            <div class="b-brand-tagline">IT-Sicherheit für jeden</div>
+          </div>
+        </div>
+        <span class="b-footer-marker">WEITER →</span>
+      </footer>
+    </div>
+
+    <!-- Slide 4 — CTA -->
+    <div class="b-slide">
+      <header class="b-header">
+        <span>$ discuss --topic basis --community on</span>
+        <span class="b-counter">04 / 04</span>
+      </header>
+      <div class="b-body">
+        <div class="b-mono-label">// frage an die community</div>
+        <h2 class="b-display h2">Welcher Punkt <span class="b-cyan">fehlt</span> in deinem KMU?</h2>
+        <div class="b-cta-box">
+          <div class="b-cta-headline">Quick-Check ab €99</div>
+          <div class="b-cta-url">cyber-aspis.de</div>
+        </div>
+      </div>
+      <footer class="b-footer">
+        <div class="b-brand">
+          <div class="b-ca-logo">CA</div>
+          <div>
+            <div class="b-brand-title">Cyber Aspis</div>
+            <div class="b-brand-tagline">IT-Sicherheit für jeden</div>
+          </div>
+        </div>
+        <span class="b-footer-marker" style="border:1px solid #00d9ff; color:#00d9ff; padding:4px 8px;">ENDE</span>
+      </footer>
+    </div>
+  </div>
+
+  <h3>Farb-Tokens</h3>
+  <div class="swatch-grid">
+    <div class="swatch"><div class="swatch-color" style="background:#0a0e1a"></div>
+      <div class="swatch-info"><div class="name">--bg-deep</div><div class="hex">#0a0e1a</div><div class="use">Page-BG (tiefer als Web)</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#0f1729"></div>
+      <div class="swatch-info"><div class="name">--bg-mid</div><div class="hex">#0f1729</div><div class="use">Gradient-Endpunkt</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#00d9ff"></div>
+      <div class="swatch-info"><div class="name">--brand-cyan</div><div class="hex">#00d9ff</div><div class="use">Defensive-Akzent (vs Web #00d4ff!)</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#ff3c3c"></div>
+      <div class="swatch-info"><div class="name">--alarm-red</div><div class="hex">#ff3c3c</div><div class="use">Mythos/Warnung</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#f0f4f8"></div>
+      <div class="swatch-info"><div class="name">--text-primary</div><div class="hex">#f0f4f8</div><div class="use">Off-White (vs Web pure #fff!)</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#8b95a8"></div>
+      <div class="swatch-info"><div class="name">--text-muted</div><div class="hex">#8b95a8</div><div class="use">Sekundär</div></div></div>
+  </div>
+
+  <h3>Typografie</h3>
+  <div class="specimen-box" style="background:#0a0e1a; color:#f0f4f8;">
+    <div class="specimen-meta" style="color:#8b95a8">Bebas Neue · 138px · uppercase · Hero-Headline (Slide 1)</div>
+    <div style="font-family:'Bebas Neue', sans-serif; font-size: 96px; line-height: 1.02; text-transform: uppercase; letter-spacing: 0.005em;">
+      800+ <span style="color:#00d9ff">5.</span>
+    </div>
+  </div>
+  <div class="specimen-box" style="background:#0a0e1a; color:#f0f4f8;">
+    <div class="specimen-meta" style="color:#8b95a8">Bebas Neue · 84px · Headlines 2/3/4</div>
+    <div style="font-family:'Bebas Neue', sans-serif; font-size: 60px; line-height: 1.02; text-transform: uppercase;">Die fünf, die wirklich tragen.</div>
+  </div>
+  <div class="specimen-box" style="background:#0a0e1a; color:#f0f4f8;">
+    <div class="specimen-meta" style="color:#8b95a8">Manrope · 22px · Verdict / Subline</div>
+    <div style="font-family:'Manrope', sans-serif; font-size: 18px;">Basis-Anforderungen, die in fast jedem KMU-Quick-Check als Findings auftauchen.</div>
+  </div>
+  <div class="specimen-box" style="background:#0a0e1a; color:#f0f4f8;">
+    <div class="specimen-meta" style="color:#8b95a8">JetBrains Mono · 14px · Badges, Labels, Terminal-Cmds</div>
+    <div style="font-family:'JetBrains Mono', monospace; font-size: 12px; color: #00d9ff; letter-spacing: 0.08em;">$ scope --target "10mitarbeiter-kmu"</div>
+  </div>
+
+  <h3>Don'ts (Profile B)</h3>
+  <div class="donts">
+    <strong>Niemals auf Profile-B-Surfaces:</strong>
+    <ul>
+      <li>Orbitron oder Exo 2 (Web-Fonts) — komplett anderes Profile</li>
+      <li>Magenta <code>#e040fb</code> — Profile B nutzt Cyan oder Alarm-Red</li>
+      <li>Glow-Shadows wie Web — Carousel-Look ist matter (Border+Background-Tint statt Glow)</li>
+      <li>Über 4 Slides ohne Reason — LinkedIn-Engagement bricht ab Slide 5</li>
+    </ul>
+  </div>
+
+  <details class="token-table">
+    <summary>Vollständige Token-Tabelle Profile B</summary>
+    <table>
+      <thead><tr><th>Token</th><th>Wert</th><th>Use-Case</th></tr></thead>
+      <tbody>
+        <tr><td>--bg-deep</td><td>#0a0e1a</td><td>Page-BG</td></tr>
+        <tr><td>--bg-mid</td><td>#0f1729</td><td>Gradient-End</td></tr>
+        <tr><td>--brand-cyan</td><td>#00d9ff</td><td>Defensive-Akzent</td></tr>
+        <tr><td>--brand-cyan-d</td><td>#00a8c4</td><td>dunklere Variante</td></tr>
+        <tr><td>--alarm-red</td><td>#ff3c3c</td><td>Mythos/Warning</td></tr>
+        <tr><td>--alarm-red-d</td><td>#c92a2a</td><td>dunklere Variante</td></tr>
+        <tr><td>--text-primary</td><td>#f0f4f8</td><td>Headlines, Body</td></tr>
+        <tr><td>--text-muted</td><td>#8b95a8</td><td>Sekundär</td></tr>
+        <tr><td>--text-subtle</td><td>#4a5568</td><td>Tertiär, Counter</td></tr>
+        <tr><td>Slide-Format</td><td>1080×1350</td><td>LinkedIn Portrait</td></tr>
+        <tr><td>Padding außen</td><td>72px 80px</td><td>Slide-Margins</td></tr>
+        <tr><td>Grid-Overlay</td><td>50px Cyan-Lines 4% Opacity</td><td>Signature-Element</td></tr>
+        <tr><td>Display-Headline 1</td><td>Bebas Neue 138px</td><td>Hook (Slide 1)</td></tr>
+        <tr><td>Display-Headline 2-4</td><td>Bebas Neue 84px</td><td>Slide 2/3/4</td></tr>
+        <tr><td>Body</td><td>Manrope 20-22px</td><td>Subline/Verdict</td></tr>
+        <tr><td>Mono-Labels</td><td>JetBrains Mono 11-16px</td><td>Header-Cmd, Badges</td></tr>
+      </tbody>
+    </table>
+  </details>
+</section>
+
+<!-- ============================================================
+     SECTION C — PROFILE C (PDF-REPORTS)
+     ============================================================ -->
+<section class="showcase-section" id="profile-c">
+  <h2>Profile C — PDF-Reports (Audit-Output)</h2>
+  <p class="section-lead">
+    Implementiert in <code>Cyber-Aspis/toolkit/backend/templates/report_*.html.j2</code>. WeasyPrint
+    rendert Jinja2-Templates zu A4-PDF. Print-optimiert — Helvetica Neue + Light-Theme weil Reports
+    an Steuerberater/Anwälte/KMU-Geschäftsführer gehen, die keinen Cyberpunk-Look erwarten.
+  </p>
+
+  <h3>Sub-Variant C1 — Quick-Check Report (€99-299)</h3>
+  <p style="color: var(--showcase-meta); font-size: 0.92rem; margin-bottom: 12px;">
+    KMU-Format, 3-stufige Severity, kompakt-lesbar. Hand-gemockt mit Beispieldaten.
+  </p>
+
+  <div class="c-mock-page c1">
+    <div class="c1-header">
+      <div>
+        <div class="c1-brand">Cyber<span> Aspis</span></div>
+        <div style="font-size: 9pt; color: #6b7280;">IT-Security für KMU</div>
+      </div>
+      <div class="c1-meta">
+        Kunde: Müller GmbH<br>
+        Berichts-Nr: QC-2026-042<br>
+        Datum: 2026-05-12
+      </div>
+    </div>
+    <div class="c1-title-block">
+      <h1>Security Quick-Check Report</h1>
+      <p>Scope: kunde-domain.de + 2 Subdomains · Methodik: BSI-Grundschutz Basis-Anforderungen</p>
+    </div>
+    <h2>Befund-Übersicht</h2>
+    <div class="c1-summary-grid">
+      <div class="c1-box high"><div class="count">2</div><div class="label">High</div></div>
+      <div class="c1-box medium"><div class="count">5</div><div class="label">Medium</div></div>
+      <div class="c1-box low"><div class="count">3</div><div class="label">Low</div></div>
+      <div class="c1-box total"><div class="count">10</div><div class="label">Gesamt</div></div>
+    </div>
+    <h2>Empfehlungen (Auszug)</h2>
+    <div class="c1-rec">
+      <span class="c1-badge high">High</span> &nbsp;<strong>MFA für Admin-Zugänge aktivieren.</strong> Aktuell loggt sich der Admin-Account nur per Passwort ein — Brute-Force-Risiko.
+    </div>
+    <div class="c1-rec" style="border-left-color: #f59e0b; background: #fffbeb;">
+      <span class="c1-badge medium">Medium</span> &nbsp;<strong>TLS-Konfiguration härten.</strong> Server unterstützt TLS 1.0/1.1 — sollte auf 1.2+ beschränkt werden.
+    </div>
+  </div>
+
+  <h3>Sub-Variant C2 — Professional Report (€500+)</h3>
+  <p style="color: var(--showcase-meta); font-size: 0.92rem; margin-bottom: 12px;">
+    Größere Engagements, Cover-Page dark + Indigo, 5-stufige Severity (Critical + Info zusätzlich).
+  </p>
+
+  <!-- C2 Cover -->
+  <div class="c-mock-page c2-cover c2" style="padding: 0;">
+    <div style="padding: 60px 56px;">
+      <div class="logo">Cyber<span> Aspis</span></div>
+      <div class="tagline">IT-Security · KMU-Audits · BSI-Grundschutz</div>
+      <div class="title">Vulnerability Assessment Report</div>
+      <div class="subtitle">Müller GmbH · Q2/2026</div>
+      <hr>
+      <div class="meta-grid">
+        <div>
+          <div class="meta-label">Berichts-Nr.</div>
+          <div class="meta-value">VA-2026-007</div>
+        </div>
+        <div>
+          <div class="meta-label">Erstellt</div>
+          <div class="meta-value">12. Mai 2026</div>
+        </div>
+        <div>
+          <div class="meta-label">Auditor</div>
+          <div class="meta-value">Georg Papagiannis</div>
+        </div>
+        <div>
+          <div class="meta-label">Methodik</div>
+          <div class="meta-value">PTES + BSI-Grundschutz</div>
+        </div>
+      </div>
+      <div class="footer">
+        Vertraulich · nur für interne Verwendung beim Auftraggeber.<br>
+        Cyber Aspis IT-Security · cyber-aspis.de · kontakt@cyber-aspis.de
+      </div>
+    </div>
+  </div>
+
+  <!-- C2 Content (severity) -->
+  <div class="c-mock-page c2">
+    <h2>Befund-Übersicht (5-stufig)</h2>
+    <div class="c2-sev-grid">
+      <div class="c2-sev-box critical"><div class="num">1</div><div class="lbl">Critical</div></div>
+      <div class="c2-sev-box high"><div class="num">3</div><div class="lbl">High</div></div>
+      <div class="c2-sev-box medium"><div class="num">7</div><div class="lbl">Medium</div></div>
+      <div class="c2-sev-box low"><div class="num">5</div><div class="lbl">Low</div></div>
+      <div class="c2-sev-box info"><div class="num">12</div><div class="lbl">Info</div></div>
+      <div class="c2-sev-box total"><div class="num">28</div><div class="lbl">Gesamt</div></div>
+    </div>
+  </div>
+
+  <h3>Profile-C Jinja2-Quellen</h3>
+  <p style="color: var(--showcase-meta); font-size: 0.92rem; margin-bottom: 12px;">
+    Auszug aus <code>reports/templates/report_quick_check.html.j2</code> (Source-of-Truth gespiegelt aus Toolkit-Repo).
+    Templates rendern nicht im Browser — daher Source-Auszug + Mock-Render oben.
+  </p>
+  <div class="jinja-source">
+<span class="j-comment">{# Quick-Check Report Header #}</span>
+&lt;div class="header"&gt;
+  &lt;div class="brand"&gt;Cyber&lt;span&gt; Aspis&lt;/span&gt;&lt;/div&gt;
+  &lt;div class="meta"&gt;
+    Kunde: <span class="j-var">{{ customer.name }}</span>&lt;br&gt;
+    Berichts-Nr: <span class="j-var">{{ report.number }}</span>&lt;br&gt;
+    Datum: <span class="j-var">{{ report.date|format_date }}</span>
+  &lt;/div&gt;
+&lt;/div&gt;
+
+<span class="j-comment">{# Severity-Summary mit 3-stufiger Skala #}</span>
+<span class="j-stmt">{% for sev in</span> ['high', 'medium', 'low'] <span class="j-stmt">%}</span>
+  &lt;div class="summary-box box-<span class="j-var">{{ sev }}</span>"&gt;
+    &lt;div class="count"&gt;<span class="j-var">{{ counts[sev] }}</span>&lt;/div&gt;
+    &lt;div class="label"&gt;<span class="j-var">{{ sev|capitalize }}</span>&lt;/div&gt;
+  &lt;/div&gt;
+<span class="j-stmt">{% endfor %}</span>
+  </div>
+
+  <h3>Don'ts (Profile C)</h3>
+  <div class="donts">
+    <strong>Niemals auf Profile-C-Surfaces:</strong>
+    <ul>
+      <li>Cyan/Magenta-Neon — wirkt unprofessionell auf Audit-Reports</li>
+      <li>Orbitron oder Bebas Neue — Display-Fonts auf Print-Body unleserlich</li>
+      <li>Glow-Shadows — auf Print kein Effekt, nur Druckkosten</li>
+      <li>Severity-Farben mischen zwischen C1 (3-stufig) und C2 (5-stufig) — pro Report-Typ konsistent</li>
+    </ul>
+  </div>
+
+  <details class="token-table">
+    <summary>Vollständige Token-Tabelle Profile C (C1 + C2)</summary>
+    <table>
+      <thead><tr><th>Variant</th><th>Token</th><th>Wert</th><th>Use-Case</th></tr></thead>
+      <tbody>
+        <tr><td>C1</td><td>--brand-navy</td><td>#1e3a5f</td><td>Primary, Header-Underline</td></tr>
+        <tr><td>C1</td><td>--brand-purple</td><td>#7c3aed</td><td>Akzent, h2-Border-Left</td></tr>
+        <tr><td>C1</td><td>--sev-high</td><td>#dc2626</td><td>High-Severity</td></tr>
+        <tr><td>C1</td><td>--sev-medium</td><td>#d97706</td><td>Medium-Severity</td></tr>
+        <tr><td>C1</td><td>--sev-low</td><td>#059669</td><td>Low-Severity</td></tr>
+        <tr><td>C2</td><td>--cover-bg</td><td>#0f172a</td><td>Cover dark</td></tr>
+        <tr><td>C2</td><td>--brand-indigo</td><td>#818cf8</td><td>Primary-Akzent</td></tr>
+        <tr><td>C2</td><td>--sev-critical</td><td>#7c3aed</td><td>Critical (zusätzlich zu C1)</td></tr>
+        <tr><td>C2</td><td>--sev-info</td><td>#2563eb</td><td>Info (zusätzlich zu C1)</td></tr>
+        <tr><td>Beide</td><td>Font</td><td>Helvetica Neue, Arial</td><td>Body</td></tr>
+        <tr><td>Beide</td><td>Mono</td><td>Courier New</td><td>CVSS-Werte</td></tr>
+        <tr><td>Beide</td><td>Format</td><td>A4</td><td>210×297mm</td></tr>
+      </tbody>
+    </table>
+  </details>
+</section>
+
+<!-- ============================================================
+     SECTION D — BEKANNTE DRIFTS
+     ============================================================ -->
+<section class="showcase-section" id="drifts">
+  <h2>Bekannte Drifts (für Phase-4-Diskussion)</h2>
+  <p class="section-lead">
+    Drei Drifts wurden bei der Inventur entdeckt. Diese Sektion zeigt sie pixel-an-pixel —
+    der Owner entscheidet in Phase 4 ob harmonisieren, akzeptieren oder dokumentiert dulden.
+  </p>
+
+  <!-- Drift 1: Cyan -->
+  <h3>Drift 1 — Cyan-Wert: Profile A #00d4ff vs Profile B #00d9ff</h3>
+  <div class="drift-row">
+    <div class="drift-side">
+      <h5>Profile A · Web</h5>
+      <div class="drift-demo" style="background:#0d0d1a">
+        <span style="color:#00d4ff; font-family:'Orbitron'; font-size: 2rem; font-weight: 900;">#00d4ff</span>
+      </div>
+      <div class="meta">cyber-aspis-website/index.html · --accent-cyan</div>
+    </div>
+    <div class="drift-side">
+      <h5>Profile B · Social</h5>
+      <div class="drift-demo" style="background:#0a0e1a">
+        <span style="color:#00d9ff; font-family:'Bebas Neue'; font-size: 2rem;">#00d9ff</span>
+      </div>
+      <div class="meta">cowork-pipeline/templates/base.css · --brand-cyan</div>
+    </div>
+  </div>
+  <div class="drift-verdict">
+    <strong>Delta:</strong> +2% Helligkeit auf Profile B. <strong>Plausibel als bewusste Anpassung:</strong>
+    Profile B hat tieferes BG (#0a0e1a vs #0d0d1a), Cyan wirkt dort blasser — heller Wert kompensiert.
+    <strong>Vorschlag:</strong> „akzeptierter Drift — Render-Optimierung Print/PDF" ODER auf gemeinsamen Wert
+    einigen (Owner-Entscheidung in Section E).
+  </div>
+
+  <!-- Drift 2: Text-Primary -->
+  <h3>Drift 2 — Text-Primary: Profile A #ffffff vs Profile B #f0f4f8</h3>
+  <div class="drift-row">
+    <div class="drift-side">
+      <h5>Profile A · Web</h5>
+      <div class="drift-demo" style="background:#0d0d1a">
+        <span style="color:#ffffff; font-family:'Exo 2'; font-size: 1.4rem;">Pure White #ffffff</span>
+      </div>
+      <div class="meta">--text-primary</div>
+    </div>
+    <div class="drift-side">
+      <h5>Profile B · Social</h5>
+      <div class="drift-demo" style="background:#0a0e1a">
+        <span style="color:#f0f4f8; font-family:'Manrope'; font-size: 1.4rem;">Off-White #f0f4f8</span>
+      </div>
+      <div class="meta">--text-primary</div>
+    </div>
+  </div>
+  <div class="drift-verdict">
+    <strong>Delta:</strong> Profile B vermeidet pures Weiß zugunsten von „soft white". <strong>Plausibel:</strong>
+    Print- und Social-Card-Best-Practice — pures #fff auf dunklem BG produziert harte Kanten + Augen-Ermüdung
+    beim Carousel-Swipe. Browser-Subpixel-AA macht das auf Web-Profile irrelevant. <strong>Vorschlag:</strong>
+    „surface-spezifisch optimiert — kein Harmonisierungs-Bedarf".
+  </div>
+
+  <!-- Drift 3: Severity-Skala -->
+  <h3>Drift 3 — Severity-Skala: C1 3-stufig vs C2 5-stufig</h3>
+  <div class="drift-row">
+    <div class="drift-side">
+      <h5>Profile C1 · Quick-Check</h5>
+      <div class="drift-demo" style="background:white; flex-direction:column; gap: 8px; padding: 16px;">
+        <span class="c1-badge high" style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:9pt;font-weight:600;background:#fef2f2;color:#dc2626;border:1px solid #fca5a5;text-transform:uppercase;font-family:'Helvetica Neue'">High</span>
+        <span class="c1-badge medium" style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:9pt;font-weight:600;background:#fffbeb;color:#d97706;border:1px solid #fcd34d;text-transform:uppercase;font-family:'Helvetica Neue'">Medium</span>
+        <span class="c1-badge low" style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:9pt;font-weight:600;background:#ecfdf5;color:#059669;border:1px solid #6ee7b7;text-transform:uppercase;font-family:'Helvetica Neue'">Low</span>
+      </div>
+      <div class="meta">3 Stufen — €99-299 KMU-Format</div>
+    </div>
+    <div class="drift-side">
+      <h5>Profile C2 · Professional</h5>
+      <div class="drift-demo" style="background:white; flex-direction:column; gap: 6px; padding: 16px;">
+        <span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:9pt;font-weight:600;background:#f5f3ff;color:#7c3aed;border:1px solid #a78bfa;text-transform:uppercase;font-family:'Helvetica Neue'">Critical</span>
+        <span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:9pt;font-weight:600;background:#fef2f2;color:#dc2626;border:1px solid #fca5a5;text-transform:uppercase;font-family:'Helvetica Neue'">High</span>
+        <span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:9pt;font-weight:600;background:#fffbeb;color:#d97706;border:1px solid #fcd34d;text-transform:uppercase;font-family:'Helvetica Neue'">Medium</span>
+        <span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:9pt;font-weight:600;background:#ecfdf5;color:#059669;border:1px solid #6ee7b7;text-transform:uppercase;font-family:'Helvetica Neue'">Low</span>
+        <span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:9pt;font-weight:600;background:#eff6ff;color:#2563eb;border:1px solid #93c5fd;text-transform:uppercase;font-family:'Helvetica Neue'">Info</span>
+      </div>
+      <div class="meta">5 Stufen — €500+ Audit-Format mit CVSS</div>
+    </div>
+  </div>
+  <div class="drift-verdict">
+    <strong>Delta:</strong> Zwei zusätzliche Stufen auf C2 (Critical + Info). <strong>Bewusst zwei Produkte —
+    NICHT harmonisieren:</strong> KMU-Geschäftsführer kommt mit „high/medium/low" klar; Critical+Info wären
+    Lärm. Audit-Engagements brauchen Critical für CVSS-Mapping und Info für Documentation-Vollständigkeit.
+    <strong>Vorschlag:</strong> „kein Drift — zwei Information-Density-Layer für unterschiedliche Zielgruppen".
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION E — DECISION-TRACKER
+     ============================================================ -->
+<section class="showcase-section" id="decisions">
+  <h2>Phase-4 Decision-Tracker</h2>
+  <p class="section-lead">
+    Wird vom Owner in der Review-Runde ausgefüllt. Status: <code>offen</code> · <code>akzeptiert</code> ·
+    <code>harmonisieren</code> · <code>verworfen</code>.
+  </p>
+
+  <table class="decision-tracker">
+    <thead>
+      <tr>
+        <th>Drift</th>
+        <th>Aktueller Stand</th>
+        <th>Owner-Entscheidung</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Cyan-Wert A vs B</td>
+        <td>#00d4ff vs #00d9ff</td>
+        <td class="empty">— offen —</td>
+        <td class="empty">offen</td>
+      </tr>
+      <tr>
+        <td>Text-Primary A vs B</td>
+        <td>#ffffff vs #f0f4f8</td>
+        <td class="empty">— offen —</td>
+        <td class="empty">offen</td>
+      </tr>
+      <tr>
+        <td>Severity C1 vs C2</td>
+        <td>3-stufig vs 5-stufig</td>
+        <td class="empty">— offen —</td>
+        <td class="empty">offen</td>
+      </tr>
+      <tr>
+        <td>Logo Dark-Mode</td>
+        <td>Stempel warm vs Frontend dark</td>
+        <td class="empty">— offen —</td>
+        <td class="empty">offen</td>
+      </tr>
+      <tr>
+        <td>Logo Header-Größe</td>
+        <td>42×42px tot bei Stempel-Textur</td>
+        <td class="empty">— offen —</td>
+        <td class="empty">offen</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="showcase-footer">
+  <h3>Open TODOs für Implementations</h3>
+  <ul>
+    <li><strong>Profile A</strong> · <code>prefers-reduced-motion</code>-Fallback in <code>index.html</code> einbauen (steht nur in Showcase, nicht in Live-Site)</li>
+    <li><strong>Profile A</strong> · Dark-Mode-Logo-Variante: bewusst NICHT erstellt (Brand-Dualität-Entscheidung Phase 1)</li>
+    <li><strong>Profile A</strong> · Header-Logo-Skalierung 42×42px → Reduced-Mark-SVG anlegen (Aspis-Schild ohne Kreissigel)</li>
+    <li><strong>Profile B</strong> · Slide-5+ wenn Storyline länger ist — eigene Template-Erweiterung nötig</li>
+    <li><strong>Profile C</strong> · <code>report_interim.html.j2</code> + <code>report_final.html.j2</code> ausführlich dokumentieren (C-Familie nicht detailliert in DESIGN.md)</li>
+    <li><strong>Profile C</strong> · Toolkit-Frontend Tailwind-Config auf Profile-A-Tokens mappen (Phase 2 später)</li>
+    <li><strong>Cross-Profile</strong> · Reduced-Mark-SVG anlegen als <code>assets/logo-mark.svg</code> für Header/Favicon ≤64px</li>
+  </ul>
+
+  <div style="margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--showcase-rule);">
+    Cyber Aspis · IT-Security für KMU · cyber-aspis.de<br>
+    Diese Showcase: <code>brand.html</code> @ Commit f772a42 · Generiert 2026-05-12 · DESIGN.md v3
+  </div>
+</footer>
+
+</body>
+</html>
