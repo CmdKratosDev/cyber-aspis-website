@@ -18,3 +18,19 @@ Thumbs.db
 package.json
 package-lock.json
 node_modules/
+.brand-bakeoff/
+
+# Interne Coordination-/Strategie-/Design-Docs — NICHT ins Public-Repo
+findings.md
+tech-decisions.md
+tech-debt.md
+DESIGN.md
+PROJECT-STATUS.md
+AUDIT-*.md
+ANALYTICS-DEPLOY-RUNBOOK.md
+BLOG-KONZEPT.md
+WEBSITE-WORKPACKAGE.md
+services-content.md
+
+# Interne Content-Drafts (Social-Post-Stubs) — nur polierte /lernen-Inhalte bleiben public
+content/lernen/*-linkedin-stub-*.md
