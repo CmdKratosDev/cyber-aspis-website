@@ -1159,7 +1159,7 @@
             verständlich erklärt, schnell umgesetzt, fair berechnet.
         </p>
         <div class="hero-ctas">
-            <a href="mailto:kontakt@cyber-aspis.de?subject=Kostenloses%20Erstgespräch" class="btn-primary">
+            <a href="mailto:kontakt@cyber-aspis.de?subject=Kostenloses%20Erstgespräch" class="btn-primary" data-goatcounter-click="hero-erstgespraech">
                 Kostenloses Erstgespräch →
             </a>
             <a href="#services" class="btn-secondary">
@@ -1258,7 +1258,7 @@
                     <li>PDF-Report + Review-Call</li>
                 </ul>
                 <span class="card-price">299 € Pauschal</span>
-                <a class="card-link" href="#contact">Jetzt anfragen →</a>
+                <a class="card-link" href="#contact" data-goatcounter-click="cta-jetzt-anfragen">Jetzt anfragen →</a>
             </div>
         </div>
 
@@ -1372,7 +1372,7 @@
                 <span class="bundle-price">599 €</span>
                 <span class="bundle-savings">Sie sparen 199 €</span>
             </div>
-            <a href="#contact" class="bundle-cta" onclick="prefillService('Security Starter Bundle')">
+            <a href="#contact" class="bundle-cta" data-goatcounter-click="bundle-starter" onclick="prefillService('Security Starter Bundle')">
                 Paket anfragen →
             </a>
         </div>
@@ -1396,7 +1396,7 @@
                 <span class="bundle-price">ab 1.190 €</span>
                 <span class="bundle-savings">Sie sparen 299 €</span>
             </div>
-            <a href="#contact" class="bundle-cta" onclick="prefillService('KMU Shield Bundle')">
+            <a href="#contact" class="bundle-cta" data-goatcounter-click="bundle-kmu-shield" onclick="prefillService('KMU Shield Bundle')">
                 Paket anfragen →
             </a>
         </div>
@@ -1419,7 +1419,7 @@
                 <span class="bundle-price">ab 1.390 € + 179 €/Mo</span>
                 <span class="bundle-savings">Sie sparen 450 €</span>
             </div>
-            <a href="#contact" class="bundle-cta" onclick="prefillService('Full Protect Bundle')">
+            <a href="#contact" class="bundle-cta" data-goatcounter-click="bundle-full-protect" onclick="prefillService('Full Protect Bundle')">
                 Paket anfragen →
             </a>
         </div>
@@ -1612,11 +1612,11 @@
             <div class="contact-list">
                 <div>
                     <span class="contact-lbl">Telefon</span>
-                    <a href="tel:+4951156356965" class="contact-val">+49 511 56356965</a>
+                    <a href="tel:+4951156356965" class="contact-val" data-goatcounter-click="kontakt-telefon">+49 511 56356965</a>
                 </div>
                 <div>
                     <span class="contact-lbl">E-Mail</span>
-                    <a href="mailto:kontakt@cyber-aspis.de" class="contact-val">kontakt@cyber-aspis.de</a>
+                    <a href="mailto:kontakt@cyber-aspis.de" class="contact-val" data-goatcounter-click="kontakt-mail">kontakt@cyber-aspis.de</a>
                 </div>
                 <div>
                     <span class="contact-lbl">Social</span>
@@ -1973,6 +1973,9 @@
             .then(function (res) {
                 if (!res.ok) throw new Error('HTTP ' + res.status);
                 showStatus('success', '✓ Ihre Anfrage wurde erfolgreich übermittelt! Ich melde mich innerhalb von 24 Stunden.');
+                if (window.goatcounter && window.goatcounter.count) {
+                    window.goatcounter.count({ path: 'kontakt-formular-gesendet', title: 'Kontaktformular abgeschickt', event: true });
+                }
                 form.reset();
             })
             .catch(function () {
