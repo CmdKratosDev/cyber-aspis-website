@@ -1086,6 +1086,9 @@
             }
         }
     </style>
+    <!-- Analytics: self-hosted GoatCounter (cookielos, DSGVO-konform, kein Drittanbieter-CDN) -->
+    <script data-goatcounter="https://stats.cyber-aspis.de/count"
+            async src="https://stats.cyber-aspis.de/count.js"></script>
 </head>
 <body>
 
@@ -1203,8 +1206,12 @@
             <p class="about-label">Über uns</p>
             <h2 class="about-heading">Über Cyber Aspis<br>IT-Security</h2>
             <p class="about-body">
-                Wir bieten umfassende IT-Sicherheitsdienstleistungen für Privatpersonen
-                und kleine Unternehmen. Von der Schwachstellenanalyse über Malware-Scans
+                Cyber Aspis wird von Georgios Papagiannis geführt, der aus der physischen
+                Sicherheitstechnik kommt. Wer jahrelang Brand- und Einbruchmeldeanlagen
+                absichert, denkt Sicherheit vom Zutritt bis ins Netzwerk. Genau diesen Blick
+                bringt Cyber Aspis in die IT-Sicherheit für den Mittelstand.<br><br>
+                Wir bieten umfassende IT-Sicherheitsdienstleistungen für kleine und
+                mittlere Unternehmen. Von der Schwachstellenanalyse über Malware-Scans
                 bis hin zur Backup-Strategie – unser Ziel ist es, Ihre digitale Sicherheit
                 zu stärken und Sie vor modernen Cyber-Bedrohungen zu schützen.<br><br>
                 Maßgeschneiderte Lösungen, klare Berichte, persönlicher Ansprechpartner.
@@ -1317,7 +1324,6 @@
                     <li>Umsetzungs-Roadmap</li>
                 </ul>
                 <span class="card-price">95 €/Stunde</span>
-                <a class="card-link" href="services/compliance-audit.html">Mehr erfahren →</a>
             </div>
         </div>
 
@@ -1606,8 +1612,7 @@
             <div class="contact-list">
                 <div>
                     <span class="contact-lbl">Telefon</span>
-                    <!-- TODO: Echte Telefonnummer eintragen -->
-                    <span class="contact-val">[Telefonnummer folgt]</span>
+                    <a href="tel:+4951156356965" class="contact-val">+49 511 56356965</a>
                 </div>
                 <div>
                     <span class="contact-lbl">E-Mail</span>
@@ -1710,17 +1715,15 @@
         </p>
         <p>
             <strong>Kontakt</strong><br>
-            <!-- TODO: Telefonnummer eintragen sobald vorhanden -->
-            Telefon: [wird ergänzt]<br>
+            Telefon: <a href="tel:+4951156356965">+49 511 56356965</a><br>
             E-Mail: <a href="mailto:kontakt@cyber-aspis.de">kontakt@cyber-aspis.de</a>
         </p>
         <p>
-            <strong>Umsatzsteuer-Identifikationsnummer</strong><br>
-            <!-- TODO: USt-IdNr. nach Gewerbeanmeldung eintragen (falls vorhanden) -->
-            [USt-IdNr. nach Gewerbeanmeldung]
+            <strong>Umsatzsteuer</strong><br>
+            Kleinunternehmer gemäß § 19 UStG, daher kein Ausweis der Umsatzsteuer und keine Umsatzsteuer-Identifikationsnummer.
         </p>
         <p>
-            <strong>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</strong><br>
+            <strong>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</strong><br>
             Georgios Papagiannis (Anschrift wie oben)
         </p>
     </div>
@@ -1731,7 +1734,7 @@
     <div class="modal-box">
         <button class="modal-close" onclick="closeModal('modal-agb')">✕</button>
         <h2>Allgemeine Geschäftsbedingungen</h2>
-        <p style="color: var(--text-muted); font-size: 0.85rem;">Cyber Aspis IT-Security · Georgios Papagiannis · Stand: März 2026</p>
+        <p style="color: var(--text-muted); font-size: 0.85rem;">Cyber Aspis IT-Security · Georgios Papagiannis · Stand: Juli 2026</p>
 
         <h3>§ 1 Geltungsbereich</h3>
         <p>(1) Diese AGB gelten für alle Verträge zwischen Cyber Aspis IT-Security, Georgios Papagiannis, Peinerstraße 77, 30519 Hannover (nachfolgend „Auftragnehmer") und seinen Kunden (nachfolgend „Auftraggeber") über die Erbringung von IT-Sicherheitsdienstleistungen.</p>
@@ -1775,7 +1778,7 @@
         <p>Es gilt deutsches Recht. Gerichtsstand ist Hannover. Sollten einzelne Bestimmungen unwirksam sein, bleibt die Wirksamkeit der übrigen Bestimmungen unberührt.</p>
 
         <p style="margin-top:1.5rem; color: var(--text-muted); font-size: 0.85rem;">
-            <em>Stand: März 2026 · Version 1.0</em>
+            <em>Stand: Juli 2026 · Version 1.0</em>
         </p>
     </div>
 </div>
@@ -1793,7 +1796,7 @@
 
         <p><strong>2. Erhebung und Verarbeitung personenbezogener Daten</strong></p>
         <p>
-            Diese Website erhebt keine personenbezogenen Daten über Tracking-Dienste, Cookies oder eingebettete Drittanbieter-Inhalte.
+            Diese Website setzt keine Tracking-Cookies und bindet keine werblichen Drittanbieter-Inhalte ein. Zur anonymen Reichweitenmessung wird eine selbst gehostete, cookielose Analytics-Lösung eingesetzt (GoatCounter, siehe Punkt 6).
             Alle Schriftarten (Fonts) werden lokal vom eigenen Server ausgeliefert — es findet keine Verbindung zu Google-Servern statt.
             Mit Ausnahme der unter Punkt 7 beschriebenen API-Aufrufe für den Threat-Intelligence-Feed werden keine Daten an Dritte übermittelt.
         </p>
@@ -1817,9 +1820,18 @@
             Beschwerden können Sie bei der zuständigen Datenschutzbehörde einreichen.
         </p>
 
-        <p><strong>6. Keine Cookies, kein Tracking</strong></p>
+        <p><strong>6. Reichweitenmessung (GoatCounter, cookielos, selbst gehostet)</strong></p>
         <p>
-            Diese Website verwendet keine Tracking-Cookies. Der einzige im Browser gespeicherte Wert ist ein lokales Flag (<code>ca-banner-closed</code> im localStorage), das Ihre Einstellung zum Info-Banner speichert. Es enthält keine personenbezogenen Daten.
+            Zur anonymen Reichweitenmessung nutzt diese Website <strong>GoatCounter</strong>, eine quelloffene Analytics-Software, die auf einem eigenen Server unter <code>stats.cyber-aspis.de</code> betrieben wird. Es findet keine Datenübertragung an Dritte oder ins Ausland statt.
+        </p>
+        <p>
+            GoatCounter verwendet <strong>keine Cookies</strong> und speichert keine dauerhafte, personenbezogene Kennung. Zur Unterscheidung von Aufrufen innerhalb einer Sitzung wird im Arbeitsspeicher aus Website-Kennung, Browser-Kennung (User-Agent) und IP-Adresse eine zufällige, nicht zurückrechenbare Kennung erzeugt. IP-Adresse und User-Agent werden dabei <strong>zu keinem Zeitpunkt dauerhaft gespeichert</strong>, die Zuordnung wird nach 8 Stunden verworfen. Gespeichert werden ausschließlich anonyme Aggregatdaten: aufgerufene Seite, Referrer, Browsertyp, ungefährer Standort (Land, aus der IP abgeleitet) und Bildschirmgröße.
+        </p>
+        <p>
+            Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einer datensparsamen, anonymen Reichweitenmessung ohne Personenbezug). Da keine personenbezogenen Daten gespeichert werden, ist eine Einwilligung nicht erforderlich.
+        </p>
+        <p>
+            Darüber hinaus verwendet diese Website keine Tracking-Cookies. Der einzige im Browser gespeicherte Wert ist ein lokales Flag (<code>ca-banner-closed</code> im localStorage), das Ihre Einstellung zum Info-Banner speichert. Es enthält keine personenbezogenen Daten.
         </p>
 
         <p><strong>7. Externe API-Aufrufe – Threat Intelligence Feed</strong></p>
@@ -1855,7 +1867,7 @@
         </p>
 
         <p style="margin-top:1.5rem; color: var(--text-muted); font-size: 0.85rem;">
-            <em>Stand: März 2026 · Diese Datenschutzerklärung wird vor Go-Live finalisiert.</em>
+            <em>Stand: Juli 2026</em>
         </p>
     </div>
 </div>
