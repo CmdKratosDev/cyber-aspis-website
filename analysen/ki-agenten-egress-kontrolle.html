@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
 <meta name="description" content="Empirische Laboruntersuchung einer zweistufigen Egress-Kontrolle für lokale KI-Agenten gegen Datenexfiltration und Prompt-Injection - Cyber Aspis AI-Security-Lab.">
 <meta name="author" content="Georgios Papagiannis">
 <title>Laborbericht: Zweistufige Egress-Kontrolle für lokale KI-Agenten | Cyber Aspis</title>
@@ -20,7 +21,7 @@
     --figpanel: #f5f3ee;
     --figborder: #d8d3c7;
   }
-  @media (prefers-color-scheme: dark) {
+  @media not all { /* Dark-Mode bewusst aus: Report = helle Lese-Oberflaeche */
     :root {
       --paper:   #1b1917;
       --surface: #24211d;
