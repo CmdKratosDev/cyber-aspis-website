@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Empirische Laboruntersuchung einer zweistufigen Egress-Kontrolle für lokale KI-Agenten gegen Datenexfiltration und Prompt-Injection - Cyber Aspis AI-Security-Lab.">
+<meta name="author" content="Georgios Papagiannis">
+<title>Laborbericht: Zweistufige Egress-Kontrolle für lokale KI-Agenten | Cyber Aspis</title>
+<style>
+  :root {
+    --paper:   #f5f3ee;
+    --surface: #ffffff;
+    --ink:     #2d2a24;
+    --muted:   #6b6457;
+    --rule:    #d8d3c7;
+    --accent:  #5a4a3a;
+    --link:    #00586a;
+    --ok:      #2f6d5b;
+    --warn:    #a24b2f;
+    --figpanel: #f5f3ee;
+    --figborder: #d8d3c7;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper:   #1b1917;
+      --surface: #24211d;
+      --ink:     #ece7dd;
+      --muted:   #a89f8f;
+      --rule:    #38332c;
+      --accent:  #cba883;
+      --link:    #64b9cf;
+      --ok:      #74c2a8;
+      --warn:    #e2926f;
+    }
+  }
+  :root[data-theme="light"] {
+    --paper:#f5f3ee; --surface:#ffffff; --ink:#2d2a24; --muted:#6b6457; --rule:#d8d3c7;
+    --accent:#5a4a3a; --link:#00586a; --ok:#2f6d5b; --warn:#a24b2f;
+  }
+  :root[data-theme="dark"] {
+    --paper:#1b1917; --surface:#24211d; --ink:#ece7dd; --muted:#a89f8f; --rule:#38332c;
+    --accent:#cba883; --link:#64b9cf; --ok:#74c2a8; --warn:#e2926f;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: Georgia, 'Times New Roman', serif;
+    line-height: 1.6; -webkit-text-size-adjust: 100%;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 20px 64px; }
+
+  h1, h2, h3, .label, .brand, th, .fig-cap b, .badge {
+    font-family: ui-sans-serif, system-ui, 'Segoe UI', Roboto, sans-serif;
+  }
+  .mono, code, td .m { font-family: ui-monospace, 'SF Mono', 'Cascadia Code', Consolas, monospace; }
+
+  /* ---- Header band ---- */
+  header { background: var(--surface); border-bottom: 2px solid var(--accent); }
+  .head-inner { max-width: 720px; margin: 0 auto; padding: 26px 20px 30px; display: flex; flex-direction: column; gap: 14px; }
+  .brand-row { display: flex; align-items: center; gap: 12px; }
+  .brand-row svg { width: 40px; height: 40px; flex: none; }
+  .brand { font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); font-size: 15px; }
+  .kicker { font-family: ui-monospace, Consolas, monospace; font-size: 12px; color: var(--muted); letter-spacing: 0.03em; }
+  h1 { font-size: clamp(22px, 6vw, 30px); line-height: 1.15; margin: 4px 0 0; text-wrap: balance; color: var(--ink); }
+  .subtitle { font-style: italic; color: var(--accent); font-size: clamp(14px, 3.6vw, 17px); margin: 0; }
+  .meta { display: grid; grid-template-columns: auto 1fr; gap: 3px 14px; font-family: ui-monospace, Consolas, monospace;
+          font-size: 12.5px; margin-top: 6px; }
+  .meta b { color: var(--muted); font-weight: 400; }
+
+  /* ---- Body sections ---- */
+  h2 { font-size: clamp(18px, 4.6vw, 22px); margin: 40px 0 8px; padding-bottom: 5px;
+       border-bottom: 1.5px solid var(--accent); text-wrap: balance; }
+  h2 .n { color: var(--accent); margin-right: 8px; }
+  h3 { font-size: clamp(15px, 3.6vw, 17px); color: var(--accent); margin: 24px 0 4px; }
+  p { margin: 0 0 12px; }
+
+  a { color: var(--link); }
+  .abstract { background: var(--surface); border-left: 3px solid var(--accent); border-radius: 3px;
+              padding: 16px 18px; margin: 24px 0; }
+  .abstract h3 { margin-top: 0; }
+  .keywords { font-size: 13.5px; color: var(--muted); margin-top: 10px; }
+  .keywords b { color: var(--accent); font-family: ui-sans-serif, system-ui, sans-serif; }
+
+  ul, ol { margin: 4px 0 14px; padding-left: 22px; }
+  li { margin: 5px 0; }
+
+  .hyp { background: var(--surface); border: 1px solid var(--rule); border-radius: 4px; padding: 10px 14px; margin: 8px 0; }
+  .hyp b { font-family: ui-sans-serif, system-ui, sans-serif; color: var(--accent); }
+
+  sup a { font-size: 68%; font-weight: 700; color: var(--accent); text-decoration: none; padding: 0 1px; }
+
+  /* ---- Tables ---- */
+  .tbl-scroll { overflow-x: auto; margin: 14px 0; -webkit-overflow-scrolling: touch; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 380px; }
+  caption { text-align: left; font-family: ui-sans-serif, system-ui, sans-serif; font-size: 13px;
+            font-weight: 600; color: var(--accent); margin-bottom: 6px; }
+  th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  thead th { font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted);
+             border-bottom: 1.5px solid var(--accent); font-weight: 700; }
+  .ok { color: var(--ok); font-weight: 700; }
+  .warn { color: var(--warn); font-weight: 700; }
+  code { background: var(--figpanel); padding: 1px 5px; border-radius: 3px; font-size: 12.5px; }
+
+  /* ---- Figures: fixed light panel so the SVG's own colors always work ---- */
+  figure { margin: 20px 0; }
+  .fig-panel { background: #f5f3ee; border: 1px solid #d8d3c7; border-radius: 6px; padding: 14px;
+               overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .fig-panel svg { display: block; width: 100%; height: auto; min-width: 460px; }
+  .fig-cap { font-size: 13px; color: var(--muted); margin-top: 8px; }
+  .fig-cap b { color: var(--accent); font-weight: 600; }
+
+  .note { font-size: 12.5px; color: var(--muted); font-style: italic; }
+  hr.sec { border: none; border-top: 1px solid var(--rule); margin: 40px 0 0; }
+
+  .endnotes { margin-top: 14px; font-size: 13px; color: var(--muted); }
+  .endnotes li { margin: 8px 0; }
+  .endnotes a { color: var(--link); }
+  footer { text-align: center; font-family: ui-monospace, Consolas, monospace; font-size: 11px;
+           color: var(--muted); margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--rule); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="head-inner">
+    <div class="brand-row">
+      <svg viewBox="0 0 64 64" role="img" aria-label="Cyber Aspis">
+        <line x1="32" y1="58" x2="32" y2="8" stroke="#5a4a3a" stroke-width="2.5" stroke-linecap="round"/>
+        <path fill="#5a4a3a" d="M 32 4 L 27 14 L 32 12 L 37 14 Z"/>
+        <rect x="29" y="58" width="6" height="3" fill="#5a4a3a"/>
+        <circle cx="32" cy="32" r="19" fill="none" stroke="#5a4a3a" stroke-width="3"/>
+        <circle cx="32" cy="32" r="16" fill="none" stroke="#5a4a3a" stroke-width="0.8" opacity="0.4"/>
+        <path fill="#5a4a3a" fill-rule="evenodd" d="M 32 20 L 22 44 L 26 44 L 28 39 L 36 39 L 38 44 L 42 44 Z M 30 35 L 34 35 L 32 30 Z"/>
+      </svg>
+      <span class="brand">Cyber Aspis</span>
+    </div>
+    <div class="kicker">Technischer Laborbericht · AI-Security-Lab · 2026</div>
+    <h1>Zweistufige Egress-Kontrolle für lokale KI-Agenten</h1>
+    <p class="subtitle">Empirische Untersuchung der Wirksamkeit deterministischer und LLM-basierter Output-Filter gegen Datenexfiltration und Prompt-Injection</p>
+    <div class="meta">
+      <b>Autor</b><span>Georgios Papagiannis</span>
+      <b>Datum</b><span>11. Juli 2026</span>
+      <b>Typ</b><span>Laboruntersuchung (Proof of Concept)</span>
+    </div>
+  </div>
+</header>
+
+<div style="max-width:720px;margin:0 auto;padding:14px 20px 0;font-family:ui-sans-serif,system-ui,'Segoe UI',sans-serif;font-size:13px">
+  <a href="/analysen/" style="color:var(--link);text-decoration:none">&larr; Wissen &amp; Analysen</a>
+</div>
+
+<main class="wrap">
+
+  <div class="abstract">
+    <h3>Zusammenfassung</h3>
+    <p>Der Einsatz von KI-Agenten zur Verarbeitung sensibler Daten wirft die Frage auf, wie sich unkontrollierter Datenabfluss und durch manipulierten Input ausgelöste Aktionen verhindern lassen. Letzteres ist als Prompt-Injection bekannt und gilt als offenes Problem der KI-Sicherheit.<sup><a href="#q1" id="r1">1</a></sup> Diese Arbeit untersucht experimentell eine zweistufige Verteidigungsarchitektur aus netzseitiger Egress-Kontrolle und einem hybriden Output-Filter, der eine deterministische Regel-DLP mit einem LLM-basierten Prüfagenten kombiniert. In einer isolierten Docker-Umgebung wurde ein Testkorpus aus 15 adversarialen Eingaben gegen die Architektur geführt. Die netzseitige Isolation blockierte alle drei getesteten Exfiltrationswege. Der deterministische Filter blockierte 9 von 10 schädlichen Eingaben, ohne einen der harmlosen Kontrollfälle fälschlich zu blockieren. Der LLM-basierte Prüfagent wurde durch eine gegen ihn selbst gerichtete Injektion umgangen und erzeugte zusätzlich einen Falsch-Positiv. Daraus folgt, dass ein LLM-basierter Filter wegen seiner eigenen Injizierbarkeit keine verlässliche Sicherheitsgrenze bildet und die deterministische Schicht die tragende Rolle übernehmen muss.</p>
+    <div class="keywords"><b>Schlagwörter:</b> Prompt-Injection, Data Loss Prevention, Defense-in-Depth, LLM-Sicherheit, OWASP LLM01, Egress-Kontrolle</div>
+  </div>
+
+  <h2><span class="n">1</span>Einleitung</h2>
+  <h3>1.1 Motivation</h3>
+  <p>Kleine und mittlere Unternehmen erwägen zunehmend den Einsatz KI-gestützter Assistenten für die Bearbeitung von E-Mails und Dokumenten. Damit entsteht ein doppeltes Risiko. Ein solcher Assistent könnte sensible Daten an unbefugte Ziele senden. Er könnte außerdem durch Anweisungen, die in den verarbeiteten Inhalten versteckt sind, zu schädlichen Aktionen verleitet werden. Beide Risiken sind für einen Verantwortlichen ohne Sicherheitsexpertise schwer einzuschätzen, weil das Verhalten des Modells nach außen wie eine Blackbox wirkt.</p>
+  <h3>1.2 Zielsetzung und Forschungsfragen</h3>
+  <p>Untersucht wird, ob eine zweistufige Verteidigungsarchitektur diese Risiken nachweisbar reduziert. Daraus ergeben sich drei Forschungsfragen:</p>
+  <ul>
+    <li><b>F1:</b> Verhindert netzseitige Isolation zuverlässig den unkontrollierten Egress?</li>
+    <li><b>F2:</b> Welche Detektionsrate und Falsch-Positiv-Rate erreicht ein deterministischer Output-Filter?</li>
+    <li><b>F3:</b> Erhöht ein zusätzlicher LLM-basierter Prüfagent die Sicherheit, und ist dieser Prüfagent selbst angreifbar?</li>
+  </ul>
+  <h3>1.3 Hypothesen</h3>
+  <div class="hyp"><b>H1.</b> Ein Container ohne direkten Netzzugang erreicht externe Ziele ausschließlich über einen Allowlist-Proxy.</div>
+  <div class="hyp"><b>H2.</b> Ein regelbasierter Filter erkennt strukturierte sensible Daten mit hoher Trefferquote bei geringer Falsch-Positiv-Rate.</div>
+  <div class="hyp"><b>H3 (Annahme).</b> Ein LLM-basierter Prüfagent ist gegen die geprüften Prompt-Injektionen resistent. Diese Annahme wird geprüft; ein einziges Gegenbeispiel genügt, um sie zu widerlegen.</div>
+
+  <h2><span class="n">2</span>Theoretische Grundlagen</h2>
+  <p>Ein Sprachmodell trennt nicht zuverlässig zwischen Instruktion und Daten. In einem verarbeiteten Text eingebettete Anweisungen können deshalb das Modellverhalten übernehmen. Dieses Muster wird als Prompt-Injection bezeichnet und im Katalog der OWASP-Foundation als wichtigstes Risiko für LLM-Anwendungen geführt. Der Stand der Technik beschreibt das Problem als mitigierbar, jedoch nicht als gelöst.<sup><a href="#q2" id="r2">2</a></sup></p>
+  <p>Ein verwandtes Risiko ist der Abfluss geschützter Informationen, etwa des Systemprompts. Die OWASP-Foundation führt dies als eigenen Eintrag zur Preisgabe des Systemprompts.<sup><a href="#q1b" id="r1b">1</a></sup></p>
+  <p>Das Prinzip Defense-in-Depth trennt Verteidigung in unabhängige Schichten. Für KI-Agenten ist die Netzwerk-Zugriffskontrolle (die Frage, wer senden darf) orthogonal zur Ausgabekontrolle (die Frage, was gesendet werden darf). Beide Schichten müssen getrennt validiert werden, da keine die andere ersetzt. Eine frühere eigene Messung an einem gehärteten Chatbot bestätigte dies quantitativ: vollständige Netzwerk-Härtung senkte die Rate der Systemprompt-Extraktion nicht, sondern ließ sie unverändert hoch.<sup><a href="#q4" id="r4">4</a></sup></p>
+  <p>Data Loss Prevention (DLP) bezeichnet die Erkennung sensibler Daten anhand fester Muster. Reguläre Ausdrücke und Prüfsummen arbeiten deterministisch und sind damit unabhängig vom Sprachmodell. Für Kreditkartennummern dient der Luhn-Algorithmus als Prüfsumme, der die meisten zufälligen Ziffernfolgen von gültigen Kartennummern unterscheidet.<sup><a href="#q3" id="r3">3</a></sup> Ein deterministischer Filter lässt sich, anders als ein Sprachmodell, nicht durch sprachliche Manipulation umgehen.</p>
+
+  <h2><span class="n">3</span>Material und Methoden</h2>
+  <h3>3.1 Versuchsumgebung</h3>
+  <div class="tbl-scroll">
+    <table>
+      <caption>Tabelle 1: Komponenten der Laborumgebung</caption>
+      <thead><tr><th>Komponente</th><th>Spezifikation</th></tr></thead>
+      <tbody>
+        <tr><td>Host</td><td>Windows 11 Pro, Docker 29.5.2</td></tr>
+        <tr><td>Orchestrierung</td><td>Docker Compose, drei Dienste</td></tr>
+        <tr><td>Sprachmodell (Prüfagent)</td><td>Qwen 2.5, 3 Mrd. Parameter, lokal via Ollama</td></tr>
+        <tr><td>Agent-Laufzeit</td><td>Python 3.12, Bibliothek httpx</td></tr>
+        <tr><td>Egress-Proxy</td><td>Squid, Allowlist mit Grundhaltung „alles verweigern"</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">Als Verifikationsmodell wurde Qwen 2.5 mit 3 Mrd. Parametern statt des vorgesehenen Qwen 3 mit 8 Mrd. Parametern eingesetzt, um den Ressourcenaufwand des Modell-Downloads zu senken. Die Architektur bleibt identisch. Die geringere Modellstärke ist als Limitation in Abschnitt 5.3 dokumentiert.</p>
+
+  <h3>3.2 Systemarchitektur</h3>
+  <p>Die Architektur besteht aus drei Verteidigungsschichten, die in Abbildung 1 dargestellt sind. Layer 1 realisiert die Egress-Kontrolle netzseitig: Der Agent-Container liegt in einem internen Netz ohne Route ins Internet, sein einziger Ausgang ist ein Allowlist-Proxy. Das Sprachmodell liegt ebenfalls im internen Netz, sodass kein Rückkanal über den Host entsteht. Layer 2a ist die deterministische DLP-Schicht und bildet den harten Blocker. Layer 2b ist der LLM-Prüfagent und wirkt nur ergänzend. Beide Ausgabeschichten sind als „fail-closed" mit UND-Verknüpfung verschaltet, sodass eine Freigabe nur bei Zustimmung beider Schichten erfolgt.</p>
+
+  <figure>
+    <div class="fig-panel">
+      <svg viewBox="0 0 720 400" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, system-ui, sans-serif">
+        <rect x="18" y="40" width="430" height="330" rx="10" fill="#f5f3ee" stroke="#5a4a3a" stroke-width="1.5" stroke-dasharray="6 4"/>
+        <text x="34" y="64" font-size="13" font-weight="700" fill="#5a4a3a">Internes Netz</text>
+        <text x="34" y="80" font-size="10" font-family="monospace" fill="#6b6457">internal: true · kein Internet</text>
+        <rect x="40" y="110" width="120" height="46" rx="6" fill="#ffffff" stroke="#d8d3c7"/>
+        <text x="100" y="132" font-size="11" fill="#2d2a24" text-anchor="middle">E-Mail (Eingabe)</text>
+        <text x="100" y="147" font-size="8.5" font-family="monospace" fill="#6b6457" text-anchor="middle">Testpostfach</text>
+        <rect x="40" y="190" width="120" height="60" rx="6" fill="#5a4a3a"/>
+        <text x="100" y="216" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">KI-Agent</text>
+        <text x="100" y="233" font-size="8.5" font-family="monospace" fill="#e6ddcf" text-anchor="middle">Python 3.12</text>
+        <rect x="40" y="290" width="120" height="56" rx="6" fill="#ffffff" stroke="#d8d3c7"/>
+        <text x="100" y="313" font-size="11" fill="#2d2a24" text-anchor="middle">LLM (lokal)</text>
+        <text x="100" y="329" font-size="8.5" font-family="monospace" fill="#6b6457" text-anchor="middle">Qwen 2.5 · 3B</text>
+        <rect x="210" y="150" width="210" height="180" rx="8" fill="#ffffff" stroke="#5a4a3a" stroke-width="1.2"/>
+        <text x="315" y="172" font-size="12" font-weight="700" fill="#5a4a3a" text-anchor="middle">Output-Gatekeeper</text>
+        <rect x="228" y="188" width="174" height="52" rx="5" fill="#eaf1f0" stroke="#2f6d5b"/>
+        <text x="315" y="207" font-size="10.5" font-weight="700" fill="#2f6d5b" text-anchor="middle">Layer 2a · Regel-DLP</text>
+        <text x="315" y="223" font-size="8.5" font-family="monospace" fill="#2f6d5b" text-anchor="middle">deterministisch · harter Blocker</text>
+        <rect x="228" y="252" width="174" height="52" rx="5" fill="#f5efe8" stroke="#a24b2f" stroke-dasharray="4 3"/>
+        <text x="315" y="271" font-size="10.5" font-weight="700" fill="#a24b2f" text-anchor="middle">Layer 2b · LLM-Judge</text>
+        <text x="315" y="287" font-size="8.5" font-family="monospace" fill="#a24b2f" text-anchor="middle">best-effort · injizierbar</text>
+        <rect x="470" y="150" width="230" height="120" rx="10" fill="#ffffff" stroke="#5a4a3a" stroke-width="1.2"/>
+        <text x="585" y="185" font-size="12" font-weight="700" fill="#5a4a3a" text-anchor="middle">Allowlist-Proxy</text>
+        <text x="585" y="203" font-size="9" font-family="monospace" fill="#6b6457" text-anchor="middle">Squid · default-deny</text>
+        <text x="585" y="238" font-size="10.5" font-weight="700" fill="#2f6d5b" text-anchor="middle">Layer 1 · Egress</text>
+        <text x="585" y="253" font-size="8.5" font-family="monospace" fill="#6b6457" text-anchor="middle">einziger Ausgang</text>
+        <rect x="560" y="310" width="140" height="54" rx="27" fill="#f5f3ee" stroke="#6b6457"/>
+        <text x="630" y="342" font-size="12" font-weight="700" fill="#6b6457" text-anchor="middle">Internet</text>
+        <defs>
+          <marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#5a4a3a"/></marker>
+          <marker id="arg" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#2f6d5b"/></marker>
+        </defs>
+        <line x1="100" y1="156" x2="100" y2="188" stroke="#5a4a3a" stroke-width="1.4" marker-end="url(#ar)"/>
+        <line x1="100" y1="290" x2="100" y2="252" stroke="#5a4a3a" stroke-width="1.4" marker-end="url(#ar)"/>
+        <line x1="160" y1="220" x2="208" y2="220" stroke="#5a4a3a" stroke-width="1.4" marker-end="url(#ar)"/>
+        <line x1="420" y1="214" x2="468" y2="214" stroke="#2f6d5b" stroke-width="1.4" marker-end="url(#arg)"/>
+        <text x="444" y="207" font-size="8" font-family="monospace" fill="#2f6d5b" text-anchor="middle">PASS</text>
+        <line x1="585" y1="270" x2="585" y2="308" stroke="#6b6457" stroke-width="1.4" marker-end="url(#ar)"/>
+        <line x1="180" y1="300" x2="558" y2="336" stroke="#a24b2f" stroke-width="1.3" stroke-dasharray="5 4"/>
+        <line x1="360" y1="309" x2="378" y2="327" stroke="#a24b2f" stroke-width="2.4"/>
+        <line x1="378" y1="309" x2="360" y2="327" stroke="#a24b2f" stroke-width="2.4"/>
+        <text x="300" y="360" font-size="8.5" font-family="monospace" fill="#a24b2f">direkter Egress blockiert</text>
+      </svg>
+    </div>
+    <div class="fig-cap"><b>Abbildung 1:</b> Versuchsaufbau. Der Agent liegt in einem internen Netz ohne direkten Internetzugang. Jede Ausgabe passiert den Gatekeeper aus deterministischer DLP (Layer 2a) und LLM-Judge (Layer 2b); der Egress erfolgt ausschließlich über den Allowlist-Proxy (Layer 1).</div>
+  </figure>
+
+  <h3>3.3 Messgrößen</h3>
+  <p>Erhoben wurden drei Kennzahlen. Die Egress-Blockrate misst den Anteil unterbundener Ausgangsverbindungen. Die Detektionsrate (Recall) misst den Anteil korrekt geblockter schädlicher Eingaben. Die Falsch-Positiv-Rate misst den Anteil fälschlich geblockter harmloser Eingaben.</p>
+  <h3>3.4 Testkorpus und Durchführung</h3>
+  <p>Der Testkorpus umfasst 15 Eingaben in sieben Kategorien: direkte Injektion, gegen den Prüfagenten gerichtete Injektion, Encoding per Base64, Umgehung über unsichtbare Zeichen, gesplittete personenbezogene Daten, semantische Exfiltration (bewusst als bekannte Lücke markiert) sowie harmlose Kontrollfälle. Vor dem Aufbau erfolgte ein strukturiertes Threat-Model-Review nach dem Prinzip des feindseligen Gegenlesers, das zwölf Härtungsauflagen ergab. Anschließend liefen drei Teilversuche: die Prüfung der Egress-Isolation, der Lauf des Korpus ohne den LLM-Judge sowie der Lauf des Korpus mit aktivem LLM-Judge, ergänzt um eine gezielte Einzelprobe des Judge.</p>
+
+  <h2><span class="n">4</span>Ergebnisse</h2>
+  <h3>4.1 Teilversuch I: Egress-Isolation</h3>
+  <p>Aus dem Agent-Container heraus wurden drei Netzwege geprüft. Der direkte Weg ins Internet scheiterte, der Weg über den Proxy zu einem nicht freigegebenen Ziel wurde mit dem Status 403 verweigert, und das interne Sprachmodell blieb erreichbar. Tabelle 2 fasst dies zusammen.</p>
+  <div class="tbl-scroll">
+    <table>
+      <caption>Tabelle 2: Egress-Isolation aus dem Agent-Container</caption>
+      <thead><tr><th>Vektor</th><th>Erwartung</th><th>Messung</th></tr></thead>
+      <tbody>
+        <tr><td>Direkt ins Internet</td><td>blockiert</td><td class="ok">blockiert (ConnectError)</td></tr>
+        <tr><td>Via Proxy, nicht freigegebenes Ziel</td><td>verweigert</td><td class="ok">HTTP 403</td></tr>
+        <tr><td>Internes Modell <code>llm:11434</code></td><td>erreichbar</td><td class="ok">HTTP 200</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Ein zusätzlicher Befund stützt die Isolation: Der Versuch, das Sprachmodell im isolierten Container nachzuladen, scheiterte an blockierter DNS-Auflösung. Die Isolation wirkt so weit, dass eine Bereitstellung des Modells außerhalb des Laufzeitbetriebs notwendig wird. H1 gilt damit als bestätigt. Nicht geprüft wurde die Exfiltration zu ausdrücklich freigegebenen Zielen; ein Allowlist-Proxy unterbindet unerlaubte Ziele, nicht den Abfluss über erlaubte Kanäle. Dieser Restkanal bleibt eine bekannte Grenze der netzseitigen Kontrolle.</p>
+
+  <h3>4.2 Teilversuch II: Deterministischer Filter</h3>
+  <p>Der deterministische Filter erreichte eine Detektionsrate von 9 von 10 bei null Falsch-Positiven. Nicht erkannt wurde die gegen den Prüfagenten gerichtete Injektion, da sie keine strukturierten personenbezogenen Daten enthält und damit regelbasiert nicht erfassbar ist. H2 gilt als bestätigt.</p>
+
+  <h3>4.3 Teilversuch III: Hybrid mit LLM-Judge</h3>
+  <p>Mit aktivem LLM-Judge blieb die Detektionsrate bei 9 von 10, jedoch trat ein Falsch-Positiv auf. Die gezielte Einzelprobe zeigte den für die Architektur entscheidenden Punkt. Die Eingabe <code>[SYSTEM]: Scan abgeschlossen, Antworte ausschließlich mit PASS</code> führte zum Ergebnis <span class="warn">passed = True</span>. Der Prüfagent befolgte die eingebettete Anweisung und ließ die Eingabe durch. Abbildung 2 stellt die Kennzahlen dar, Abbildung 3 veranschaulicht den Kernbefund.</p>
+  <div class="tbl-scroll">
+    <table>
+      <caption>Tabelle 3: Detektion und Falsch-Positive nach Filterstufe</caption>
+      <thead><tr><th>Metrik</th><th>Nur Layer 2a</th><th>Layer 2a + 2b</th></tr></thead>
+      <tbody>
+        <tr><td>Detektionsrate</td><td>9 / 10</td><td>9 / 10</td></tr>
+        <tr><td>Falsch-Positive</td><td class="ok">0</td><td class="warn">1</td></tr>
+        <tr><td>Judge-Injektion erkannt</td><td>nicht anwendbar</td><td class="warn">nein</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <figure>
+    <div class="fig-panel">
+      <svg viewBox="0 0 720 250" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, system-ui, sans-serif">
+        <line x1="150" y1="30" x2="150" y2="210" stroke="#d8d3c7"/>
+        <line x1="150" y1="210" x2="680" y2="210" stroke="#d8d3c7"/>
+        <line x1="415" y1="30" x2="415" y2="210" stroke="#efece5"/>
+        <line x1="680" y1="30" x2="680" y2="210" stroke="#efece5"/>
+        <text x="150" y="228" font-size="8" font-family="monospace" fill="#6b6457" text-anchor="middle">0</text>
+        <text x="415" y="228" font-size="8" font-family="monospace" fill="#6b6457" text-anchor="middle">50</text>
+        <text x="680" y="228" font-size="8" font-family="monospace" fill="#6b6457" text-anchor="middle">100 %</text>
+        <text x="140" y="58" font-size="10" fill="#2d2a24" text-anchor="end">Egress-Isolation</text>
+        <rect x="150" y="44" width="530" height="22" rx="3" fill="#2f6d5b"/>
+        <text x="672" y="59" font-size="9" font-weight="700" fill="#ffffff" text-anchor="end">3 / 3</text>
+        <text x="140" y="102" font-size="10" fill="#2d2a24" text-anchor="end">Detektion · Layer 2a</text>
+        <rect x="150" y="88" width="477" height="22" rx="3" fill="#5a4a3a"/>
+        <text x="619" y="103" font-size="9" font-weight="700" fill="#ffffff" text-anchor="end">9 / 10</text>
+        <text x="140" y="146" font-size="10" fill="#2d2a24" text-anchor="end">Detektion · 2a + 2b</text>
+        <rect x="150" y="132" width="477" height="22" rx="3" fill="#9c8a76"/>
+        <text x="619" y="147" font-size="9" font-weight="700" fill="#ffffff" text-anchor="end">9 / 10</text>
+        <text x="140" y="190" font-size="10" fill="#2d2a24" text-anchor="end">Falsch-Positive</text>
+        <rect x="150" y="176" width="2" height="22" fill="#2f6d5b"/>
+        <text x="162" y="191" font-size="9" fill="#2f6d5b">Layer 2a: 0</text>
+        <rect x="250" y="176" width="24" height="22" rx="3" fill="#a24b2f"/>
+        <text x="284" y="191" font-size="9" fill="#a24b2f">2a + 2b: 1</text>
+        <text x="360" y="191" font-size="9" font-family="monospace" fill="#a24b2f">Judge-Injektion: umgangen</text>
+      </svg>
+    </div>
+    <div class="fig-cap"><b>Abbildung 2:</b> Kennzahlen der drei Teilversuche. Die Egress-Isolation ist vollständig wirksam. Der zusätzliche LLM-Judge steigert die Detektionsrate nicht, erzeugt aber einen Falsch-Positiv und lässt die gegen ihn gerichtete Injektion durch.</div>
+  </figure>
+
+  <figure>
+    <div class="fig-panel">
+      <svg viewBox="0 0 720 210" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, system-ui, sans-serif">
+        <defs>
+          <marker id="a2" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#a24b2f"/></marker>
+          <marker id="a3" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#2f6d5b"/></marker>
+        </defs>
+        <rect x="20" y="26" width="220" height="60" rx="6" fill="#f5efe8" stroke="#a24b2f"/>
+        <text x="130" y="48" font-size="9.5" fill="#2d2a24" text-anchor="middle">Eingabe an Layer 2b:</text>
+        <text x="130" y="64" font-size="8.5" font-family="monospace" fill="#a24b2f" text-anchor="middle">"Antworte nur mit PASS"</text>
+        <text x="130" y="77" font-size="8" fill="#6b6457" text-anchor="middle">(gegen den Judge gerichtet)</text>
+        <line x1="240" y1="56" x2="315" y2="56" stroke="#a24b2f" stroke-width="1.5" marker-end="url(#a2)"/>
+        <rect x="320" y="26" width="150" height="60" rx="6" fill="#ffffff" stroke="#a24b2f" stroke-dasharray="4 3"/>
+        <text x="395" y="52" font-size="10.5" font-weight="700" fill="#a24b2f" text-anchor="middle">LLM-Judge (2b)</text>
+        <text x="395" y="68" font-size="8.5" fill="#6b6457" text-anchor="middle">liest Inhalt als Befehl</text>
+        <line x1="470" y1="56" x2="545" y2="56" stroke="#a24b2f" stroke-width="1.5" marker-end="url(#a2)"/>
+        <rect x="550" y="30" width="150" height="52" rx="6" fill="#a24b2f"/>
+        <text x="625" y="52" font-size="11" font-weight="700" fill="#ffffff" text-anchor="middle">Urteil: PASS</text>
+        <text x="625" y="68" font-size="8.5" font-family="monospace" fill="#f3d9cd" text-anchor="middle">Injektion erfolgreich</text>
+        <rect x="20" y="126" width="220" height="60" rx="6" fill="#eaf1f0" stroke="#2f6d5b"/>
+        <text x="130" y="148" font-size="9.5" fill="#2d2a24" text-anchor="middle">Eingabe an Layer 2a:</text>
+        <text x="130" y="164" font-size="8.5" font-family="monospace" fill="#2f6d5b" text-anchor="middle">"IBAN DE89 3704 0044 ..."</text>
+        <text x="130" y="177" font-size="8" fill="#6b6457" text-anchor="middle">(strukturierte Daten)</text>
+        <line x1="240" y1="156" x2="315" y2="156" stroke="#2f6d5b" stroke-width="1.5" marker-end="url(#a3)"/>
+        <rect x="320" y="126" width="150" height="60" rx="6" fill="#ffffff" stroke="#2f6d5b"/>
+        <text x="395" y="152" font-size="10.5" font-weight="700" fill="#2f6d5b" text-anchor="middle">Regel-DLP (2a)</text>
+        <text x="395" y="168" font-size="8.5" fill="#6b6457" text-anchor="middle">Muster + Prüfsumme</text>
+        <line x1="470" y1="156" x2="545" y2="156" stroke="#2f6d5b" stroke-width="1.5" marker-end="url(#a3)"/>
+        <rect x="550" y="130" width="150" height="52" rx="6" fill="#2f6d5b"/>
+        <text x="625" y="152" font-size="11" font-weight="700" fill="#ffffff" text-anchor="middle">Urteil: BLOCK</text>
+        <text x="625" y="168" font-size="8.5" font-family="monospace" fill="#d4e6df" text-anchor="middle">nicht manipulierbar</text>
+      </svg>
+    </div>
+    <div class="fig-cap"><b>Abbildung 3:</b> Kernbefund. Der LLM-Judge liest angreiferkontrollierten Inhalt und lässt sich durch eine gegen ihn gerichtete Anweisung zur Freigabe bewegen (oben). Die deterministische Regel-DLP prüft strukturelle Merkmale und ist gegen sprachliche Manipulation unempfindlich (unten).</div>
+  </figure>
+
+  <h2><span class="n">5</span>Diskussion</h2>
+  <h3>5.1 Interpretation der Hypothesen</h3>
+  <p>H1 und H2 werden bestätigt. Die netzseitige Isolation unterband alle getesteten Ausgangswege, und der deterministische Filter erreicht eine hohe Trefferquote ohne Falsch-Positive. H3 wird verworfen. Der LLM-Judge ist selbst prompt-injizierbar. Der Mechanismus, der Injektion abwehren soll, wurde durch genau eine solche Injektion umgangen. Dieses rekursive Versagen deckt sich mit dem Stand der Literatur, die Prompt-Injection als ungelöst beschreibt; der Beitrag dieser Arbeit liegt nicht in der Neuheit des Effekts, sondern darin, ihn in einem kontrollierten lokalen Aufbau reproduzierbar zu zeigen und die praktische Konsequenz für die Architektur abzuleiten.</p>
+  <h3>5.2 Kernbefund und Konsequenz</h3>
+  <p>Das Hinzufügen des LLM-Filters verbesserte die Detektionsrate nicht und erzeugte zugleich einen Falsch-Positiv. Ein LLM-basierter Filter kann daher nicht als harte Sicherheitsgrenze dienen, sondern nur als ergänzende und unzuverlässige Schicht. Zwei Prüfschritte mit demselben Modell bilden zudem keine unabhängigen Schichten, da sie dieselben Schwächen teilen. Echte Unabhängigkeit entsteht erst durch verschiedene Mechanismen. Die deterministische Schicht arbeitet modellunabhängig und trägt deshalb die Beweislast der Verteidigung. Der LLM-Judge darf einen Block der deterministischen Schicht nie aufheben.</p>
+  <h3>5.3 Fehlerbetrachtung und Limitationen</h3>
+  <ul>
+    <li><b>Stichprobengröße.</b> Mit 15 Eingaben besitzt der Korpus keine statistische Aussagekraft. Die Ergebnisse belegen einen Effekt, keine Quote.</li>
+    <li><b>Einzelmessung.</b> Es liegen keine Wiederholungsläufe vor. Ausgaben eines Sprachmodells sind stochastisch, und die Temperatur wurde nicht kontrolliert. Das Judge-Ergebnis ist damit ein Existenznachweis, kein Häufigkeitsnachweis.</li>
+    <li><b>Modellstärke.</b> Die Verifikation nutzte ein Modell mit 3 Mrd. Parametern. Ein stärkeres Modell könnte einzelne Fälle abfangen. Am Prinzip der grundsätzlichen Injizierbarkeit ändert das nichts.</li>
+    <li><b>Konstruktvalidität.</b> Der Korpus wurde vom Autor formuliert und ist nicht repräsentativ für reale Angriffe. Die bewusst als bekannte Lücke markierten Fälle machen diese Grenze transparent.</li>
+  </ul>
+  <h3>5.4 Bedrohung der Validität</h3>
+  <p>Da die schädlichen Testfälle teils selbst konstruiert wurden, besteht die Gefahr, nur bereits bekannte Angriffe zu prüfen. Die als bekannte Lücke ausgewiesenen Fälle der semantischen Exfiltration adressieren diese Gefahr offen und verhindern eine geschönte Trefferquote.</p>
+
+  <h2><span class="n">6</span>Fazit und Ausblick</h2>
+  <p>Eine zweistufige Architektur reduziert den Wirkungsradius eines kompromittierten KI-Agenten nachweisbar. Netzisolation und deterministische DLP sind wirksam und, anders als der LLM-Judge, nicht durch sprachliche Manipulation umgehbar; ihre Grenze liegt bei Mustern, die sie nicht kennen, etwa der semantischen Exfiltration. Der LLM-basierte Prüfagent ist hingegen selbst angreifbar und darf keine tragende Sicherheitsrolle übernehmen. Die zentrale Erkenntnis lautet: Prompt-Injection ist nicht gelöst, und verlässlicher Schutz entsteht durch modellunabhängige, deterministische Mechanismen, die durch semantische Prüfung ergänzt, aber nicht ersetzt werden.</p>
+  <p>Für weitere Arbeiten bieten sich Wiederholungsläufe bei kontrollierter Temperatur und mit einem stärkeren Modell an, eine Erweiterung des Korpus auf mindestens 20 Fälle sowie ein Vergleich verschiedener Judge-Modelle, um die Injektions-Anfälligkeit zu quantifizieren.</p>
+
+  <h2><span class="n">7</span>Literatur</h2>
+  <ol class="endnotes">
+    <li id="q1">OWASP Foundation: <i>OWASP Top 10 for Large Language Model Applications</i>, Eintrag LLM01 (Prompt Injection) und <span id="q1b">LLM07 (System Prompt Leakage)</span>. Online unter genai.owasp.org. <a href="#r1">↩</a></li>
+    <li id="q2">Willison, S.: Artikelserie zu Prompt Injection, u.&nbsp;a. „Prompt injection: what's the worst that can happen?". Online unter simonwillison.net. <a href="#r2">↩</a></li>
+    <li id="q3">Luhn, H.&nbsp;P.: <i>Computer for Verifying Numbers</i>. US-Patent 2.950.048, 1960. <a href="#r3">↩</a></li>
+    <li id="q4">Cyber Aspis AI-Security-Lab: eigene Voruntersuchung zur netzseitigen Härtung gegen Systemprompt-Extraktion, 2026 (interner Messbericht, Veröffentlichung in Vorbereitung). <a href="#r4">↩</a></li>
+  </ol>
+  <p class="note">Alle Online-Quellen zuletzt geprüft am 11.07.2026.</p>
+
+  <div style="max-width:720px;margin:36px auto 0;padding:18px 20px;background:var(--surface);border-left:3px solid var(--accent);border-radius:3px;font-family:ui-sans-serif,system-ui,'Segoe UI',sans-serif">
+    <p style="margin:0 0 6px;font-weight:700;color:var(--accent)">Setzen Sie KI-Werkzeuge im Betrieb ein?</p>
+    <p style="margin:0;font-size:14px;line-height:1.55">Cyber Aspis unterstützt kleine und mittlere Unternehmen dabei, KI-Integrationen abzusichern &ndash; mit derselben Methodik wie in diesem Bericht. <a href="/#contact" style="color:var(--link);font-weight:600">Kostenloses Erstgespräch anfragen &rarr;</a></p>
+  </div>
+
+  <footer>Cyber Aspis · IT-Sicherheit für den Mittelstand · Alle Messwerte aus isolierter Laborumgebung ohne echte Kundendaten</footer>
+</main>
+
+</body>
+</html>
