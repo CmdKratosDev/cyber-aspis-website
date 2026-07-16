@@ -3,6 +3,7 @@ FROM nginx:alpine
 # Dateien kopieren
 COPY index.html    /usr/share/nginx/html/index.html
 COPY assets/       /usr/share/nginx/html/assets/
+COPY services/     /usr/share/nginx/html/services/
 COPY nginx.conf    /etc/nginx/conf.d/default.conf
 
 # Standard-Nginx-Config entfernen (wird durch unsere ersetzt)
