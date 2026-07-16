@@ -1486,65 +1486,9 @@
 <!-- ═══ TESTIMONIALS ═══ -->
 <section id="testimonials" aria-labelledby="testimonials-heading">
     <h2 id="testimonials-heading" class="section-title">Kundenstimmen</h2>
-    <div class="testimonials-grid">
-
-        <!-- Karte 1: Anwaltskanzlei -->
-        <div class="testimonial-card">
-            <span class="testimonial-quote-icon">"</span>
-            <blockquote class="testimonial-text">
-                <em>[Coming Soon — Beta-Audit Q2/2026]</em><br><br>
-                Hier wird die Stimme unseres ersten Beta-Kunden aus dem Bereich Rechtswesen stehen —
-                nach expliziter Einwilligung und Abschluss des Audits.
-            </blockquote>
-            <div class="testimonial-divider"></div>
-            <div class="testimonial-footer">
-                <div class="testimonial-avatar" aria-hidden="true">M.B.</div>
-                <div class="testimonial-meta">
-                    <h3 class="testimonial-name">M.B., Anwaltskanzlei</h3>
-                    <span class="testimonial-branch-tag">Rechtswesen</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Karte 2: Steuerberatung -->
-        <div class="testimonial-card">
-            <span class="testimonial-quote-icon">"</span>
-            <blockquote class="testimonial-text">
-                <em>[Coming Soon — Beta-Audit Q2/2026]</em><br><br>
-                Hier wird die Stimme unseres ersten Beta-Kunden aus dem Bereich Steuerberatung stehen —
-                nach expliziter Einwilligung und Abschluss des Audits.
-            </blockquote>
-            <div class="testimonial-divider"></div>
-            <div class="testimonial-footer">
-                <div class="testimonial-avatar" aria-hidden="true">T.S.</div>
-                <div class="testimonial-meta">
-                    <h3 class="testimonial-name">T.S., Steuerberatungskanzlei</h3>
-                    <span class="testimonial-branch-tag">Steuerberatung</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Karte 3: Gesundheitswesen -->
-        <div class="testimonial-card">
-            <span class="testimonial-quote-icon">"</span>
-            <blockquote class="testimonial-text">
-                <em>[Coming Soon — Beta-Audit Q2/2026]</em><br><br>
-                Hier wird die Stimme unseres ersten Beta-Kunden aus dem Gesundheitswesen stehen —
-                nach expliziter Einwilligung und Abschluss des Audits.
-            </blockquote>
-            <div class="testimonial-divider"></div>
-            <div class="testimonial-footer">
-                <div class="testimonial-avatar" aria-hidden="true">C.D.</div>
-                <div class="testimonial-meta">
-                    <h3 class="testimonial-name">C.D., Dental-Praxis</h3>
-                    <span class="testimonial-branch-tag">Gesundheitswesen</span>
-                </div>
-            </div>
-        </div>
-
-    </div>
     <div class="testimonials-notice">
-        <p>Alle echten Stimmen werden nach expliziter Einwilligung der Mandanten veröffentlicht (Art. 6 Abs. 1 lit. a DSGVO)</p>
+        <p>Die ersten Beta-Audits laufen derzeit. Kundenstimmen erscheinen hier nach Abschluss der Projekte —
+        ausschließlich echte Stimmen, mit expliziter Einwilligung der Kunden (Art. 6 Abs. 1 lit. a DSGVO).</p>
     </div>
 </section>
 
@@ -1852,7 +1796,7 @@
         <p>
             <strong>HackerNews Algolia Search API</strong><br>
             Anbieter: Algolia, Inc., 55 2nd St., 4th Floor, San Francisco, CA 94105, USA<br>
-            URL: <code>https://hn.algolia.com/api/v1/search_by_date?...</code><br>
+            URL: <code>https://hn.algolia.com/api/v1/search?...</code><br>
             Verarbeitete Daten: Öffentliche News-Metadaten (keine personenbezogenen Daten).
             Bei diesem Abruf wird Ihre IP-Adresse an die Server von Algolia übermittelt.
             Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der Darstellung
@@ -2094,13 +2038,20 @@
     }
 
     // --- HackerNews Algolia ---
-    var HN_URL = 'https://hn.algolia.com/api/v1/search_by_date?tags=story&query=cybersecurity+security+breach+vulnerability&hitsPerPage=5';
+    // Relevanz-Suche statt search_by_date: die alte Multi-Wort-Query fand fast nur
+    // Jahre alte Stories. Fenster: letzte 7 Tage, min. 10 Punkte.
     var HN_KEY = 'ca-feed-hn';
+
+    function hnUrl() {
+        var since = Math.floor(Date.now() / 1000) - 7 * 86400;
+        return 'https://hn.algolia.com/api/v1/search?tags=story&query=security' +
+               '&numericFilters=created_at_i%3E' + since + ',points%3E10&hitsPerPage=5';
+    }
 
     function fetchHN(callback) {
         var cached = cacheGet(HN_KEY);
         if (cached) { callback(null, cached); return; }
-        fetch(HN_URL)
+        fetch(hnUrl())
             .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
             .then(function(json) {
                 var items = (json.hits || []).slice(0, 5);
