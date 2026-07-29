@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="../assets/favicon.png">
+    <title>Selbst-Audit-Checkliste: Supply-Chain-Risiken in der Build-Pipeline | Cyber Aspis</title>
+    <meta name="description" content="20-Punkte-Selbst-Audit-Checkliste zum Auditieren Ihrer CI-Pipeline auf Supply-Chain-Vulnerabilities. Für PHP/Composer, Python/pip, Node.js/npm, Docker und CI/CD-Secrets.">
+
+    <!-- ═══ OpenGraph ═══ -->
+    <meta property="og:type"        content="article">
+    <meta property="og:url"         content="https://cyber-aspis.de/lernen/checkliste-supply-chain.html">
+    <meta property="og:title"       content="Selbst-Audit-Checkliste: Supply-Chain-Risiken in der Build-Pipeline | Cyber Aspis">
+    <meta property="og:description" content="20-Punkte-Selbst-Audit-Checkliste zum Auditieren Ihrer CI-Pipeline auf Supply-Chain-Vulnerabilities. Für PHP/Composer, Python/pip, Node.js/npm, Docker und CI/CD-Secrets.">
+    <meta property="og:image"       content="https://cyber-aspis.de/assets/og-image.png">
+    <meta property="og:image:width"  content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale"      content="de_DE">
+    <meta property="og:site_name"   content="Cyber Aspis IT-Security">
+
+    <!-- ═══ Twitter / X Card ═══ -->
+    <meta name="twitter:card"        content="summary_large_image">
+    <meta name="twitter:title"       content="Selbst-Audit-Checkliste: Supply-Chain-Risiken in der Build-Pipeline | Cyber Aspis">
+    <meta name="twitter:description" content="20-Punkte-Selbst-Audit-Checkliste für PHP/Composer, Python/pip, Node.js/npm, Docker und CI/CD-Secrets.">
+    <meta name="twitter:image"       content="https://cyber-aspis.de/assets/og-image.png">
+
+    <!-- ═══ Canonical ═══ -->
+    <link rel="canonical" href="https://cyber-aspis.de/lernen/checkliste-supply-chain.html">
+
+    <!-- ═══ Schema.org: Breadcrumb ═══ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Startseite", "item": "https://cyber-aspis.de/" },
+        { "@type": "ListItem", "position": 2, "name": "Lernen", "item": "https://cyber-aspis.de/lernen/" },
+        { "@type": "ListItem", "position": 3, "name": "Supply-Chain-Checkliste", "item": "https://cyber-aspis.de/lernen/checkliste-supply-chain.html" }
+      ]
+    }
+    </script>
+
+    <style>
+        /* ===== LOCAL FONTS (DSGVO-konform — kein Google CDN) ===== */
+        @font-face { font-family: 'Orbitron'; src: url('../assets/fonts/orbitron.woff2') format('woff2'); font-weight: 700 900; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Exo 2'; src: url('../assets/fonts/exo2.woff2') format('woff2'); font-weight: 100 900; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Space Mono'; src: url('../assets/fonts/spacemono-regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Space Mono'; src: url('../assets/fonts/spacemono-bold.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; }
+    </style>
+    <style>
+        /* ===== CSS VARIABLES ===== */
+        :root {
+            --bg-primary:    #0d0d1a;
+            --bg-secondary:  #12082e;
+            --bg-card:       #1a1a35;
+            --text-primary:  #ffffff;
+            --text-muted:    #9090b8;
+            --accent-cyan:   #00d4ff;
+            --accent-magenta:#e040fb;
+            --accent-purple: #7b2ff7;
+            --gradient-wave: linear-gradient(135deg, #00d4ff 0%, #7b2ff7 50%, #cc00ff 100%);
+            --font-display:  'Orbitron', monospace;
+            --font-mono:     'Space Mono', monospace;
+            --font-body:     'Exo 2', sans-serif;
+        }
+
+        /* ===== RESET & BASE ===== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--font-body); background: var(--bg-primary); color: var(--text-primary); overflow-x: hidden; line-height: 1.6; }
+
+        /* ===== NAVIGATION ===== */
+        nav { position: sticky; top: 0; z-index: 999; background: rgba(13,13,26,0.88); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid rgba(224,64,251,0.18); padding: 0 6%; display: flex; align-items: center; justify-content: space-between; height: 68px; }
+        .nav-logo { display: flex; align-items: center; gap: 11px; text-decoration: none; }
+        .nav-logo img { height: 42px; width: 42px; object-fit: contain; }
+        .nav-logo-fallback { width: 42px; height: 42px; border-radius: 50%; border: 2px solid var(--accent-cyan); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 0.7rem; font-weight: 900; color: var(--accent-cyan); }
+        .nav-logo-text { font-family: var(--font-display); font-size: 0.72rem; font-weight: 700; color: var(--text-primary); letter-spacing: 0.12em; line-height: 1.3; }
+        .nav-links { display: flex; gap: 1.7rem; list-style: none; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; transition: color 0.2s; position: relative; }
+        .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--accent-magenta); transition: width 0.3s ease; }
+        .nav-links a:hover { color: var(--accent-cyan); }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-links a.nav-current { color: var(--accent-cyan); }
+        .nav-links a.nav-current::after { width: 100%; }
+        .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 5px; background: none; border: none; }
+        .hamburger span { display: block; width: 24px; height: 2px; background: var(--text-primary); transition: all 0.3s; }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+        /* ===== BUTTONS ===== */
+        .btn-primary { display: inline-flex; align-items: center; gap: 8px; background: var(--accent-magenta); color: white; text-decoration: none; padding: 14px 30px; border-radius: 50px; font-weight: 700; font-size: 0.93rem; letter-spacing: 0.05em; box-shadow: 0 0 32px rgba(224,64,251,0.42); transition: all 0.3s ease; border: none; cursor: pointer; min-height: 48px; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 52px rgba(224,64,251,0.65); background: #cc00ff; }
+        .btn-secondary { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--accent-cyan); text-decoration: none; padding: 14px 30px; border-radius: 50px; font-weight: 600; font-size: 0.93rem; letter-spacing: 0.05em; border: 1px solid rgba(0,212,255,0.38); transition: all 0.3s ease; min-height: 48px; }
+        .btn-secondary:hover { background: rgba(0,212,255,0.08); border-color: var(--accent-cyan); box-shadow: 0 0 20px rgba(0,212,255,0.2); }
+
+        /* ===== SECTION BASE ===== */
+        section { padding: 76px 6%; }
+        .section-title { text-align: center; font-family: var(--font-display); font-size: clamp(1.4rem, 3vw, 2.2rem); font-weight: 700; letter-spacing: 0.06em; color: var(--text-primary); margin-bottom: 2.4rem; }
+        .section-title::after { content: ''; display: block; width: 56px; height: 3px; background: var(--gradient-wave); margin: 14px auto 0; border-radius: 2px; }
+        .section-lede { max-width: 760px; margin: 0 auto 2.2rem; color: var(--text-muted); font-size: 0.96rem; line-height: 1.8; text-align: center; }
+
+        /* ===== BREADCRUMB ===== */
+        .breadcrumb-strip { background: rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.06); padding: 12px 6%; }
+        .breadcrumb { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); list-style: none; max-width: 900px; margin: 0 auto; }
+        .breadcrumb li + li::before { content: '/'; margin-right: 8px; opacity: 0.5; }
+        .breadcrumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+        .breadcrumb a:hover { color: var(--accent-cyan); }
+        .breadcrumb li:last-child { color: var(--accent-cyan); }
+
+        /* ===== AUDIENCE BANNER ═══ */
+        .audience-banner { background: rgba(0,212,255,0.06); border-top: 1px solid rgba(0,212,255,0.25); border-bottom: 1px solid rgba(0,212,255,0.25); padding: 14px 6%; }
+        .audience-banner-inner { max-width: 900px; margin: 0 auto; display: flex; align-items: flex-start; gap: 12px; }
+        .audience-banner-icon { font-size: 1.1rem; flex-shrink: 0; line-height: 1.5; }
+        .audience-banner p { font-size: 0.86rem; color: var(--text-muted); line-height: 1.65; }
+        .audience-banner strong { color: var(--accent-cyan); }
+
+        /* ===== HERO ===== */
+        .service-hero { background: var(--bg-secondary); padding: 64px 6% 64px; position: relative; overflow: hidden; }
+        .service-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 80% 50%, rgba(123,47,247,0.18) 0%, transparent 60%), radial-gradient(ellipse at 20% 80%, rgba(0,212,255,0.1) 0%, transparent 50%); pointer-events: none; }
+        .service-hero-inner { position: relative; z-index: 1; max-width: 820px; margin: 0 auto; }
+        .service-hero-tag { display: inline-flex; align-items: center; gap: 9px; background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.32); color: var(--accent-cyan); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; padding: 6px 16px; border-radius: 100px; margin-bottom: 1.6rem; }
+        .service-hero h1 { font-family: var(--font-display); font-size: clamp(1.6rem, 3.6vw, 2.7rem); font-weight: 900; line-height: 1.22; letter-spacing: 0.01em; margin-bottom: 1.2rem; }
+        .service-hero h1 .gradient-word { background: var(--gradient-wave); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .service-hero-subtitle { font-size: 1.03rem; color: var(--text-muted); font-weight: 300; line-height: 1.75; max-width: 660px; }
+        .stat-row { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 2.4rem; }
+        .stat { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; padding: 14px 20px; min-width: 130px; }
+        .stat-val { font-family: var(--font-display); font-size: 1.25rem; font-weight: 900; color: var(--accent-cyan); display: block; }
+        .stat-lbl { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; }
+
+        /* ===== INTRO ===== */
+        #intro { background: var(--bg-primary); }
+        .intro-box { max-width: 780px; margin: 0 auto; }
+        .intro-box p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.85; }
+
+        /* ===== CHECKLIST ===== */
+        #checklist { background: var(--bg-secondary); }
+        .checklist-inner { max-width: 860px; margin: 0 auto; }
+        .check-category-heading { font-family: var(--font-display); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-cyan); margin: 2.6rem 0 1.1rem; padding-bottom: 0.6rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .check-category-heading:first-child { margin-top: 0; }
+        .check-category-note { font-size: 0.82rem; color: var(--text-muted); margin: -0.6rem 0 1.2rem; font-style: italic; }
+        .check-item { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 1.3rem 1.6rem; margin-bottom: 0.9rem; }
+        .check-head { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 0.9rem; }
+        .check-num { font-family: var(--font-display); font-size: 0.78rem; font-weight: 900; color: var(--accent-cyan); opacity: 0.55; min-width: 26px; line-height: 1.7; }
+        .check-title { display: flex; align-items: flex-start; gap: 10px; font-family: var(--font-body); font-size: 0.94rem; font-weight: 700; color: var(--text-primary); cursor: pointer; }
+        .check-title input[type="checkbox"] { margin-top: 4px; width: 16px; height: 16px; accent-color: var(--accent-cyan); flex-shrink: 0; cursor: pointer; }
+        .check-cmd { background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.07); border-radius: 8px; padding: 12px 16px; margin: 0 0 0.8rem 38px; overflow-x: auto; }
+        .check-cmd code { font-family: var(--font-mono); font-size: 0.78rem; color: #7fe8b0; white-space: pre; }
+        .check-expected { font-size: 0.83rem; color: var(--text-muted); line-height: 1.65; margin-left: 38px; }
+        .check-expected strong { color: var(--text-primary); }
+        .check-note { font-size: 0.83rem; color: var(--text-muted); line-height: 1.72; margin: 0.75rem 0 0 38px; padding-left: 0.9rem; border-left: 2px solid rgba(255,255,255,0.09); }
+        .check-note strong { color: var(--text-primary); }
+        .check-cmd + .check-cmd { margin-top: -0.2rem; }
+
+        /* ===== INCIDENT INFO BOX ===== */
+        .incident-box { max-width: 780px; margin: 2.2rem auto 0; background: rgba(0,212,255,0.05); border: 1px solid rgba(0,212,255,0.28); border-left: 3px solid var(--accent-cyan); border-radius: 12px; padding: 1.5rem 1.8rem; }
+        .incident-box h3 { font-family: var(--font-display); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-cyan); margin-bottom: 0.9rem; }
+        .incident-box p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.8; margin-bottom: 0.85rem; }
+        .incident-box p:last-child { margin-bottom: 0; }
+        .incident-box strong { color: var(--text-primary); }
+        .incident-box code { font-family: var(--font-mono); font-size: 0.85em; background: rgba(255,255,255,0.07); padding: 1px 5px; border-radius: 3px; }
+
+        /* ===== INCIDENT-RESPONSE HINWEIS ===== */
+        .ir-box { background: rgba(224,64,251,0.07); border: 1px solid rgba(224,64,251,0.35); border-left: 3px solid var(--accent-magenta); border-radius: 12px; padding: 1.5rem 1.8rem; margin: 1.5rem 0 1.7rem; }
+        .ir-box h4 { font-family: var(--font-display); font-size: 0.79rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-magenta); margin-bottom: 0.9rem; }
+        .ir-box > p { color: var(--text-muted); font-size: 0.88rem; line-height: 1.75; margin-bottom: 0.95rem; }
+        .ir-box ol { margin: 0 0 0 1.15rem; display: flex; flex-direction: column; gap: 0.7rem; }
+        .ir-box li { color: var(--text-muted); font-size: 0.88rem; line-height: 1.7; }
+        .ir-box li strong { color: var(--text-primary); }
+
+        /* ===== DOCUMENTATION TEMPLATE ===== */
+        #documentation { background: var(--bg-primary); }
+        .doc-box { max-width: 760px; margin: 0 auto; background: var(--bg-card); border: 1px solid rgba(255,255,255,0.07); border-left: 3px solid var(--accent-magenta); border-radius: 12px; padding: 1.8rem 2.1rem; }
+        .doc-box p.doc-lede { color: var(--text-muted); font-size: 0.9rem; line-height: 1.75; margin-bottom: 1.2rem; }
+        .doc-template { list-style: none; display: flex; flex-direction: column; gap: 8px; font-family: var(--font-mono); font-size: 0.82rem; color: var(--text-muted); }
+        .doc-template li strong { color: var(--accent-magenta); }
+
+        /* ===== ROTATION PRIORITY ===== */
+        #rotation { background: var(--bg-secondary); }
+        .rotation-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 980px; margin: 0 auto; }
+        .rotation-card { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 1.6rem 1.8rem; }
+        .rotation-card h3 { font-family: var(--font-display); font-size: 0.78rem; letter-spacing: 0.08em; color: var(--accent-cyan); margin-bottom: 1rem; }
+        .rotation-card ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+        .rotation-card li { font-size: 0.83rem; color: var(--text-muted); padding-left: 16px; position: relative; line-height: 1.55; }
+        .rotation-card li::before { content: '›'; position: absolute; left: 0; color: var(--accent-magenta); font-weight: 700; }
+
+        /* ===== RESOURCES ===== */
+        #resources { background: var(--bg-primary); }
+        .resources-list { list-style: none; display: flex; flex-direction: column; gap: 10px; max-width: 700px; margin: 0 auto; }
+        .resources-list li { font-size: 0.9rem; color: var(--text-muted); }
+        .resources-list a { color: var(--accent-cyan); text-decoration: none; }
+        .resources-list a:hover { text-decoration: underline; }
+
+        /* ===== CTA SECTION ===== */
+        #cta-service { background: var(--bg-secondary); padding: 80px 6%; text-align: center; }
+        .cta-heading { font-family: var(--font-display); font-size: clamp(1.4rem, 3vw, 2.2rem); font-weight: 700; margin-bottom: 1rem; }
+        .cta-subtext { color: var(--text-muted); margin-bottom: 2rem; font-size: 1rem; }
+        .cta-buttons { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+
+        /* ===== FOOTER ===== */
+        footer { background: #06060f; border-top: 1px solid rgba(255,255,255,0.06); padding: 28px 6%; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+        .footer-copy { font-size: 0.79rem; color: var(--text-muted); }
+        .footer-links { display: flex; gap: 1.5rem; }
+        .footer-links a { font-size: 0.79rem; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+        .footer-links a:hover { color: var(--accent-cyan); }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 860px) {
+            .rotation-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 640px) {
+            .nav-links { display: none; }
+            .hamburger { display: flex; }
+            .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 68px; left: 0; right: 0; background: rgba(13,13,26,0.97); padding: 20px 6%; gap: 1rem; border-bottom: 1px solid rgba(224,64,251,0.18); }
+            section { padding: 52px 5%; }
+            .service-hero { padding: 48px 5% 48px; }
+            .check-item { padding: 1.1rem 1.1rem; }
+            .check-cmd, .check-expected { margin-left: 0; }
+            .check-note { margin-left: 0; }
+            .incident-box, .ir-box { padding: 1.2rem 1.2rem; }
+            footer { flex-direction: column; text-align: center; }
+        }
+
+        /* ===== PRINT ===== */
+        @media print {
+            nav, .hamburger, .breadcrumb-strip, #cta-service, .footer-links, .stat-row, .service-hero-tag, .progress-note { display: none !important; }
+            .service-hero::before { display: none !important; }
+            html, body { background: #fff !important; color: #000 !important; font-size: 10pt; }
+            section, .service-hero, #checklist, #intro, #documentation, #rotation, #resources { background: #fff !important; padding: 0 0 10pt !important; }
+            .section-title, .cta-heading, .check-category-heading, .incident-box h3, .ir-box h4, .rotation-card h3, .doc-template li strong { color: #000 !important; }
+            .section-title::after { background: #000 !important; }
+            .service-hero h1, .service-hero-subtitle, .intro-box p, .check-expected, .check-note, .check-category-note, .doc-lede, .section-lede, .rotation-card li, .incident-box p, .ir-box > p, .ir-box li, .resources-list li, .footer-copy { color: #000 !important; }
+            .service-hero h1 .gradient-word { background: none !important; -webkit-text-fill-color: #000 !important; color: #000 !important; }
+            .check-item, .doc-box, .rotation-card, .incident-box, .ir-box { background: #fff !important; border: 1pt solid #999 !important; border-left-width: 2pt !important; break-inside: avoid; page-break-inside: avoid; }
+            .check-cmd { background: #f2f2f2 !important; border: 1pt solid #bbb !important; overflow: visible !important; }
+            .check-cmd code { color: #000 !important; white-space: pre-wrap !important; word-break: break-all; font-size: 8.5pt; }
+            .check-num { color: #000 !important; opacity: 1 !important; }
+            .rotation-grid { grid-template-columns: 1fr !important; }
+            a { color: #000 !important; text-decoration: underline; }
+            .check-category-heading { break-after: avoid; page-break-after: avoid; }
+            footer { background: #fff !important; border-top: 1pt solid #999 !important; }
+        }
+    </style>
+    <!-- Analytics: self-hosted GoatCounter (cookielos, DSGVO-konform, kein Drittanbieter-CDN) -->
+    <script data-goatcounter="https://stats.cyber-aspis.de/count"
+            async src="https://stats.cyber-aspis.de/count.js"></script>
+</head>
+<body>
+
+<!-- ═══ NAVIGATION ═══ -->
+<nav>
+    <a href="../index.html" class="nav-logo">
+        <img src="../assets/logo.png" alt="Cyber Aspis Logo"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+        <div class="nav-logo-fallback" style="display:none;">CA</div>
+        <span class="nav-logo-text">CYBER ASPIS<br>IT-SECURITY</span>
+    </a>
+    <button class="hamburger" id="hamburger" aria-label="Menü öffnen">
+        <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="nav-links">
+        <li><a href="../ueber-uns.html">Über uns</a></li>
+        <li><a href="../index.html#services">Leistungen</a></li>
+        <li><a href="../analysen/">Analysen</a></li>
+        <li><a href="index.html" class="nav-current">Lernen</a></li>
+        <li><a href="../index.html#faq">FAQ</a></li>
+        <li><a href="../index.html#threat-feed">Intel</a></li>
+        <li><a href="../index.html#contact">Kontakt</a></li>
+    </ul>
+</nav>
+
+<!-- ═══ BREADCRUMB ═══ -->
+<div class="breadcrumb-strip" aria-label="Seitenpfad">
+    <ol class="breadcrumb">
+        <li><a href="../index.html">Startseite</a></li>
+        <li><a href="index.html">Lernen</a></li>
+        <li>Supply-Chain-Checkliste</li>
+    </ol>
+</div>
+
+<!-- ═══ ZIELGRUPPEN-HINWEIS ═══ -->
+<div class="audience-banner" role="note">
+    <div class="audience-banner-inner">
+        <span class="audience-banner-icon" aria-hidden="true">🛠️</span>
+        <p><strong>Für wen ist das:</strong> Diese Checkliste richtet sich an Entwickler-Teams und IT-Verantwortliche mit direktem Zugriff auf Repository und CI/CD-Pipeline, nicht an Geschäftsführer ohne eigenes IT-Team. Wenn Sie die Befehle unten nicht selbst ausführen können, ist ein begleiteter Supply-Chain-Audit der passendere Weg.<br><br>
+        <strong>Autorisierung:</strong> Prüfen Sie ausschließlich Systeme, die Ihnen gehören, oder Systeme, für die Ihnen eine schriftliche Freigabe des Betreibers vorliegt. Die Punkte 16 bis 20 greifen per SSH auf Produktivsysteme zu. Ohne Freigabe kann bereits der lesende Zugriff strafbar sein. Bei fremd betriebenen Servern (Hoster, Managed Service, Konzernmutter) holen Sie die Freigabe vorher schriftlich ein. Alle Befehle hier sind lesend, keiner verändert Daten und keiner greift ein System an.</p>
+    </div>
+</div>
+
+<!-- ═══ HERO ═══ -->
+<div class="service-hero">
+    <div class="service-hero-inner">
+        <div class="service-hero-tag">Lernen · Selbst-Audit-Checkliste</div>
+        <h1>Supply-Chain-Risiken in Ihrer <span class="gradient-word">Build-Pipeline</span></h1>
+        <p class="service-hero-subtitle">
+            20 Prüfpunkte mit Copy-Paste-Befehlen, um Ihre eigene CI-Pipeline auf Supply-Chain-Vulnerabilities zu prüfen: Composer, pip, npm, Docker-Images und CI/CD-Secrets.
+        </p>
+        <div class="stat-row">
+            <div class="stat"><span class="stat-val">20</span><span class="stat-lbl">Prüfpunkte</span></div>
+            <div class="stat"><span class="stat-val">6</span><span class="stat-lbl">Kategorien</span></div>
+            <div class="stat"><span class="stat-val">22.05.2026</span><span class="stat-lbl">Bezugsvorfall Laravel-Lang</span></div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══ ANLEITUNG ═══ -->
+<section id="intro" aria-labelledby="intro-heading">
+    <h2 id="intro-heading" class="section-title">Anleitung</h2>
+    <div class="intro-box">
+        <p>Arbeiten Sie die Punkte auf Ihrer Entwicklungsmaschine und auf Ihren CI/CD-Servern (GitHub Actions, GitLab CI, Jenkins) ab. Ersetzen Sie Platzhalter wie <code style="background:rgba(255,255,255,0.08); padding:1px 5px; border-radius:3px; font-family:var(--font-mono); font-size:0.85em;">&lt;projektroot&gt;</code>, <code style="background:rgba(255,255,255,0.08); padding:1px 5px; border-radius:3px; font-family:var(--font-mono); font-size:0.85em;">user@prodserver</code> und <code style="background:rgba(255,255,255,0.08); padding:1px 5px; border-radius:3px; font-family:var(--font-mono); font-size:0.85em;">OWNER/REPO</code> durch Ihre echten Werte. Die Befehle setzen eine POSIX-Shell voraus, unter Windows nutzen Sie Git Bash oder WSL. Für die Punkte 02 und 13 brauchen Sie <code style="background:rgba(255,255,255,0.08); padding:1px 5px; border-radius:3px; font-family:var(--font-mono); font-size:0.85em;">jq</code>, für Punkt 15 optional die GitHub CLI. Wenn ein Punkt anschlägt, dokumentieren Sie den Befund weiter unten. Beachten Sie vorher den Hinweis zum Vorgehen bei Kompromittierungs-Spuren vor Punkt 16.</p>
+        <p class="progress-note" style="margin-top:1rem; font-size:0.85rem; color:var(--text-muted);">Ihr Häkchen-Fortschritt wird nur lokal in Ihrem Browser gespeichert und nicht übertragen. Über die Druckfunktion Ihres Browsers erhalten Sie eine reduzierte Fassung zum Abarbeiten auf Papier.</p>
+    </div>
+
+    <div class="incident-box">
+        <h3>Der Vorfall, auf den sich diese Checkliste bezieht</h3>
+        <p>Am 22. Mai 2026 ab 22:32 UTC hat ein Angreifer mit Schreibzugriff auf die GitHub-Organisation Laravel-Lang in vier Composer-Paketen (<code>laravel-lang/lang</code>, <code>laravel-lang/http-statuses</code>, <code>laravel-lang/attributes</code>, <code>laravel-lang/actions</code>) <strong>sämtliche bestehenden Git-Tags per Force-Push auf eigene Commits umgebogen</strong>, insgesamt rund 700 Versionen. Bei <code>laravel-lang/lang</code> allein waren es 502 Tags, alles innerhalb weniger Stunden.</p>
+        <p>Die manipulierten Commits fügten <code>src/helpers.php</code> in die <code>autoload.files</code>-Liste der <code>composer.json</code> ein. Damit lud Composer den Schadcode bei jedem Anwendungsstart automatisch, ohne dass der eigene Code das Paket überhaupt aufrufen musste. Der Payload sammelte Cloud- und CI/CD-Credentials, GitHub- und GitLab-Tokens, SSH-Keys, Docker-Auth, <code>.env</code>-Inhalte, Kubernetes-Service-Account- und Vault-Tokens, fragte den EC2-Metadaten-Endpunkt <code>169.254.169.254</code> nach IAM-Credentials ab und lud alles an die C2-Domain <code>flipboxstudio.info</code> (<code>/payload</code> zum Nachladen, <code>/exfil</code> zum Ausleiten). Packagist entfernte die bösartigen Versionen am 23.05.2026.</p>
+        <p><strong>Für die Prüfung entscheidend:</strong> Weil bestehende Tags überschrieben und die Versionsnummern später wieder auf legitimen Code zurückgemappt wurden, sagt die Versionsnummer im <code>composer.lock</code> nichts über eine Kompromittierung aus. Belastbar ist nur der Commit-SHA im Feld <code>source.reference</code>, siehe Punkt 02. Quellen dazu am Ende der Seite.</p>
+    </div>
+</section>
+
+<!-- ═══ CHECKLISTE ═══ -->
+<section id="checklist" aria-labelledby="checklist-heading">
+    <h2 id="checklist-heading" class="section-title">Die 20 Prüfpunkte</h2>
+    <div class="checklist-inner">
+
+        <h3 class="check-category-heading">PHP / Composer</h3>
+
+        <div class="check-item">
+            <div class="check-head">
+                <span class="check-num">01</span>
+                <label class="check-title"><input type="checkbox"> Composer <code style="font-size:0.85em;">audit</code> durchführen</label>
+            </div>
+            <pre class="check-cmd"><code>cd &lt;projektroot&gt; &amp;&amp; composer audit</code></pre>
+            <p class="check-expected"><strong>Erwartetes Ergebnis:</strong> Keine Vulnerabilities. Falls doch, betroffenes Paket updaten.</p>
+            <p class="check-note"><code>composer audit</code> kennt nur Advisories, die in der Packagist-Datenbank registriert sind. Für den Laravel-Lang-Vorfall reicht das nicht, deshalb ist Punkt 02 zusätzlich nötig.</p>
+        </div>
+
+        <div class="check-item">
+            <div class="check-head">
+                <span class="check-num">02</span>
+                <label class="check-title"><input type="checkbox"> Laravel-Lang-Pakete über den Commit-SHA prüfen (Vorfall 22.05.2026)</label>
+            </div>
+            <pre class="check-cmd"><code>jq -r '(.packages + (."packages-dev" // []))[] | select(.name|startswith("laravel-lang/")) | "\(.name) \(.version) \(.source.reference) \(.source.url)"' composer.lock</code></pre>
+            <p class="check-expected" style="margin-bottom:0.8rem;">Jeden ausgegebenen SHA gegen die Upstream-Historie prüfen, die Repo-URL steht in der Ausgabe oben:</p>
+            <pre class="check-cmd"><code>curl -s https://api.github.com/repos/Laravel-Lang/lang/commits/&lt;SHA&gt; | jq '{autor: .commit.author.name, mail: .commit.author.email, datum: .commit.author.date}'</code></pre>
+            <p class="check-expected"><strong>Erwartetes Ergebnis:</strong> Entweder keine Ausgabe beim ersten Befehl (Pakete nicht installiert), oder ein Commit, dessen Autor ein bekannter Maintainer ist und dessen Datum <strong>vor dem 22.05.2026, 22:32 UTC</strong> liegt.</p>
+            <p class="check-note">Die Versionsnummer allein ist kein Nachweis. Der Angreifer hat bestehende Tags überschrieben, dieselbe Versionsnummer kann also sauberen oder bösartigen Code bezeichnen. Snyk formuliert es so, dass Versionsnummern allein nicht ausreichen, um eine Betroffenheit zu bestätigen. Entscheidend ist der Commit-SHA aus <code>source.reference</code>.<br><br>
+            Zwei Merkmale entlarven die eingeschmuggelten Commits: Sie tragen alle die Autor-Identität <code>Your Name &lt;you@example.com&gt;</code>, und sie sind von keinem Branch des Upstream-Repositorys erreichbar, nur die umgebogenen Tags zeigten darauf.<br><br>
+            Achten Sie dabei auf die Auswertung: Die GitHub-API liefert einen solchen Commit weiterhin mit HTTP 200 aus, weil er im Objektspeicher des Repositorys liegt. Eine erfolgreiche Antwort ist deshalb kein Nachweis für Unbedenklichkeit, aussagekräftig sind nur Autor-Identität und Datum. Ein HTTP 404 ist ebenfalls ein Warnsignal, dann liegt der Commit gar nicht im angegebenen Repository. Die publizierten SHAs der bösartigen Commits stehen in der StepSecurity-Analyse (Quellen unten), dort können Sie Ihre Werte direkt abgleichen.</p>
+        </div>
+
+        <div class="check-item">
+            <div class="check-head">
+                <span class="check-num">03</span>
+                <label class="check-title"><input type="checkbox"> Composer.lock in Git versioniert?</label>
+            </div>
+            <pre class="check-cmd"><code>git ls-files composer.lock</code></pre>
+            <p class="check-expected"><strong>Erwartetes Ergebnis:</strong> Der Befehl gibt <code style="font-size:0.85em;">composer.lock</code> aus. Ohne versionierte Lock-Datei können Sie nach einem Vorfall nicht rekonstruieren, welche Commits Sie ausgeliefert haben.</p>
+        </div>
+
+        <div class="check-item">
+            <div class="check-head">
+                <span class="check-num">04</span>
+                <label class="check-title"><input type="checkbox"> Composer.lock-Integrität prüfen</label>
+            </div>
+            <pre class="check-cmd"><code>composer validate &amp;&amp; composer install --dry-run</code></pre>
+            <p class="check-expected"><strong>Erwartetes Ergebnis:</strong> Keine Fehler, Lock-Datei stimmt mit composer.json überein.</p>
+        </div>
+
+        <div class="check-item">
+            <div class="check-head">
+                <span class="check-num">05</span>
+                <label class="check-title"><input type="checkbox"> <code style="font-size:0.85em;">autoload.files</code> aller installierten Pakete sichten</label>
+            </div>
+            <pre class="check-cmd"><code>grep -H '"files"' vendor/*/*/composer.json | head -20</code></pre>
+            <p class="check-expected" style="margin-bottom:0.8rem;">Bei sehr großem <code style="font-size:0.85em;">vendor</code>-Baum stattdessen:</p>
+            <pre class="check-cmd"><code>find vendor -mindepth 3 -maxdepth 3 -name composer.json -exec grep -l '"files"' {} +</code></pre>
+            <p class="check-expected"><strong>Erwartetes Ergebnis:</strong> Sie kennen jedes Paket, das PHP-Dateien beim Anwendungsstart automatisch lädt, und haben die Einträge gesichtet.</p>
+            <p class="check-note">Zwei Pfadebenen sind Pflicht, weil Composer nach <code>vendor/&lt;hersteller&gt;/&lt;paket&gt;/composer.json</code> installiert. Ein Muster mit nur einer Ebene (<code>vendor/*/composer.json</code>) trifft in einem normalen Projekt gar nichts und liefert damit eine falsche Entlastung. <code>autoload.files</code> war der Ausführungsvektor des Mai-Vorfalls, deshalb lohnt hier der genaue Blick.</p>
+        </div>
+
+        <h3 class="check-category-heading">Python / pip</h3>
+
+        <div class="check-item">
+            <div class="check-head">
+                <span class="check-num">06</span>
+                <label class="check-title"><input type="checkbox"> pip-audit durchführen</label>
+            </div>
+            <pre class="check-cmd"><code>pipx install pip-audit
+pip-audit -r requirements.txt</code></pre>
+            <p class="check-expected"><strong>Erwartetes Ergebnis:</strong> Keine Vulnerabilities gemeldet.</p>
+            <p class="check-note"><code>pipx</code> statt <code>pip install</code>, damit das Audit-Tool nicht selbst in Ihre Projekt-Umgebung wandert. Beachten Sie dabei: <code>pip-audit</code> prüft ohne Argumente die Umgebung, in der es läuft. Via pipx installiert wäre das die isolierte pipx-Umgebung und nicht Ihr Projekt, deshalb hier explizit die Requirements-Datei. Wollen Sie die installierte Umgebung selbst scannen, muss <code>pip-audit</code> in dieses venv hinein.</p>
+        </div>
+
+        <div class="check-item">
+            <div class="check-head">
+                <span class="check-num">07</span>
+                <label class="check-title"><input type="checkbox"> requirements.txt mit Hashes?</label>
+            </div>
+            <pre class="check-cmd"><code>grep -c -- '--hash=sha256:' requirements.txt</code></pre>
+            <p class="check-expected"><strong>Erwartetes Ergebnis:</strong> Eine Zahl größer 0. Ergibt der Befehl <code style="font-size:0.85em;">0</code>, gibt es keine Hash-Bindung, dann setzen Sie Punkt 08 um.</p>
+            <p class="check-note">Der Wert zählt Zeilen mit Hash-Eintrag und nicht Pakete: <code>pip-compile --generate-hashes</code> schreibt pro Paket oft mehrere Hashes, einen je Wheel oder Sdist. Die Zahl liegt also normalerweise über Ihrer Paketanzahl.</p>
+        </div>
+
+        <div class="check-item">
+            <div class="check-head">
+                <span class="check-num">08</span>
+                <label class="check-title"><input type="checkbox"> pip-compile mit Hash-Validierung nutzen</label>
+            </div>
+            <pre class="check-cmd"><code>pipx install pip-tools
+pip-compile --generate-hashes requirements.in</code></pre>
+            <p class="check-expected"><strong>Erwartetes Ergebnis:</strong> <code style="font-size:0.85em;">requirements.txt</code> wurde mit <code style="font-size:0.85em;">--generate-hashes</code> erzeugt. <code style="font-size:0.85em;">pip install -r requirements.txt</code> akzeptiert danach nur noch exakt diese Artefakte.</p>
+        </div>
+
+        <h3 class="check-category-heading">Node.js / npm</h3>
+
+        <div class="check-item">
+            <div class="check-head">
+                <span class="check-num">09</span>
+                <label class="check-title"><input type="checkbox"> npm <code style="font-size:0.85em;">audit</code> durchführen</label>
+            </div>
+            <pre class="check-cmd"><code>npm audit --audit-level=high</code></pre>
+            <p class="check-expected"><strong>Erwartetes Ergebnis:</strong> Keine kritischen oder hohen Vulnerabilities.</p>
+        </div>
+
+        <div class="check-item">
+            <div class="check-head">
+                <span class="check-num">10</span>
+                <label class="check-title"><input type="checkbox"> package-lock.json versioniert?</label>
+            </div>
+            <pre class="check-cmd"><code>git ls-files package-lock.json</code></pre>
+            <p class="check-expected"><strong>Erwartetes Ergebnis:</strong> Der Befehl gibt <code style="font-size:0.85em;">package-lock.json</code> aus.</p>
+        </div>
+
+        <div class="check-item">
+            <div class="check-head">
+                <span class="check-num">11</span>
+                <label class="check-title"><input type="checkbox"> <code style="font-size:0.85em;">npm ci</code> statt <code style="font-size:0.85em;">npm install</code> in CI/CD</label>
+            </div>
+            <pre class="check-cmd"><code>for f in .github/workflows .gitlab-ci.yml Jenkinsfile bitbucket-pipelines.yml; do
+  [ -e "$f" ] &amp;&amp; grep -rn -e 'npm install' -e 'npm i ' "$f"
+done</code></pre>
+            <p class="check-expected"><strong>Erwartetes Ergebnis:</strong> Keine Ausgabe, überall <code style="font-size:0.85em;">npm ci</code> oder <code style="font-size:0.85em;">npm ci --omit=dev</code>.</p>
+            <p class="check-note"><code>npm install</code> darf Versionen neu auflösen und die Lock-Datei ändern, <code>npm ci</code> installiert strikt aus <code>package-lock.json</code>. Die <code>[ -e ]</code>-Abfrage verhindert die "No such file"-Meldungen, die ein direktes <code>grep -r</code> über nicht vorhandene Pfade erzeugt.</p>
+        </div>
+
+        <h3 class="check-category-heading">Docker / Container-Images</h3>
+
+        <div class="check-item">
+            <div class="check-head">
+                <span class="check-num">12</span>
+                <label class="check-title"><input type="checkbox"> Base-Images per Digest pinnen (Empfehlung)</label>
+            </div>
+            <pre class="check-cmd"><code>grep -inE '^[[:space:]]*FROM' Dockerfile | grep -v '@sha256'</code></pre>
+            <p class="check-expected"><strong>Erwartetes Ergebnis (Empfehlung, kein Mangel):</strong> Die Ausgabe zeigt alle Base-Images, die über einen Tag statt über einen Digest referenziert sind.</p>
+            <p class="check-note"><code>FROM node:20</code> ist kein Fehler, sondern ein veränderlicher Verweis: Derselbe Tag kann morgen auf ein anderes Image zeigen, Ihr Build ist damit nicht reproduzierbar. Für Produktions-Builds ist <code>FROM node:20@sha256:...</code> die stärkere Variante, in Entwicklungs-Dockerfiles ist der Tag oft eine bewusste Entscheidung. Bewerten Sie das pro Image und nicht als Pauschalbefund.</p>
+        </div>
+
+        <div class="check-item">
+            <div class="check-head">
+                <span class="check-num">13</span>
+                <label class="check-title"><input type="checkbox"> Container-Images auf einbackene Laravel-Lang-Pakete prüfen</label>
+            </div>
+            <pre class="check-cmd"><code>for img in $(docker image ls --format '{{.Repository}}:{{.Tag}}' | grep -v '&lt;none&gt;'); do
+  docker create --name aspis_scan "$img" /bin/true &gt;/dev/null 2&gt;&amp;1 || continue
+  printf '%s\t%s\n' "$(docker export aspis_scan | tar -tf - 2&gt;/dev/null | grep -c 'vendor/laravel-lang/')" "$img"
+  docker rm -f aspis_scan &gt;/dev/null
+done</code></pre>
+            <p class="check-expected" style="margin-bottom:0.8rem;">Bei einem Treffer die eingebackene Lock-Datei herausholen und nach Punkt 02 auswerten:</p>
+            <pre class="check-cmd"><code>docker create --name aspis_scan &lt;image&gt; /bin/true &amp;&amp; docker cp aspis_scan:/var/www/html/composer.lock ./lock-aus-image.json; docker rm -f aspis_scan</code></pre>
+            <p class="check-expected"><strong>Erwartetes Ergebnis:</strong> Überall <code style="font-size:0.85em;">0</code>. Jede Zahl größer 0 heißt, dass dieses Image die Pakete enthält. Prüfen Sie dann den Commit-SHA in der eingebackenen <code style="font-size:0.85em;">composer.lock</code> nach Punkt 02 und bauen Sie das Image neu.</p>
+            <p class="check-note">Der Punkt ist wichtig, weil ein Fix im Repository ein bereits gebautes Image nicht sauber macht: <code>composer.lock</code> und <code>vendor/</code> liegen im Image-Layer, ein Container aus dem alten Image führt weiter den alten Code aus. <code>docker create</code> legt den Container nur an und startet ihn nicht, es wird also kein Code aus dem Image ausgeführt. Bei großen Images dauert <code>docker export</code> einige Minuten pro Image.</p>
+        </div>
+
+        <h3 class="check-category-heading">CI/CD &amp; Secrets</h3>
+
+        <div class="check-item">
+            <div class="check-head">
+                <span class="check-num">14</span>
+                <label class="check-title"><input type="checkbox"> Secrets-Scope in CI/CD beschränkt</label>
+            </div>
+            <pre class="check-cmd"><code>grep -rnE 'secrets\.[A-Za-z0-9_]+|^[[:space:]]*env:' .github/workflows 2&gt;/dev/null</code></pre>
+            <p class="check-expected"><strong>Erwartetes Ergebnis:</strong> Jedes Secret wird nur in dem Job referenziert, der es braucht.</p>
+            <p class="check-note">Ein <code>env:</code>-Block auf Workflow-Ebene, der alle Secrets in jeden Step spiegelt, ist ein Befund: Genau diese Umgebungsvariablen liest ein Stealer wie der aus dem Mai-Vorfall zuerst aus.</p>
+        </div>
+
+        <div class="check-item">
+            <div class="check-head">
+                <span class="check-num">15</span>
+                <label class="check-title"><input type="checkbox"> SSH-Key-Inventar erstellen</label>
+            </div>
+            <pre class="check-cmd"><code>for k in ~/.ssh/id_*; do
+  case "$k" in *.pub) continue;; esac
+  if ssh-keygen -y -P '' -f "$k" &gt;/dev/null 2&gt;&amp;1; then
+    echo "OHNE PASSPHRASE  $k  $(ssh-keygen -lf "$k" 2&gt;/dev/null)"
+  else
+    echo "passphrase-geschuetzt  $k"
+  fi
+done</code></pre>
+            <p class="check-expected" style="margin-bottom:0.8rem;">Hinterlegte Deploy-Keys eines Repositorys auflisten und gegen dieses Inventar abgleichen:</p>
+            <pre class="check-cmd"><code>gh api repos/OWNER/REPO/keys --jq '.[] | "\(.title)\tread_only=\(.read_only)\t\(.created_at)"'</code></pre>
+            <p class="check-expected"><strong>Erwartetes Ergebnis:</strong> Jeder private Key ist passphrase-geschützt oder liegt in Agent, Smartcard oder HSM. Zu jedem hinterlegten Deploy-Key gibt es einen dokumentierten Zweck und einen Verantwortlichen. Schreibberechtigte Deploy-Keys (<code style="font-size:0.85em;">read_only=false</code>) existieren nur dort, wo sie gebraucht werden.</p>
+            <p class="check-note"><strong>Wichtig zur Einordnung:</strong> Normale SSH-Schlüssel haben kein Verfallsdatum, <code>ssh-keygen -l</code> zeigt nur einen Fingerprint. Eine Gültigkeitsdauer haben ausschließlich SSH-Zertifikate, die von einer eigenen CA ausgestellt werden (<code>ssh-keygen -s ca_key -V +12w id_ed25519.pub</code>). Solange Sie mit reinen Schlüsseln arbeiten, ersetzt kein technisches Ablaufdatum den Kalendereintrag zur Rotation und die regelmäßige Sichtung der hinterlegten Keys.</p>
+        </div>
+
+        <h3 class="check-category-heading">Produktionsserver (SSH)</h3>
+        <p class="check-category-note">Nur relevant, wenn Sie SSH-Zugriff auf den Produktionsserver haben, und nur mit der Autorisierung aus dem Hinweis am Seitenanfang.</p>
+
+        <div class="ir-box" role="note">
+            <h4>Wenn einer der folgenden Punkte anschlägt</h4>
+            <p>Die Punkte 16 bis 20 suchen nach Spuren einer Kompromittierung. Ein Treffer ist ein laufender Sicherheitsvorfall und kein Konfigurationsfehler. Räumen Sie dann nicht auf, sondern gehen Sie so vor:</p>
+            <ol>
+                <li><strong>System isolieren, nicht putzen.</strong> Wer Dateien löscht, Prozesse killt oder unbekannte Keys entfernt, warnt den Angreifer und vernichtet die Beweise, die Sie später für Meldung, Versicherung und Ursachenanalyse brauchen. Netzwerk trennen oder in ein isoliertes Segment hängen, System möglichst nicht neu starten.</li>
+                <li><strong>Beweise sichern, bevor Sie etwas ändern.</strong> Wenn möglich ein Speicherabbild ziehen, danach Logs, Container-Images, <code style="font-family:var(--font-mono); font-size:0.85em;">composer.lock</code> und relevante Dateisystem-Stände wegkopieren. Zeitstempel und Prüfsummen mitschreiben.</li>
+                <li><strong>Erst danach rotieren</strong>, in der Reihenfolge aus der Schnell-Referenz weiter unten.</li>
+                <li><strong>Meldepflicht prüfen.</strong> Können personenbezogene Daten betroffen sein und besteht dadurch ein Risiko für die betroffenen Personen, ist der Vorfall nach Art. 33 DSGVO binnen 72 Stunden der zuständigen Aufsichtsbehörde zu melden. Die Frist läuft ab Kenntnisnahme und nicht ab Abschluss Ihrer Analyse. Prüfen Sie zusätzlich die vertraglichen Meldefristen gegenüber Kunden und Versicherer.</li>
+                <li><strong>Hilfe holen, wenn die Routine fehlt.</strong> Der erste Zugriff nach einem Treffer entscheidet darüber, ob der Vorfall später noch nachvollziehbar ist. Wer diesen Ablauf nicht eingeübt hat, sollte Unterstützung dazuholen, bevor am System gearbeitet wird.</li>
+            </ol>
+        </div>
+
+        <div class="check-item">
+            <div class="check-head">
+                <span class="check-num">16</span>
+                <label class="check-title"><input type="checkbox"> IoC-Check auf das Drop-Verzeichnis des Stealers</label>
+            </div>
+            <pre class="check-cmd"><code>ssh user@prodserver 'ls -la "${TMPDIR:-/tmp}/.laravel_locale/" 2&gt;/dev/null || echo "kein Drop-Verzeichnis vorhanden"'</code></pre>
+            <p class="check-expected"><strong>Erwartetes Ergebnis:</strong> Die Ausgabe lautet <code style="font-size:0.85em;">kein Drop-Verzeichnis vorhanden</code>.</p>
+            <p class="check-note">Wichtig zur Aussagekraft: Der Loader legte seine Artefakte unter <code>$TMPDIR/.laravel_locale/</code> ab, eine zufällig benannte <code>.php</code>-Datei aus 12 Hex-Zeichen, und löschte sie laut Analyse innerhalb weniger Sekunden nach dem Start wieder. Ein leeres Ergebnis ist deshalb keine Entlastung. Der belastbare Nachweis bleibt der Commit-SHA aus Punkt 02.</p>
+        </div>
+
+        <div class="check-item">
+            <div class="check-head">
+                <span class="check-num">17</span>
+                <label class="check-title"><input type="checkbox"> Prozesse mit gelöschtem oder in /tmp liegendem Binary</label>
+            </div>
+            <pre class="check-cmd"><code>ssh user@prodserver 'sudo ls -l /proc/*/exe 2&gt;/dev/null | grep -iE "deleted|/tmp/"'</code></pre>
+            <p class="check-expected" style="margin-bottom:0.8rem;">Zusätzlich elternlose PHP-Prozesse suchen:</p>
+            <pre class="check-cmd"><code>ssh user@prodserver 'ps -eo pid,ppid,etime,comm | grep -E "^[[:space:]]*[0-9]+[[:space:]]+1[[:space:]]" | grep -i php'</code></pre>
+            <p class="check-expected"><strong>Erwartetes Ergebnis:</strong> Beide Befehle liefern keine Ausgabe.</p>
+            <p class="check-note">Der erste Befehl findet Prozesse, deren ausführbare Datei gelöscht wurde oder aus <code>/tmp</code> stammt. Genau so verhielt sich die zweite Stufe des Stealers: eine ELF-Datei unter <code>/tmp/.&lt;8 Hex-Zeichen&gt;</code>, die sich nach dem Start selbst entfernte. Der zweite Befehl zeigt PHP-Prozesse mit <code>ppid=1</code>, also solche, deren Elternprozess verschwunden ist. Beides sind Auffälligkeiten, die eine Analyse verdienen, und keine automatischen Beweise.</p>
+        </div>
+
+        <div class="check-item">
+            <div class="check-head">
+                <span class="check-num">18</span>
+                <label class="check-title"><input type="checkbox"> SSH <code style="font-size:0.85em;">authorized_keys</code> prüfen</label>
+            </div>
+            <pre class="check-cmd"><code>ssh user@prodserver 'for f in /home/*/.ssh/authorized_keys /root/.ssh/authorized_keys; do [ -f "$f" ] &amp;&amp; echo "== $f" &amp;&amp; ssh-keygen -lf "$f"; done'</code></pre>
+            <p class="check-expected"><strong>Erwartetes Ergebnis:</strong> Ausschließlich Fingerprints, die Sie aus dem Inventar in Punkt 15 kennen.</p>
+            <p class="check-note">Bei einem unbekannten Key: <strong>nicht sofort löschen.</strong> Datei mit Zeitstempeln sichern, dazu das <code>~/.ssh</code>-Verzeichnis und die Login-Historie (<code>last</code>, <code>journalctl -u ssh</code>), dann nach dem Hinweis oben vorgehen. Das Entfernen ist Teil der koordinierten Reaktion und nicht der erste Schritt.</p>
+        </div>
+
+        <div class="check-item">
+            <div class="check-head">
+                <span class="check-num">19</span>
+                <label class="check-title"><input type="checkbox"> .env-Dateien und ihre Ablage prüfen</label>
+            </div>
+            <pre class="check-cmd"><code>find . -name '.env*' -not -path './.git/*' -not -path './vendor/*' -not -path './node_modules/*' -exec ls -l {} +
+git ls-files | grep -E '(^|/)\.env'</code></pre>
+            <p class="check-expected"><strong>Erwartetes Ergebnis:</strong> Der zweite Befehl gibt höchstens <code style="font-size:0.85em;">.env.example</code> aus, also eine Vorlage ohne echte Werte. Jeder andere Treffer ist ein Befund.</p>
+            <p class="check-note"><code>.env.local</code>, <code>.env.production</code> und ähnliche Varianten enthalten typischerweise echte lokale Secrets. Sie gehören damit nicht in die Versionskontrolle, nicht in das Web-Verzeichnis und nur mit Rechten <code>600</code> auf die Platte. Der erste Befehl zeigt genau diese Rechte mit an. Ob eine Datei zusätzlich über das Web erreichbar ist, prüfen Sie an Ihrer eigenen Domain mit <code>curl -sI https://ihre-domain.example/.env</code>, erwartet wird <code>404</code> oder <code>403</code>.</p>
+        </div>
+
+        <div class="check-item">
+            <div class="check-head">
+                <span class="check-num">20</span>
+                <label class="check-title"><input type="checkbox"> Egress-, DNS- und Webserver-Logs auf den C2-Callout prüfen</label>
+            </div>
+            <pre class="check-cmd"><code>ssh user@prodserver 'grep -ril flipboxstudio /var/log/nginx /var/log/apache2 /var/log/squid /var/log/named /var/log/dnsmasq.log /var/log/unbound.log 2&gt;/dev/null; journalctl -u systemd-resolved --since 2026-05-22 2&gt;/dev/null | grep -i flipboxstudio'</code></pre>
+            <p class="check-expected"><strong>Erwartetes Ergebnis:</strong> Keine Ausgabe.</p>
+            <p class="check-note">Der HTTPS-Callout einer PHP-Anwendung an <code>flipboxstudio.info</code> landet nicht in <code>/var/log/auth.log</code> oder <code>/var/log/syslog</code>, dort protokolliert das System Anmeldungen und Dienstmeldungen. Sichtbar wird ausgehender Verkehr nur in den Logs der Stelle, die ihn vermittelt: lokaler Resolver oder DNS-Server, Forward-Proxy, Egress-Firewall, gegebenenfalls Netflow. Passen Sie die Pfade an Ihre Umgebung an.<br><br>
+            Wenn keine dieser Quellen existiert, ist das selbst der Befund: Ohne Egress- oder DNS-Protokollierung können Sie einen Datenabfluss weder feststellen noch ausschließen. Das ist die häufigste Lücke in KMU-Umgebungen und die lohnendste Sofortmaßnahme nach diesem Vorfall.</p>
+            <p class="check-expected" style="margin-top:0.8rem; margin-bottom:0.8rem;">Für den Zugriff auf <code style="font-size:0.85em;">169.254.169.254</code> gilt eine Besonderheit: Auf AWS erfasst VPC Flow Logs den Verkehr zum Instanz-Metadaten-Dienst laut Dokumentation nicht, ein Suchlauf dort ist also wirkungslos. Prüfen Sie stattdessen, ob IMDSv2 erzwungen ist:</p>
+            <pre class="check-cmd"><code>aws ec2 describe-instances --query 'Reservations[].Instances[].{Id:InstanceId,IMDS:MetadataOptions.HttpTokens}' --output table</code></pre>
+            <p class="check-expected">Erwartet wird <code style="font-size:0.85em;">required</code> für jede Instanz. Mit IMDSv1 genügt ein einfacher GET aus dem Anwendungsprozess, um IAM-Credentials abzuholen.</p>
+        </div>
+
+    </div>
+</section>
+
+<!-- ═══ BEFUNDSDOKUMENTATION ═══ -->
+<section id="documentation" aria-labelledby="documentation-heading">
+    <h2 id="documentation-heading" class="section-title">Befundsdokumentation</h2>
+    <div class="doc-box">
+        <p class="doc-lede">Für Konfigurationsbefunde aus den Punkten 01 bis 15 dokumentieren Sie strukturiert und rotieren anschließend. Bei Treffern in den Punkten 16 bis 20 gilt zuerst der Hinweis zum Vorgehen bei Kompromittierungs-Spuren: sichern und isolieren, dann dokumentieren, dann rotieren.</p>
+        <ul class="doc-template">
+            <li><strong>Was:</strong> Beschreibung des Fundes</li>
+            <li><strong>Wo:</strong> Server, Datei, Image</li>
+            <li><strong>Wann gefunden:</strong> Datum, Uhrzeit</li>
+            <li><strong>Auswirkung:</strong> Priorität P0/P1/P2</li>
+            <li><strong>Kategorie:</strong> Konfigurationsbefund oder Kompromittierungs-Spur</li>
+            <li><strong>Beweise gesichert:</strong> Was, wohin, mit welcher Prüfsumme</li>
+            <li><strong>Rotation-Plan:</strong> Was, wann, von wem</li>
+            <li><strong>Verantwortlich:</strong> Name, Rolle</li>
+            <li><strong>Status:</strong> Offen / In Bearbeitung / Abgeschlossen</li>
+        </ul>
+    </div>
+</section>
+
+<!-- ═══ ROTATIONS-PRIORITÄT ═══ -->
+<section id="rotation" aria-labelledby="rotation-heading">
+    <h2 id="rotation-heading" class="section-title">Schnell-Referenz: Welche Secrets wann rotieren?</h2>
+    <p class="section-lede">Priorisiert nach Blast-Radius und Detection-Window. Bei bestätigter Kompromittierung erst nach der Beweissicherung starten.</p>
+
+    <div class="rotation-grid">
+        <div class="rotation-card">
+            <h3>Sofort (innerhalb 2h)</h3>
+            <ul>
+                <li>Cloud-API-Keys (AWS, Azure, GCP), höchstes Lateral-Movement-Risiko</li>
+                <li>CI/CD-Pipeline-Tokens (GitHub Actions, GitLab CI, Jenkins)</li>
+                <li>Über IMDS ausgegebene Instanz-Rollen: betroffene Instanzen ersetzen, da die temporären Credentials an der Rolle hängen</li>
+            </ul>
+        </div>
+        <div class="rotation-card">
+            <h3>Heute (innerhalb 8h)</h3>
+            <ul>
+                <li>VCS-Tokens und Deploy-SSH-Keys für CI/CD</li>
+                <li>Datenbankpasswörter, vorrangig wenn die DB von außen erreichbar ist</li>
+                <li>Laravel <code style="font-size:0.85em;">APP_KEY</code> (Off-Peak, invalidiert aktive Sessions). Sonderfall bei <code style="font-size:0.85em;">encrypted</code>-Casts: <code style="font-size:0.85em;">APP_KEY</code> vor dem DB-Passwort rotieren und Re-Encrypt durchführen, sonst sind verschlüsselte Felder verloren</li>
+                <li>Kubernetes-Service-Account- und Vault-Tokens</li>
+            </ul>
+        </div>
+        <div class="rotation-card">
+            <h3>Diese Woche</h3>
+            <ul>
+                <li>SSH-Keys für Server-Admin-Zugriff</li>
+                <li>SaaS-API-Keys und Webhook-Secrets (Stripe, Twilio, SendGrid)</li>
+                <li>Passwort-Manager-Master-Passwörter, falls ein Entwicklerrechner betroffen war</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ RESSOURCEN ═══ -->
+<section id="resources" aria-labelledby="resources-heading">
+    <h2 id="resources-heading" class="section-title">Quellen zum Vorfall</h2>
+    <ul class="resources-list" style="margin-bottom:2.4rem;">
+        <li><strong>StepSecurity</strong> (Zeitleiste und Liste der bösartigen Commit-SHAs): <a href="https://www.stepsecurity.io/blog/laravel-lang-supply-chain-attack" target="_blank" rel="noopener">stepsecurity.io/blog/laravel-lang-supply-chain-attack</a></li>
+        <li><strong>Snyk Advisory</strong> (Einordnung, warum Versionsnummern nicht ausreichen): <a href="https://snyk.io/blog/laravel-lang-supply-chain-advisory/" target="_blank" rel="noopener">snyk.io/blog/laravel-lang-supply-chain-advisory</a></li>
+        <li><strong>Phoenix Security</strong> (technische Payload-Analyse und IoC-Liste): <a href="https://phoenix.security/laravel-lang-composer-supply-chain-compromise-rce-backdoor/" target="_blank" rel="noopener">phoenix.security/laravel-lang-composer-supply-chain-compromise-rce-backdoor</a></li>
+        <li><strong>Aikido Security</strong> (Erstmeldung zum Credential-Stealer): <a href="https://www.aikido.dev/blog/supply-chain-attack-targets-laravel-lang-packages-with-credential-stealer" target="_blank" rel="noopener">aikido.dev/blog/supply-chain-attack-targets-laravel-lang-packages-with-credential-stealer</a></li>
+    </ul>
+
+    <h2 class="section-title">Weiterführende Ressourcen</h2>
+    <ul class="resources-list">
+        <li><strong>OWASP Dependency Check:</strong> <a href="https://owasp.org/www-project-dependency-check/" target="_blank" rel="noopener">owasp.org/www-project-dependency-check</a></li>
+        <li><strong>CISA Known Exploited Vulnerabilities Catalog:</strong> <a href="https://www.cisa.gov/known-exploited-vulnerabilities" target="_blank" rel="noopener">cisa.gov/known-exploited-vulnerabilities</a></li>
+        <li><strong>National Vulnerability Database (NVD):</strong> <a href="https://nvd.nist.gov/" target="_blank" rel="noopener">nvd.nist.gov</a></li>
+        <li><strong>GitHub Advisory Database:</strong> <a href="https://github.com/advisories" target="_blank" rel="noopener">github.com/advisories</a></li>
+    </ul>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<section id="cta-service" aria-labelledby="cta-service-heading">
+    <h2 id="cta-service-heading" class="cta-heading">Ergebnis unklar?</h2>
+    <p class="cta-subtext">Wenn ein Befund sich nicht sauber einordnen lässt oder Sie Ihre Auswertung gegengeprüft haben möchten: Das erste Gespräch dauert 30 Minuten und kostet nichts. Danach entscheiden Sie, ob ein Audit sinnvoll ist. Bei bestätigter Kompromittierung ziehen Sie einen Incident-Response-Dienstleister hinzu, bevor am System gearbeitet wird.</p>
+    <div class="cta-buttons">
+        <a href="mailto:kontakt@cyber-aspis.de?subject=Anfrage%20Supply-Chain-Audit" class="btn-primary">
+            Erstgespräch anfragen →
+        </a>
+        <a href="../index.html#contact" class="btn-secondary">
+            Zum Kontaktformular
+        </a>
+    </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+    <span class="footer-copy">© 2026 Cyber Aspis IT-Security · Alle Rechte vorbehalten</span>
+    <div class="footer-links">
+        <a href="../index.html">Startseite</a>
+        <a href="index.html">Lernen</a>
+        <a href="../index.html#contact">Kontakt</a>
+        <a href="../impressum.html">Impressum</a>
+        <a href="../datenschutz.html">Datenschutz</a>
+    </div>
+</footer>
+
+<script>
+    // Hamburger toggle
+    const hamburger = document.getElementById('hamburger');
+    const navLinks  = document.getElementById('nav-links');
+    if (hamburger && navLinks) {
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('open');
+            hamburger.setAttribute('aria-label',
+                navLinks.classList.contains('open') ? 'Menü schließen' : 'Menü öffnen');
+        });
+    }
+
+    // Checkbox-Fortschritt lokal im Browser halten (localStorage, keine Uebertragung).
+    // Key haengt an der Prüfpunkt-Nummer, damit ein spaeteres Umsortieren den Stand nicht verschiebt.
+    (function persistChecklistState() {
+        var boxes = document.querySelectorAll('#checklist .check-item input[type="checkbox"]');
+        var store;
+        try {
+            store = window.localStorage;
+            store.getItem('aspis-scc-probe');
+        } catch (e) {
+            return; // localStorage gesperrt oder nicht verfuegbar: Checkboxen funktionieren weiter, nur ohne Persistenz
+        }
+        boxes.forEach(function (box) {
+            var item = box.closest('.check-item');
+            var num  = item ? item.querySelector('.check-num') : null;
+            if (!num) return;
+            var key = 'aspis-scc-' + num.textContent.trim();
+            if (store.getItem(key) === '1') box.checked = true;
+            box.addEventListener('change', function () {
+                try {
+                    store.setItem(key, box.checked ? '1' : '0');
+                } catch (e) { /* Quota oder Private Mode: Persistenz still ueberspringen */ }
+            });
+        });
+    })();
+</script>
+</body>
+</html>

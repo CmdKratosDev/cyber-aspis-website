@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="../assets/favicon.png">
+    <title>Beispiel-Report: So sieht ein Quick-Check aus | Cyber Aspis</title>
+    <meta name="description" content="Ein vollständiges (fiktives) Beispiel eines Cyber-Aspis-Quick-Check-Reports: Executive Summary, Findings mit Business-Impact und priorisierte Roadmap. So sieht der Report aus, bevor Sie ihn beauftragen.">
+
+    <!-- ═══ OpenGraph ═══ -->
+    <meta property="og:type"        content="article">
+    <meta property="og:url"         content="https://cyber-aspis.de/lernen/beispiel-report.html">
+    <meta property="og:title"       content="Beispiel-Report: So sieht ein Quick-Check aus | Cyber Aspis">
+    <meta property="og:description" content="Ein vollständiges (fiktives) Beispiel eines Cyber-Aspis-Quick-Check-Reports: Executive Summary, Findings mit Business-Impact und priorisierte Roadmap.">
+    <meta property="og:image"       content="https://cyber-aspis.de/assets/og-image.png">
+    <meta property="og:image:width"  content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale"      content="de_DE">
+    <meta property="og:site_name"   content="Cyber Aspis IT-Security">
+
+    <!-- ═══ Twitter / X Card ═══ -->
+    <meta name="twitter:card"        content="summary_large_image">
+    <meta name="twitter:title"       content="Beispiel-Report: So sieht ein Quick-Check aus | Cyber Aspis">
+    <meta name="twitter:description" content="Ein vollständiges (fiktives) Beispiel eines Cyber-Aspis-Quick-Check-Reports.">
+    <meta name="twitter:image"       content="https://cyber-aspis.de/assets/og-image.png">
+
+    <!-- ═══ Canonical ═══ -->
+    <link rel="canonical" href="https://cyber-aspis.de/lernen/beispiel-report.html">
+
+    <!-- ═══ Schema.org: Breadcrumb ═══ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Startseite", "item": "https://cyber-aspis.de/" },
+        { "@type": "ListItem", "position": 2, "name": "Lernen", "item": "https://cyber-aspis.de/lernen/" },
+        { "@type": "ListItem", "position": 3, "name": "Beispiel-Report", "item": "https://cyber-aspis.de/lernen/beispiel-report.html" }
+      ]
+    }
+    </script>
+
+    <style>
+        /* ===== LOCAL FONTS (DSGVO-konform — kein Google CDN) ===== */
+        @font-face { font-family: 'Orbitron'; src: url('../assets/fonts/orbitron.woff2') format('woff2'); font-weight: 700 900; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Exo 2'; src: url('../assets/fonts/exo2.woff2') format('woff2'); font-weight: 100 900; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Space Mono'; src: url('../assets/fonts/spacemono-regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Space Mono'; src: url('../assets/fonts/spacemono-bold.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; }
+    </style>
+    <style>
+        /* ===== CSS VARIABLES ===== */
+        :root {
+            --bg-primary:    #0d0d1a;
+            --bg-secondary:  #12082e;
+            --bg-card:       #1a1a35;
+            --text-primary:  #ffffff;
+            --text-muted:    #9090b8;
+            --accent-cyan:   #00d4ff;
+            --accent-magenta:#e040fb;
+            --accent-purple: #7b2ff7;
+            --gradient-wave: linear-gradient(135deg, #00d4ff 0%, #7b2ff7 50%, #cc00ff 100%);
+            --font-display:  'Orbitron', monospace;
+            --font-mono:     'Space Mono', monospace;
+            --font-body:     'Exo 2', sans-serif;
+            --sev-crit: #ff3b30;
+            --sev-hoch: #ff6b35;
+            --sev-mittel: #ffc107;
+        }
+
+        /* ===== RESET & BASE ===== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--font-body); background: var(--bg-primary); color: var(--text-primary); overflow-x: hidden; line-height: 1.6; }
+
+        /* ===== NAVIGATION ===== */
+        nav { position: sticky; top: 0; z-index: 999; background: rgba(13,13,26,0.88); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid rgba(224,64,251,0.18); padding: 0 6%; display: flex; align-items: center; justify-content: space-between; height: 68px; }
+        .nav-logo { display: flex; align-items: center; gap: 11px; text-decoration: none; }
+        .nav-logo img { height: 42px; width: 42px; object-fit: contain; }
+        .nav-logo-fallback { width: 42px; height: 42px; border-radius: 50%; border: 2px solid var(--accent-cyan); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 0.7rem; font-weight: 900; color: var(--accent-cyan); }
+        .nav-logo-text { font-family: var(--font-display); font-size: 0.72rem; font-weight: 700; color: var(--text-primary); letter-spacing: 0.12em; line-height: 1.3; }
+        .nav-links { display: flex; gap: 1.7rem; list-style: none; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; transition: color 0.2s; position: relative; }
+        .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--accent-magenta); transition: width 0.3s ease; }
+        .nav-links a:hover { color: var(--accent-cyan); }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-links a.nav-current { color: var(--accent-cyan); }
+        .nav-links a.nav-current::after { width: 100%; }
+        .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 5px; background: none; border: none; }
+        .hamburger span { display: block; width: 24px; height: 2px; background: var(--text-primary); transition: all 0.3s; }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+        /* ===== BUTTONS ===== */
+        .btn-primary { display: inline-flex; align-items: center; gap: 8px; background: var(--accent-magenta); color: white; text-decoration: none; padding: 14px 30px; border-radius: 50px; font-weight: 700; font-size: 0.93rem; letter-spacing: 0.05em; box-shadow: 0 0 32px rgba(224,64,251,0.42); transition: all 0.3s ease; border: none; cursor: pointer; min-height: 48px; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 52px rgba(224,64,251,0.65); background: #cc00ff; }
+        .btn-secondary { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--accent-cyan); text-decoration: none; padding: 14px 30px; border-radius: 50px; font-weight: 600; font-size: 0.93rem; letter-spacing: 0.05em; border: 1px solid rgba(0,212,255,0.38); transition: all 0.3s ease; min-height: 48px; }
+        .btn-secondary:hover { background: rgba(0,212,255,0.08); border-color: var(--accent-cyan); box-shadow: 0 0 20px rgba(0,212,255,0.2); }
+
+        /* ===== SECTION BASE ===== */
+        section { padding: 80px 6%; }
+        .section-title { text-align: center; font-family: var(--font-display); font-size: clamp(1.4rem, 3vw, 2.2rem); font-weight: 700; letter-spacing: 0.06em; color: var(--text-primary); margin-bottom: 2.6rem; }
+        .section-title::after { content: ''; display: block; width: 56px; height: 3px; background: var(--gradient-wave); margin: 14px auto 0; border-radius: 2px; }
+        .section-lede { max-width: 760px; margin: 0 auto 2.4rem; color: var(--text-muted); font-size: 0.98rem; line-height: 1.8; text-align: center; }
+
+        /* ===== BREADCRUMB ===== */
+        .breadcrumb-strip { background: rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.06); padding: 12px 6%; }
+        .breadcrumb { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); list-style: none; max-width: 900px; margin: 0 auto; }
+        .breadcrumb li + li::before { content: '/'; margin-right: 8px; opacity: 0.5; }
+        .breadcrumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+        .breadcrumb a:hover { color: var(--accent-cyan); }
+        .breadcrumb li:last-child { color: var(--accent-cyan); }
+
+        /* ===== FICTION BANNER (Pflicht-Kennzeichnung) ===== */
+        .fiction-banner {
+            background: rgba(255,107,53,0.1);
+            border-top: 1px solid rgba(255,107,53,0.35);
+            border-bottom: 1px solid rgba(255,107,53,0.35);
+            padding: 14px 6%;
+        }
+        .fiction-banner-inner {
+            max-width: 900px; margin: 0 auto;
+            display: flex; align-items: flex-start; gap: 12px;
+        }
+        .fiction-banner-icon { font-size: 1.15rem; flex-shrink: 0; line-height: 1.5; }
+        .fiction-banner p { font-size: 0.86rem; color: #ffcbb0; line-height: 1.65; }
+        .fiction-banner strong { color: #ff9a5c; }
+
+        /* ===== HERO ===== */
+        .service-hero { background: var(--bg-secondary); padding: 64px 6% 64px; position: relative; overflow: hidden; }
+        .service-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 80% 50%, rgba(123,47,247,0.18) 0%, transparent 60%), radial-gradient(ellipse at 20% 80%, rgba(0,212,255,0.1) 0%, transparent 50%); pointer-events: none; }
+        .service-hero-inner { position: relative; z-index: 1; max-width: 820px; margin: 0 auto; }
+        .service-hero-tag { display: inline-flex; align-items: center; gap: 9px; background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.32); color: var(--accent-cyan); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; padding: 6px 16px; border-radius: 100px; margin-bottom: 1.6rem; }
+        .service-hero h1 { font-family: var(--font-display); font-size: clamp(1.7rem, 4vw, 2.9rem); font-weight: 900; line-height: 1.2; letter-spacing: 0.01em; margin-bottom: 1.2rem; }
+        .service-hero h1 .gradient-word { background: var(--gradient-wave); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .service-hero-subtitle { font-size: 1.05rem; color: var(--text-muted); font-weight: 300; line-height: 1.75; max-width: 660px; }
+        .stat-row { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 2.4rem; }
+        .stat { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; padding: 14px 20px; min-width: 130px; }
+        .stat-val { font-family: var(--font-display); font-size: 1.25rem; font-weight: 900; color: var(--accent-cyan); display: block; }
+        .stat-lbl { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; }
+
+        /* ===== SUMMARY ===== */
+        #summary { background: var(--bg-primary); }
+        .summary-box { max-width: 780px; margin: 0 auto; background: var(--bg-card); border: 1px solid rgba(255,255,255,0.07); border-left: 3px solid var(--accent-cyan); border-radius: 12px; padding: 2rem 2.2rem; }
+        .summary-box p { color: var(--text-muted); font-size: 0.96rem; line-height: 1.85; margin-bottom: 1rem; }
+        .summary-box p:last-child { margin-bottom: 0; }
+        .summary-box strong { color: var(--text-primary); }
+        .legal-note { max-width: 780px; margin: 1.6rem auto 0; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-left: 3px solid var(--text-muted); border-radius: 10px; padding: 1.2rem 1.4rem; }
+        .legal-note p { font-size: 0.84rem; color: var(--text-muted); line-height: 1.75; }
+        .legal-note p + p { margin-top: 0.7rem; }
+        .legal-note strong { color: var(--text-primary); }
+
+        /* ===== METHODIK-KASTEN ===== */
+        #methodik { background: var(--bg-primary); padding-top: 0; }
+        .method-box { max-width: 780px; margin: 0 auto; background: var(--bg-card); border: 1px solid rgba(255,255,255,0.07); border-left: 3px solid var(--accent-magenta); border-radius: 12px; padding: 1.8rem 2rem; }
+        .method-box h3 { font-family: var(--font-display); font-size: 0.82rem; letter-spacing: 0.08em; color: var(--accent-magenta); margin-bottom: 1rem; }
+        .method-box ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+        .method-box li { font-size: 0.88rem; color: var(--text-muted); line-height: 1.7; padding-left: 18px; position: relative; }
+        .method-box li::before { content: '▪'; position: absolute; left: 0; color: var(--accent-cyan); font-size: 0.8rem; }
+        .method-box strong { color: var(--text-primary); }
+
+        /* ===== SEVERITY TABLE ===== */
+        .sev-table-wrap { max-width: 780px; margin: 2.4rem auto 0; }
+        .sev-table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+        .sev-table th { font-family: var(--font-display); font-size: 0.66rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.08); text-align: left; }
+        .sev-table td { padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.05); color: var(--text-muted); }
+        .sev-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 8px; }
+        .sev-dot.crit { background: var(--sev-crit); }
+        .sev-dot.hoch { background: var(--sev-hoch); }
+        .sev-dot.mittel { background: var(--sev-mittel); }
+        .sev-dot.info { background: var(--accent-cyan); }
+
+        /* ===== FINDINGS ===== */
+        #findings { background: var(--bg-secondary); }
+        .findings-list { display: flex; flex-direction: column; gap: 1.6rem; max-width: 820px; margin: 0 auto; }
+        .finding-card { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.07); border-radius: 14px; padding: 1.9rem 2.1rem; }
+        .finding-card.sev-crit { border-left: 4px solid var(--sev-crit); }
+        .finding-card.sev-hoch { border-left: 4px solid var(--sev-hoch); }
+        .finding-card.sev-mittel { border-left: 4px solid var(--sev-mittel); }
+        .finding-head { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 1rem; }
+        .finding-badge { font-family: var(--font-display); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 4px 11px; border-radius: 100px; }
+        .finding-badge.sev-crit { background: rgba(255,59,48,0.15); color: var(--sev-crit); border: 1px solid rgba(255,59,48,0.35); }
+        .finding-badge.sev-hoch { background: rgba(255,107,53,0.15); color: var(--sev-hoch); border: 1px solid rgba(255,107,53,0.32); }
+        .finding-badge.sev-mittel { background: rgba(255,193,7,0.13); color: var(--sev-mittel); border: 1px solid rgba(255,193,7,0.3); }
+        .finding-id { font-family: var(--font-mono); font-size: 0.74rem; color: var(--text-muted); }
+        .finding-title { font-family: var(--font-body); font-size: 1.05rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1.1rem; }
+        .finding-block { margin-bottom: 1rem; }
+        .finding-block:last-child { margin-bottom: 0; }
+        .finding-block h4 { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-cyan); margin-bottom: 0.4rem; }
+        .finding-block p, .finding-block li { font-size: 0.88rem; color: var(--text-muted); line-height: 1.75; }
+        .finding-block ul { padding-left: 1.2rem; }
+        .finding-actions { display: flex; flex-direction: column; gap: 6px; margin-top: 0.4rem; }
+        .finding-action { font-size: 0.85rem; color: var(--text-muted); padding-left: 16px; position: relative; }
+        .finding-action::before { content: '✓'; position: absolute; left: 0; color: var(--accent-cyan); font-size: 0.72rem; font-weight: 700; }
+        .findings-note { max-width: 820px; margin: 1.8rem auto 0; text-align: center; font-size: 0.82rem; color: var(--text-muted); opacity: 0.85; }
+
+        /* ===== ROADMAP ===== */
+        #roadmap { background: var(--bg-primary); }
+        .roadmap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; max-width: 900px; margin: 0 auto; }
+        .roadmap-card { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 1.8rem 2rem; }
+        .roadmap-card h3 { font-family: var(--font-display); font-size: 0.85rem; letter-spacing: 0.08em; color: var(--accent-cyan); margin-bottom: 1.1rem; }
+        .roadmap-card ul { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+        .roadmap-card li { font-size: 0.85rem; color: var(--text-muted); padding-left: 18px; position: relative; line-height: 1.55; }
+        .roadmap-card li::before { content: '✓'; position: absolute; left: 0; color: var(--accent-cyan); font-size: 0.75rem; font-weight: 700; }
+        .effort-table-wrap { max-width: 700px; margin: 2rem auto 0; overflow-x: auto; }
+        .effort-table { width: 100%; border-collapse: collapse; font-size: 0.84rem; }
+        .effort-table th { font-family: var(--font-display); font-size: 0.64rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.08); text-align: left; }
+        .effort-table td { padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.05); color: var(--text-muted); }
+        .effort-table tr:last-child td { color: var(--text-primary); font-weight: 700; }
+
+        /* ===== DOWNLOAD ===== */
+        #download { background: var(--bg-secondary); text-align: center; }
+        .download-box { max-width: 640px; margin: 0 auto; }
+        .download-box p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.75; margin-bottom: 1.6rem; }
+        .download-fiction-note { max-width: 560px; margin: 1.6rem auto 0; font-size: 0.78rem; color: #ffcbb0; opacity: 0.9; }
+
+        /* ===== CTA SECTION ===== */
+        #cta-service { background: var(--bg-primary); padding: 80px 6%; text-align: center; }
+        .cta-heading { font-family: var(--font-display); font-size: clamp(1.4rem, 3vw, 2.2rem); font-weight: 700; margin-bottom: 1rem; }
+        .cta-subtext { color: var(--text-muted); margin-bottom: 2rem; font-size: 1rem; }
+        .cta-buttons { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+
+        /* ===== FOOTER ===== */
+        footer { background: #06060f; border-top: 1px solid rgba(255,255,255,0.06); padding: 28px 6%; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+        .footer-copy { font-size: 0.79rem; color: var(--text-muted); }
+        .footer-links { display: flex; gap: 1.5rem; }
+        .footer-links a { font-size: 0.79rem; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+        .footer-links a:hover { color: var(--accent-cyan); }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 860px) {
+            .roadmap-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 640px) {
+            .nav-links { display: none; }
+            .hamburger { display: flex; }
+            .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 68px; left: 0; right: 0; background: rgba(13,13,26,0.97); padding: 20px 6%; gap: 1rem; border-bottom: 1px solid rgba(224,64,251,0.18); }
+            section { padding: 56px 5%; }
+            .service-hero { padding: 48px 5% 48px; }
+            .finding-card { padding: 1.5rem 1.4rem; }
+            footer { flex-direction: column; text-align: center; }
+        }
+    </style>
+    <!-- Analytics: self-hosted GoatCounter (cookielos, DSGVO-konform, kein Drittanbieter-CDN) -->
+    <script data-goatcounter="https://stats.cyber-aspis.de/count"
+            async src="https://stats.cyber-aspis.de/count.js"></script>
+</head>
+<body>
+
+<!-- ═══ NAVIGATION ═══ -->
+<nav>
+    <a href="../index.html" class="nav-logo">
+        <img src="../assets/logo.png" alt="Cyber Aspis Logo"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+        <div class="nav-logo-fallback" style="display:none;">CA</div>
+        <span class="nav-logo-text">CYBER ASPIS<br>IT-SECURITY</span>
+    </a>
+    <button class="hamburger" id="hamburger" aria-label="Menü öffnen">
+        <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="nav-links">
+        <li><a href="../ueber-uns.html">Über uns</a></li>
+        <li><a href="../index.html#services">Leistungen</a></li>
+        <li><a href="../analysen/">Analysen</a></li>
+        <li><a href="index.html" class="nav-current">Lernen</a></li>
+        <li><a href="../index.html#faq">FAQ</a></li>
+        <li><a href="../index.html#threat-feed">Intel</a></li>
+        <li><a href="../index.html#contact">Kontakt</a></li>
+    </ul>
+</nav>
+
+<!-- ═══ BREADCRUMB ═══ -->
+<div class="breadcrumb-strip" aria-label="Seitenpfad">
+    <ol class="breadcrumb">
+        <li><a href="../index.html">Startseite</a></li>
+        <li><a href="index.html">Lernen</a></li>
+        <li>Beispiel-Report</li>
+    </ol>
+</div>
+
+<!-- ═══ FIKTIONS-KENNZEICHNUNG (Pflicht) ═══ -->
+<div class="fiction-banner" role="note">
+    <div class="fiction-banner-inner">
+        <span class="fiction-banner-icon" aria-hidden="true">⚠️</span>
+        <p><strong>Fiktives Beispiel.</strong> Die "Zahnarztpraxis Dr. Muster" existiert nicht, die Domain <code>praxis-muster.example</code> kann technisch nicht registriert werden. Alle Befunde auf dieser Seite sind ein realistisches, aber erfundenes Musterszenario. Das Muster zeigt den Report-Standard, nach dem gearbeitet wird, nicht ein abgeschlossenes Kundenprojekt: Cyber Aspis befindet sich im Aufbau. Bei beauftragten Audits werden Kundenname, Domain und alle technischen Details vertraulich behandelt und nie veröffentlicht.</p>
+    </div>
+</div>
+
+<!-- ═══ HERO ═══ -->
+<div class="service-hero">
+    <div class="service-hero-inner">
+        <div class="service-hero-tag">Lernen · Beispiel-Report</div>
+        <h1>So sieht ein <span class="gradient-word">Quick-Check-Report</span> aus</h1>
+        <p class="service-hero-subtitle">
+            Bevor Sie einen Quick-Check beauftragen, sollten Sie wissen, was Sie dafür bekommen. Diese Seite zeigt Aufbau und Tiefe eines Cyber-Aspis-Reports anhand eines vollständig fiktiven Beispiels: Executive Summary, priorisierte Findings mit Geschäfts-Auswirkung und eine konkrete Umsetzungs-Roadmap.
+        </p>
+        <div class="stat-row">
+            <div class="stat"><span class="stat-val">299 €</span><span class="stat-lbl">Quick-Check-Preis</span></div>
+            <div class="stat"><span class="stat-val">9</span><span class="stat-lbl">Findings im Beispiel</span></div>
+            <div class="stat"><span class="stat-val">2–4 h</span><span class="stat-lbl">Prüfdauer</span></div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══ EXECUTIVE SUMMARY ═══ -->
+<section id="summary" aria-labelledby="summary-heading">
+    <h2 id="summary-heading" class="section-title">Executive Summary</h2>
+    <p class="section-lede">So ist der Quick-Check-Report aufgebaut: am Anfang eine für die Geschäftsführung verständliche Zusammenfassung ohne Tech-Jargon, mit klarer Priorität.</p>
+    <div class="summary-box">
+        <p>Bei der Sicherheitsüberprüfung der Praxis-Webseite <strong>praxis-muster.example</strong> wurden <strong>1 kritisches, 3 hohe und 4 mittlere</strong> Sicherheitsprobleme identifiziert, dazu ein Info-Hinweis.</p>
+        <p>Das dringendste Risiko liegt im <strong>Online-Terminbuchungs-Plugin</strong>. Die installierte Version enthält eine seit 2022 öffentlich dokumentierte Schwachstelle, über die sich <strong>ohne jede Anmeldung</strong> Datenbank-Abfragen einschleusen lassen (CVE-2022-0739). Betroffen ist damit potenziell der gesamte Datenbestand der Webseite, einschließlich der Termindaten mit Patientennamen, Kontaktdaten und Behandlungswünschen. Nach DSGVO Art. 9 sind das besondere Kategorien personenbezogener Daten (Gesundheitsdaten), für die Art. 32 DSGVO entsprechend strenge Sicherheitsanforderungen stellt.</p>
+        <p><strong>Empfehlung:</strong> Das Plugin sollte innerhalb von 3 Tagen auf eine Version aktualisiert werden, die die Lücke schließt. Der Aufwand liegt bei ca. 1 bis 2 Stunden Wartung. Die vollständige, priorisierte Roadmap folgt weiter unten.</p>
+        <div class="sev-table-wrap">
+            <table class="sev-table">
+                <thead><tr><th>Severity</th><th>Anzahl</th><th>Bedeutung</th></tr></thead>
+                <tbody>
+                    <tr><td><span class="sev-dot crit"></span>Kritisch</td><td>1</td><td>Sofort beheben, System ggf. offline nehmen</td></tr>
+                    <tr><td><span class="sev-dot hoch"></span>Hoch</td><td>3</td><td>Innerhalb 7 Tagen beheben</td></tr>
+                    <tr><td><span class="sev-dot mittel"></span>Mittel</td><td>4</td><td>Innerhalb 30 Tagen beheben</td></tr>
+                    <tr><td><span class="sev-dot info"></span>Info</td><td>1</td><td>Beobachten, nächstes Wartungsfenster</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="legal-note">
+        <p><strong>Zum Thema Bußgelder, weil danach oft zuerst gefragt wird:</strong> Sicherheitsmängel betreffen Art. 32 DSGVO und fallen damit in den Rahmen von Art. 83 Abs. 4 (bis 10 Mio. € oder 2 % des weltweiten Jahresumsatzes, maßgeblich ist der höhere Betrag). Ist der Mangel zugleich ein Verstoß gegen den Grundsatz der Integrität und Vertraulichkeit nach Art. 5 Abs. 1 lit. f, greift der höhere Rahmen von Abs. 5 (bis 20 Mio. € oder 4 %). Für einen Betrieb in KMU-Größe ist die Prozent-Alternative dabei die kleinere Zahl und praktisch nicht der Maßstab. Die tatsächliche Höhe bemisst sich nach den Kriterien in Art. 83 Abs. 2, wobei ein dokumentiert und zeitnah behobener Mangel entlastend wirkt.</p>
+        <p>Der Report benennt außerdem die Folgepflichten: Meldung an die Aufsichtsbehörde binnen 72 Stunden nach Art. 33, sofern die Verletzung voraussichtlich zu einem Risiko für die betroffenen Personen führt, und Benachrichtigung der Betroffenen selbst nach Art. 34, sobald ein hohes Risiko besteht. Bei Gesundheitsdaten ist Letzteres regelmäßig anzunehmen und in der Praxis die aufwendigere Pflicht.</p>
+        <p><strong>Kein Rechtsrat:</strong> Datenschutzrechtliche Einordnungen im Report dienen der Orientierung und der Priorisierung technischer Maßnahmen. Sie sind keine Rechtsberatung im Sinne des Rechtsdienstleistungsgesetzes. Für verbindliche Bewertungen ist Ihr Datenschutzbeauftragter oder anwaltliche Beratung zuständig.</p>
+    </div>
+</section>
+
+<!-- ═══ METHODIK / AUTORISIERUNG ═══ -->
+<section id="methodik" aria-labelledby="methodik-heading">
+    <div class="method-box">
+        <h3 id="methodik-heading">Wie geprüft wird</h3>
+        <ul>
+            <li><strong>Aktive Prüfungen nur mit schriftlicher Freigabe</strong> des Systembetreibers, im vorab vereinbarten Zeitfenster. Ohne diese Freigabe gibt es keinen Test, auch keinen "kurzen Blick".</li>
+            <li><strong>Kein Datenabfluss.</strong> Prüfschritte, die personenbezogene Daten aus dem System holen würden, werden nicht ausgeführt. Wo eine Schwachstelle nur durch einen ausnutzenden Zugriff endgültig bewiesen wäre, steht das als Einschränkung im Finding, statt als Beweis verkauft zu werden.</li>
+            <li><strong>Nachvollziehbare Belege.</strong> Zitierte Schwachstellen werden mit CVE-Kennung, betroffenem Versionsbereich und Fix-Version angegeben, geprüft an Primärquellen wie NVD oder WPScan. Der Report nennt die Quellen, damit Ihr IT-Dienstleister sie gegenlesen kann.</li>
+            <li><strong>Automatisierte Scanner liefern Hinweise, keine Ergebnisse.</strong> Jeder Treffer wird manuell nachgeprüft, damit Fehlalarme nicht als Finding im Report landen.</li>
+        </ul>
+    </div>
+</section>
+
+<!-- ═══ FINDINGS ═══ -->
+<section id="findings" aria-labelledby="findings-heading">
+    <h2 id="findings-heading" class="section-title">Findings im Detail</h2>
+    <p class="section-lede">Die Finding-Einträge folgen dieser Struktur: was das Problem ist, was konkret gefunden wurde, welche Geschäfts-Auswirkung es hat und was zu tun ist. Drei Beispiele aus unterschiedlichen Schwere-Graden:</p>
+
+    <div class="findings-list">
+
+        <div class="finding-card sev-crit">
+            <div class="finding-head">
+                <span class="finding-badge sev-crit">Kritisch</span>
+                <span class="finding-id">F-01 · CWE-89 · CVE-2022-0739</span>
+            </div>
+            <h3 class="finding-title">Datenbank-Zugriff über das Termin-Buchungs-Plugin ohne Anmeldung</h3>
+
+            <div class="finding-block">
+                <h4>Was bedeutet das?</h4>
+                <p>Das Plugin, mit dem Patienten online Termine buchen (BookingPress, installiert in Version 1.0.10), gibt eine Eingabe aus dem Buchungsformular ungeprüft an die Datenbank weiter. Ein Angreifer kann dadurch eigene Datenbank-Befehle einschleusen, ohne sich anzumelden und ohne einen Termin zu buchen. Es genügt der Aufruf einer Schnittstelle, die das Plugin für alle Besucher offen hält. Die Lücke ist seit 2022 dokumentiert (CVE-2022-0739, CVSS 9.8 nach NVD), betroffen sind alle Versionen vor 1.0.11, und fertige Angriffsbefehle sind in öffentlichen Schwachstellen-Datenbanken frei einsehbar. Im Katalog aktiv ausgenutzter Schwachstellen der US-Behörde CISA ist sie nicht geführt.</p>
+            </div>
+            <div class="finding-block">
+                <h4>Befund</h4>
+                <p>Im Musterszenario war die Plugin-Version über die öffentlich abrufbare <code>readme.txt</code> auslesbar und lag im verwundbaren Bereich. Eine nicht-invasive Prüfung bestätigte, dass die betroffene Schnittstelle ohne Anmeldung erreichbar ist und auf veränderte Parameter mit unterschiedlichem Antwortverhalten reagiert. Ein ausnutzender Datenbank-Zugriff wurde bewusst nicht durchgeführt, um Patientendaten nicht zu berühren. Diese Einschränkung steht so auch im Report, statt einen Beweis zu behaupten, den die Prüfung nicht liefert.</p>
+            </div>
+            <div class="finding-block">
+                <h4>Geschäfts-Auswirkung</h4>
+                <p>Bei einer Ausnutzung wäre der Datenbestand der Webseite lesbar: Termindaten mit Patientennamen und Kontaktdaten, Behandlungsanmerkungen aus dem Buchungsformular sowie die Benutzerkonten der Webseite samt Passwort-Prüfsummen, was in der Folge eine Übernahme des Administrator-Zugangs ermöglichen kann. Termindaten einer Zahnarztpraxis sind Gesundheitsdaten nach Art. 9 DSGVO. Der Report ordnet die daran hängenden Melde- und Benachrichtigungspflichten ein (Art. 33 und Art. 34) und beziffert den Bußgeldrahmen nach Art. 83 in dem oben beschriebenen Verhältnis.</p>
+            </div>
+            <div class="finding-block">
+                <h4>Was sollte getan werden?</h4>
+                <div class="finding-actions">
+                    <span class="finding-action">Sofort (3 Tage): Plugin auf mindestens 1.0.11, besser auf die aktuelle stabile Version aktualisieren, ca. 1h</span>
+                    <span class="finding-action">Sofort (3 Tage): Backup vor Update, danach Test der Termin-Buchung, ca. 1h</span>
+                    <span class="finding-action">Sofort (3 Tage): Webserver-Logs auf Aufrufe der betroffenen Schnittstelle prüfen, um einen bereits erfolgten Zugriff auszuschließen, ca. 1h</span>
+                    <span class="finding-action">30 Tage: Automatische Plugin-Updates aktivieren, ca. 30 Min</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="finding-card sev-hoch">
+            <div class="finding-head">
+                <span class="finding-badge sev-hoch">Hoch</span>
+                <span class="finding-id">F-03 · CWE-307</span>
+            </div>
+            <h3 class="finding-title">Schwaches Login-Verhalten und kein Brute-Force-Schutz</h3>
+
+            <div class="finding-block">
+                <h4>Was bedeutet das?</h4>
+                <p>Im Musterszenario ließen sich an der Admin-Login-Seite (<code>/wp-admin</code>) 200 gängige Passwörter in weniger als zwei Minuten durchprobieren, ohne dass das System reagierte: keine Konto-Sperre, kein Captcha, keine Verzögerung. Zusätzlich akzeptiert das System kurze, einfache Passwörter, und es ist keine Multi-Faktor-Authentifizierung aktiv.</p>
+            </div>
+            <div class="finding-block">
+                <h4>Befund</h4>
+                <p>Login-Versuch-Limit: nicht konfiguriert. Multi-Faktor-Authentifizierung: nicht aktiviert. Erlaubte Passwort-Mindestkomplexität: 6 Zeichen, kein Sonderzeichen-Zwang. Der Test mit 200 häufigen Passwörtern in unter zwei Minuten löste keine Sperre aus, alle Versuche wurden verarbeitet. Kein Versuch war erfolgreich, es wurde kein Zugang erlangt. Die Passwortliste bestand aus öffentlichen Standard-Listen, nicht aus praxisbezogenen Begriffen.</p>
+            </div>
+            <div class="finding-block">
+                <h4>Geschäfts-Auswirkung</h4>
+                <p>Ein Angreifer kann mit Standard-Werkzeugen systematisch tausende Passwort-Kombinationen testen, bis er Zugriff hat. Bei einem schwachen Passwort dauert das Stunden statt Wochen.</p>
+            </div>
+            <div class="finding-block">
+                <h4>Was sollte getan werden?</h4>
+                <div class="finding-actions">
+                    <span class="finding-action">7 Tage: Login-Schutz-Plugin (z. B. "Limit Login Attempts Reloaded") installieren, 30 Min</span>
+                    <span class="finding-action">7 Tage: Multi-Faktor-Authentifizierung aktivieren, ca. 1h inkl. Schulung</span>
+                    <span class="finding-action">30 Tage: Passwort-Policy auf min. 12 Zeichen mit Sonderzeichen durchsetzen, 30 Min</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="finding-card sev-mittel">
+            <div class="finding-head">
+                <span class="finding-badge sev-mittel">Mittel</span>
+                <span class="finding-id">F-05</span>
+            </div>
+            <h3 class="finding-title">Fehlende Sicherheits-Header</h3>
+
+            <div class="finding-block">
+                <h4>Was bedeutet das?</h4>
+                <p>Mehrere wichtige HTTP-Sicherheits-Header sind auf dem Webserver nicht gesetzt: <code>Content-Security-Policy</code> (verhindert Code-Einschleusung), <code>X-Content-Type-Options: nosniff</code> (verhindert MIME-Sniffing-Angriffe), <code>Referrer-Policy</code> und <code>Permissions-Policy</code> (schränkt Browser-Funktionen ein).</p>
+            </div>
+            <div class="finding-block">
+                <h4>Was sollte getan werden?</h4>
+                <div class="finding-actions">
+                    <span class="finding-action">Im Webserver-Konfigurationsfile ergänzen, ca. 1h, kann mit dem HTTPS-Finding zusammen erledigt werden</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <p class="findings-note">Der vollständige Report enthält alle 9 Findings. Zusätzlich zu den drei hier gezeigten Beispielen sind das zwei weitere hohe Befunde, drei weitere mittlere und ein Info-Hinweis, dazu die Methodik-Details, die Quellenangaben zu den zitierten Schwachstellen und ein Glossar der Fachbegriffe.</p>
+</section>
+
+<!-- ═══ ROADMAP ═══ -->
+<section id="roadmap" aria-labelledby="roadmap-heading">
+    <h2 id="roadmap-heading" class="section-title">Empfehlungen-Roadmap (Auszug)</h2>
+    <p class="section-lede">Am Ende des Reports steht eine priorisierte Roadmap statt einer unsortierten Findings-Liste, damit sofort klar ist, womit begonnen werden sollte.</p>
+
+    <div class="roadmap-grid">
+        <div class="roadmap-card">
+            <h3>Sofort (7 Tage) · 4–6h Arbeit</h3>
+            <ul>
+                <li>Buchungs-Plugin auf die Fix-Version aktualisieren (F-01, kritisch)</li>
+                <li>WordPress Core auf die aktuelle stabile Version aktualisieren (F-02)</li>
+                <li>Login-Schutz-Plugin installieren, 2FA aktivieren (F-03)</li>
+            </ul>
+        </div>
+        <div class="roadmap-card">
+            <h3>30 Tage · 3–4h Arbeit</h3>
+            <ul>
+                <li>HTTPS-Erzwingung und HSTS-Header setzen (F-04)</li>
+                <li>Fehlende Sicherheits-Header ergänzen (F-05)</li>
+                <li>Server-Versionsdetails ausblenden (F-06)</li>
+                <li>Admin-Bereich IP-beschränken (F-07)</li>
+                <li>Test-Subdomain klären (F-09)</li>
+            </ul>
+        </div>
+        <div class="roadmap-card">
+            <h3>90 Tage · Pflege</h3>
+            <ul>
+                <li>Datenschutzerklärung extern aktualisieren lassen (F-08)</li>
+                <li>Wartungsvertrag für regelmäßige Updates aufsetzen</li>
+                <li>Optional: Cloudflare Free als WAF vorschalten</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="effort-table-wrap">
+        <table class="effort-table">
+            <thead><tr><th>Posten</th><th>Eigene Zeit</th><th>Externer Aufwand</th></tr></thead>
+            <tbody>
+                <tr><td>Sofort-Maßnahmen</td><td>1h</td><td>4–5h IT-Dienstleister (≈ 250–400 €)</td></tr>
+                <tr><td>30-Tage-Maßnahmen</td><td>30 Min</td><td>3–4h IT-Dienstleister (≈ 200–300 €)</td></tr>
+                <tr><td>90-Tage-Maßnahmen</td><td>30 Min</td><td>Datenschutzerklärung: externes Honorar nach Aufwand, Angebot einholen</td></tr>
+                <tr><td>Gesamt (technische Maßnahmen)</td><td>~2h</td><td>~450–700 € einmalig, danach ~25–35 €/Monat Wartung</td></tr>
+            </tbody>
+        </table>
+        <p class="findings-note">Die Beträge sind Schätzungen auf Basis marktüblicher Stundensätze für IT-Dienstleister und ersetzen kein Angebot Ihres Dienstleisters. Das Honorar für die Datenschutzerklärung hängt vom Umfang der Verarbeitungen ab und wird hier bewusst nicht geschätzt.</p>
+    </div>
+</section>
+
+<!-- ═══ DOWNLOAD ═══ -->
+<section id="download" aria-labelledby="download-heading">
+    <h2 id="download-heading" class="section-title">Vollständigen Beispiel-Report als PDF</h2>
+    <div class="download-box">
+        <p>Das PDF enthält alle 9 Findings, die vollständige Methodik, die Quellenangaben zu den zitierten Schwachstellen und das Fachbegriffe-Glossar, exakt in dem Layout, in dem Sie den Report als Auftraggeber erhalten.</p>
+        <p class="download-fiction-note"><strong>Die PDF-Version wird gerade aktualisiert</strong> und steht derzeit nicht zum Download bereit. Die Inhalte auf dieser Seite entsprechen dem aktuellen Stand. Wenn Sie das vollständige Muster als PDF brauchen, fragen Sie es unter <a href="mailto:kontakt@cyber-aspis.de?subject=Beispiel-Report%20als%20PDF" style="color:var(--accent-cyan)">kontakt@cyber-aspis.de</a> an.</p>
+    </div>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<section id="cta-service" aria-labelledby="cta-service-heading">
+    <h2 id="cta-service-heading" class="cta-heading">Neugierig, was ein Quick-Check für Ihre Systeme findet?</h2>
+    <p class="cta-subtext">Im Erstgespräch (30 Minuten, kostenfrei) klären wir Scope und Freigabe. Die Prüfung selbst dauert 2 bis 4 Stunden, den Report erhalten Sie im Anschluss. Einen konkreten Termin dafür vereinbaren wir im Gespräch.</p>
+    <div class="cta-buttons">
+        <a href="mailto:kontakt@cyber-aspis.de?subject=Anfrage%20Quick-Check" class="btn-primary">
+            Quick-Check anfragen →
+        </a>
+        <a href="../index.html#contact" class="btn-secondary">
+            Zum Kontaktformular
+        </a>
+    </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+    <span class="footer-copy">© 2026 Cyber Aspis IT-Security · Alle Rechte vorbehalten</span>
+    <div class="footer-links">
+        <a href="../index.html">Startseite</a>
+        <a href="index.html">Lernen</a>
+        <a href="../index.html#contact">Kontakt</a>
+        <a href="../impressum.html">Impressum</a>
+        <a href="../datenschutz.html">Datenschutz</a>
+    </div>
+</footer>
+
+<script>
+    // Hamburger toggle
+    const hamburger = document.getElementById('hamburger');
+    const navLinks  = document.getElementById('nav-links');
+    if (hamburger && navLinks) {
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('open');
+            hamburger.setAttribute('aria-label',
+                navLinks.classList.contains('open') ? 'Menü schließen' : 'Menü öffnen');
+        });
+    }
+</script>
+</body>
+</html>

@@ -1113,6 +1113,7 @@
         <li><a href="ueber-uns.html">Über uns</a></li>
         <li><a href="#services">Leistungen</a></li>
         <li><a href="analysen/">Analysen</a></li>
+        <li><a href="lernen/">Lernen</a></li>
         <li><a href="#faq">FAQ</a></li>
         <li><a href="#threat-feed">Intel</a></li>
         <li><a href="#contact">Kontakt</a></li>
@@ -1639,40 +1640,11 @@
 <footer>
     <span class="footer-copy">© 2026 Cyber Aspis IT-Security · Alle Rechte vorbehalten</span>
     <div class="footer-links">
-        <a href="#" onclick="openModal('modal-impressum'); return false;">Impressum</a>
-        <a href="#" onclick="openModal('modal-datenschutz'); return false;">Datenschutzerklärung</a>
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutzerklärung</a>
         <a href="#" onclick="openModal('modal-agb'); return false;">AGB</a>
     </div>
 </footer>
-
-<!-- ═══ MODAL: IMPRESSUM ═══ -->
-<div id="modal-impressum" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-impressum')">
-    <div class="modal-box">
-        <button class="modal-close" onclick="closeModal('modal-impressum')">✕</button>
-        <h2>Impressum</h2>
-        <p><strong>Angaben gemäß § 5 TMG</strong></p>
-        <p>
-            Georgios Papagiannis<br>
-            Cyber Aspis IT-Security<br>
-            Peinerstraße 77<br>
-            30519 Hannover<br>
-            Deutschland
-        </p>
-        <p>
-            <strong>Kontakt</strong><br>
-            Telefon: <a href="tel:+4951156356965">+49 511 56356965</a><br>
-            E-Mail: <a href="mailto:kontakt@cyber-aspis.de">kontakt@cyber-aspis.de</a>
-        </p>
-        <p>
-            <strong>Umsatzsteuer</strong><br>
-            Kleinunternehmer gemäß § 19 UStG, daher kein Ausweis der Umsatzsteuer und keine Umsatzsteuer-Identifikationsnummer.
-        </p>
-        <p>
-            <strong>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</strong><br>
-            Georgios Papagiannis (Anschrift wie oben)
-        </p>
-    </div>
-</div>
 
 <!-- ═══ MODAL: AGB ═══ -->
 <div id="modal-agb" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-agb')">
@@ -1728,95 +1700,6 @@
     </div>
 </div>
 
-<!-- ═══ MODAL: DATENSCHUTZ ═══ -->
-<div id="modal-datenschutz" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-datenschutz')">
-    <div class="modal-box">
-        <button class="modal-close" onclick="closeModal('modal-datenschutz')">✕</button>
-        <h2>Datenschutzerklärung</h2>
-        <p><strong>1. Verantwortlicher</strong></p>
-        <p>
-            Georgios Papagiannis · Cyber Aspis IT-Security<br>
-            E-Mail: <a href="mailto:kontakt@cyber-aspis.de">kontakt@cyber-aspis.de</a>
-        </p>
-
-        <p><strong>2. Erhebung und Verarbeitung personenbezogener Daten</strong></p>
-        <p>
-            Diese Website setzt keine Tracking-Cookies und bindet keine werblichen Drittanbieter-Inhalte ein. Zur anonymen Reichweitenmessung wird eine selbst gehostete, cookielose Analytics-Lösung eingesetzt (GoatCounter, siehe Punkt 6).
-            Alle Schriftarten (Fonts) werden lokal vom eigenen Server ausgeliefert — es findet keine Verbindung zu Google-Servern statt.
-            Mit Ausnahme der unter Punkt 7 beschriebenen API-Aufrufe für den Threat-Intelligence-Feed werden keine Daten an Dritte übermittelt.
-        </p>
-
-        <p><strong>3. Kontaktaufnahme per E-Mail</strong></p>
-        <p>
-            Wenn Sie uns per E-Mail kontaktieren, werden Ihre übermittelten Daten (Name, E-Mail-Adresse, Nachrichteninhalt) zum Zweck der Bearbeitung Ihrer Anfrage verarbeitet.
-            Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche Maßnahmen / Vertragserfüllung).
-            Die Daten werden nicht an Dritte weitergegeben und nach Abschluss der Anfrage gelöscht, sofern keine gesetzliche Aufbewahrungspflicht besteht.
-        </p>
-
-        <p><strong>4. Server-Logfiles</strong></p>
-        <p>
-            Der Hosting-Anbieter (Hostinger) erhebt automatisch Server-Logfiles beim Aufruf der Website. Diese enthalten: IP-Adresse, Browsertyp, Betriebssystem, Referrer-URL, Datum und Uhrzeit.
-            Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an Betrieb und Sicherheit der Website).
-        </p>
-
-        <p><strong>5. Ihre Rechte</strong></p>
-        <p>
-            Sie haben das Recht auf Auskunft (Art. 15 DSGVO), Berichtigung (Art. 16), Löschung (Art. 17), Einschränkung der Verarbeitung (Art. 18) sowie Widerspruch (Art. 21).
-            Beschwerden können Sie bei der zuständigen Datenschutzbehörde einreichen.
-        </p>
-
-        <p><strong>6. Reichweitenmessung (GoatCounter, cookielos, selbst gehostet)</strong></p>
-        <p>
-            Zur anonymen Reichweitenmessung nutzt diese Website <strong>GoatCounter</strong>, eine quelloffene Analytics-Software, die auf einem eigenen Server unter <code>stats.cyber-aspis.de</code> betrieben wird. Es findet keine Datenübertragung an Dritte oder ins Ausland statt.
-        </p>
-        <p>
-            GoatCounter verwendet <strong>keine Cookies</strong> und speichert keine dauerhafte, personenbezogene Kennung. Zur Unterscheidung von Aufrufen innerhalb einer Sitzung wird im Arbeitsspeicher aus Website-Kennung, Browser-Kennung (User-Agent) und IP-Adresse eine zufällige, nicht zurückrechenbare Kennung erzeugt. IP-Adresse und User-Agent werden dabei <strong>zu keinem Zeitpunkt dauerhaft gespeichert</strong>, die Zuordnung wird nach 8 Stunden verworfen. Gespeichert werden ausschließlich anonyme Aggregatdaten: aufgerufene Seite, Referrer, Browsertyp, ungefährer Standort (Land, aus der IP abgeleitet) und Bildschirmgröße.
-        </p>
-        <p>
-            Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einer datensparsamen, anonymen Reichweitenmessung ohne Personenbezug). Da keine personenbezogenen Daten gespeichert werden, ist eine Einwilligung nicht erforderlich.
-        </p>
-        <p>
-            Darüber hinaus verwendet diese Website keine Tracking-Cookies. Der einzige im Browser gespeicherte Wert ist ein lokales Flag (<code>ca-banner-closed</code> im localStorage), das Ihre Einstellung zum Info-Banner speichert. Es enthält keine personenbezogenen Daten.
-        </p>
-
-        <p><strong>7. Externe API-Aufrufe – Threat Intelligence Feed</strong></p>
-        <p>
-            Die Seite ruft beim Laden automatisch Daten von zwei externen Diensten ab,
-            um den Abschnitt „Aktuelle Bedrohungslage" zu befüllen:
-        </p>
-        <p>
-            <strong>CISA Known Exploited Vulnerabilities (KEV)</strong><br>
-            Anbieter: U.S. Cybersecurity and Infrastructure Security Agency (CISA), USA<br>
-            URL: <code>https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json</code><br>
-            Verarbeitete Daten: Öffentliche Schwachstellendaten (keine personenbezogenen Daten).
-            Bei diesem Abruf wird Ihre IP-Adresse an die Server der CISA übermittelt.
-            Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der Darstellung
-            aktueller Sicherheitsinformationen für Besucher einer IT-Security-Website).
-        </p>
-        <p>
-            <strong>HackerNews Algolia Search API</strong><br>
-            Anbieter: Algolia, Inc., 55 2nd St., 4th Floor, San Francisco, CA 94105, USA<br>
-            URL: <code>https://hn.algolia.com/api/v1/search?...</code><br>
-            Verarbeitete Daten: Öffentliche News-Metadaten (keine personenbezogenen Daten).
-            Bei diesem Abruf wird Ihre IP-Adresse an die Server von Algolia übermittelt.
-            Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der Darstellung
-            tagesaktueller Security-Nachrichten).
-        </p>
-        <p>
-            Die abgerufenen Daten werden ausschließlich im <code>sessionStorage</code> Ihres Browsers
-            für maximal 5 Minuten zwischengespeichert und bei Tab-Schließung automatisch gelöscht.
-            Es werden keine personenbezogenen Daten an Dritte übertragen.
-            Datenschutzerklärungen der Anbieter:
-            <a href="https://www.cisa.gov/privacy-policy" target="_blank" rel="noopener noreferrer">cisa.gov/privacy-policy</a>
-            und <a href="https://www.algolia.com/policies/privacy/" target="_blank" rel="noopener noreferrer">algolia.com/policies/privacy</a>.
-        </p>
-
-        <p style="margin-top:1.5rem; color: var(--text-muted); font-size: 0.85rem;">
-            <em>Stand: Juli 2026</em>
-        </p>
-    </div>
-</div>
-
 <script>
     // Construction banner (einmal schließbar, merkt sich den Zustand)
     (function () {
@@ -1839,7 +1722,7 @@
     }
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
-            ['modal-impressum','modal-datenschutz'].forEach(function(id) { closeModal(id); });
+            ['modal-agb'].forEach(function(id) { closeModal(id); });
         }
     });
 
