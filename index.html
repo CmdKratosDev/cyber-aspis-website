@@ -34,7 +34,7 @@
       "name": "Cyber Aspis IT-Security",
       "url": "https://cyber-aspis.de",
       "logo": "https://cyber-aspis.de/assets/logo.png",
-      "description": "Professionelle IT-Sicherheitsdienstleistungen für KMU — Penetrationstests, Vulnerability Assessments, Malware-Scans und Security-Beratung.",
+      "description": "Professionelle IT-Sicherheitsdienstleistungen für KMU — Sicherheits-Checks aus der Ferne und vor Ort, Vulnerability Assessments, KI-Sicherheits-Audits und Security-Beratung.",
       "areaServed": "DE",
       "availableLanguage": "German",
       "contactPoint": {
@@ -418,6 +418,10 @@
             overflow: hidden;
             border: 1px solid rgba(255,255,255,0.05);
             transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            /* Karten einer Reihe sind gleich hoch — der Innenraum muss die
+               überschüssige Höhe aufnehmen, sonst rutscht alles unter der
+               unterschiedlich langen Liste nach oben weg. */
+            display: flex; flex-direction: column;
         }
         .service-card:hover {
             transform: translateY(-7px);
@@ -425,7 +429,8 @@
             border-color: rgba(224,64,251,0.28);
         }
         .card-visual {
-            height: 175px; display: flex; align-items: center; justify-content: center;
+            height: 175px; flex: 0 0 175px;
+            display: flex; align-items: center; justify-content: center;
             position: relative; overflow: hidden;
         }
         .card-visual::before {
@@ -443,6 +448,23 @@
         }
         .card-body {
             background: #ffffff; padding: 20px 22px;
+            flex: 1 1 auto;
+            display: flex; flex-direction: column;
+        }
+        /* Reihenfolge im Kartenfuß: der kleingedruckte Hinweis schließt die
+           Beschreibung ab, danach folgen Preiszeile und CTA. Dadurch ist der
+           Block unter der Preiszeile in allen Karten gleich hoch — Preis und
+           Button liegen innerhalb einer Reihe auf einer Linie, der
+           Ausgleichsraum entsteht darüber. Rein per CSS, ohne Markup-Umbau. */
+        .card-body > p { order: 1; }
+        .card-price    { order: 2; }
+        .card-link     { order: 3; }
+        /* Karten ohne CTA (z. B. „Laufende Überwachung", nicht bestellbar)
+           reservieren die Höhe des fehlenden Links, damit ihre Preiszeile auf
+           der Linie der Nachbarkarten bleibt. Werte = margin-top des Links
+           (10px) + dessen Zeilenhöhe (font-size 0.68rem × line-height 1.6). */
+        .card-body:not(:has(.card-link)) .card-price {
+            margin-bottom: calc(10px + 0.68rem * 1.6);
         }
         .card-title {
             font-family: var(--font-body); font-size: 0.97rem; font-weight: 700;
@@ -462,6 +484,8 @@
         }
         .card-price {
             display: inline-flex; align-items: center;
+            align-self: flex-start;
+            margin-top: auto;
             background: rgba(224,64,251,0.1);
             color: var(--accent-magenta);
             border: 1px solid rgba(224,64,251,0.3);
@@ -473,6 +497,7 @@
         /* ===== CARD LINK ===== */
         .card-link {
             display: inline-flex; align-items: center; gap: 5px;
+            align-self: flex-start;
             margin-top: 10px;
             font-family: var(--font-display); font-size: 0.68rem;
             font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
@@ -716,18 +741,9 @@
             padding-top: 1rem;
             display: flex; flex-direction: column; gap: 4px;
         }
-        .bundle-original { font-size: 0.8rem; color: var(--text-muted); text-decoration: line-through; }
         .bundle-price {
             font-family: var(--font-display); font-size: 1.45rem; font-weight: 700;
             color: var(--text-primary);
-        }
-        .bundle-savings {
-            display: inline-block;
-            background: rgba(0,212,255,0.12); color: var(--accent-cyan);
-            border: 1px solid rgba(0,212,255,0.28);
-            border-radius: 100px; padding: 3px 11px;
-            font-family: var(--font-display); font-size: 0.6rem; font-weight: 700;
-            letter-spacing: 0.1em; text-transform: uppercase;
         }
         .bundle-cta {
             display: block; text-align: center;
@@ -1092,9 +1108,9 @@
 </head>
 <body>
 
-<!-- ═══ BETA-PHASE BANNER ═══ -->
+<!-- ═══ REFERENZKUNDEN-BANNER ═══ -->
 <div id="construction-banner">
-    ✨&nbsp;&nbsp;Beta-Phase aktiv — Frühbucher-Konditionen für KMU-Quick-Checks verfügbar. Offizieller Launch Q3 2026.
+    ✨&nbsp;&nbsp;Referenzkunden-Programm: die ersten drei Betriebe erhalten 50 % Nachlass auf die Sicherheits-Checks gegen eine schriftliche Referenz. Befristet bis 31.12.2026.
     <button id="close-banner" aria-label="Banner schließen">✕</button>
 </div>
 
@@ -1213,7 +1229,7 @@
                 absichert, denkt Sicherheit vom Zutritt bis ins Netzwerk. Genau diesen Blick
                 bringt Cyber Aspis in die IT-Sicherheit für den Mittelstand.<br><br>
                 Wir bieten umfassende IT-Sicherheitsdienstleistungen für kleine und
-                mittlere Unternehmen. Von der Schwachstellenanalyse über Malware-Scans
+                mittlere Unternehmen. Vom Quick-Check aus der Ferne über den Vor-Ort-Check
                 bis hin zur Backup-Strategie – unser Ziel ist es, Ihre digitale Sicherheit
                 zu stärken und Sie vor modernen Cyber-Bedrohungen zu schützen.<br><br>
                 Maßgeschneiderte Lösungen, klare Berichte, persönlicher Ansprechpartner.
@@ -1221,12 +1237,12 @@
             </p>
             <div class="about-stats">
                 <div class="stat">
-                    <span class="stat-val">299 €</span>
-                    <span class="stat-lbl">ab Quick-Check</span>
+                    <span class="stat-val">400 €</span>
+                    <span class="stat-lbl">ab Quick-Check remote</span>
                 </div>
                 <div class="stat">
-                    <span class="stat-val">2–4h</span>
-                    <span class="stat-lbl">Erste Ergebnisse</span>
+                    <span class="stat-val">4,5 h</span>
+                    <span class="stat-lbl">Aufwand Quick-Check</span>
                 </div>
                 <div class="stat">
                     <span class="stat-val">OWASP</span>
@@ -1245,6 +1261,22 @@
 <!-- ═══ SERVICES ═══ -->
 <section id="services">
     <h2 class="section-title">IT-Security Leistungen</h2>
+    <p style="text-align:center; color:var(--text-muted); font-size:0.95rem; margin-top:-1.5rem; margin-bottom:1rem; max-width:760px; margin-left:auto; margin-right:auto;">
+        Den Sicherheits-Check gibt es in drei Tiefen — von der reinen Fernprüfung bis zum Vor-Ort-Check im Betrieb.
+        Die Nachprüfung nach Behebung ist zu jeder Variante zubuchbar. Alles Weitere baut darauf auf.
+    </p>
+    <p style="text-align:center; color:var(--text-muted); font-size:0.82rem; margin-bottom:3rem; max-width:760px; margin-left:auto; margin-right:auto;">
+        Alle Preise in Euro und netto. Cyber Aspis wendet die Kleinunternehmerregelung nach § 19 UStG an —
+        Umsatzsteuer wird nicht ausgewiesen und nicht berechnet. Anfahrt bis 50 km ist enthalten, darüber 0,30 €/km
+        und die halbe Fahrzeit. <strong>Preise Stand 31.07.2026.</strong>
+    </p>
+    <p style="text-align:center; color:var(--text-muted); font-size:0.82rem; margin-bottom:3rem; max-width:760px; margin-left:auto; margin-right:auto;">
+        <strong>Referenzkunden-Programm:</strong> Die ersten drei Betriebe erhalten 50 % Nachlass auf den Regelpreis
+        der Sicherheits-Checks. Gegenleistung ist eine schriftliche Referenz nach Abschluss und die Zustimmung, als
+        Referenzprojekt genannt zu werden — Betriebsart und Region genügen, ein Name ist nicht erforderlich. Der
+        Nachlass wird auf der Rechnung als eigene Position ausgewiesen. Befristet bis 31.12.2026 oder bis die drei
+        Plätze vergeben sind, je nachdem was zuerst eintritt.
+    </p>
     <div class="services-wrap">
 
         <div class="service-card">
@@ -1252,15 +1284,132 @@
                 <div class="icon-ring">🔍</div>
             </div>
             <div class="card-body">
-                <h3 class="card-title">Security Quick-Check</h3>
+                <h3 class="card-title">1a · Quick-Check remote</h3>
                 <ul class="card-list">
-                    <li>Netzwerk-Scan &amp; offene Ports</li>
-                    <li>Web-Application-Check</li>
-                    <li>Konfigurations-Review</li>
-                    <li>PDF-Report + Review-Call</li>
+                    <li>Website und TLS-Verschlüsselung</li>
+                    <li>Absender-Absicherung der Domain (SPF, DKIM, DMARC)</li>
+                    <li>Sicherheits-Header</li>
+                    <li>Technische Prüfung eingebundener Drittdienste</li>
+                    <li>Bericht + Nachbesprechung · rund 4,5 Stunden Aufwand</li>
                 </ul>
-                <span class="card-price">299 € Pauschal</span>
-                <a class="card-link" href="#contact" data-goatcounter-click="cta-jetzt-anfragen">Jetzt anfragen →</a>
+                <span class="card-price">400 € Pauschal</span>
+                <a class="card-link" href="#contact" data-goatcounter-click="cta-jetzt-anfragen" onclick="prefillService('1a Quick-Check remote'); return false;">Jetzt anfragen →</a>
+                <p style="font-family:var(--font-mono); font-size:0.66rem; color:#6a6a86; margin-top:10px; line-height:1.5;">
+                    Geprüft wird die Technik. Eine rechtliche Bewertung von Datenschutzerklärungen oder
+                    Einwilligungen ist Rechtsdienstleistung und bleibt Anwälten und Datenschutzberatungen vorbehalten.
+                </p>
+            </div>
+        </div>
+
+        <div class="service-card">
+            <div class="card-visual">
+                <div class="icon-ring">🗒️</div>
+            </div>
+            <div class="card-body">
+                <h3 class="card-title">1b · Aufnahme &amp; Beratung vor Ort</h3>
+                <ul class="card-list">
+                    <li>Aufnahmegespräch im Betrieb</li>
+                    <li>Sichtprüfung ohne Eingriff in Ihre Systeme</li>
+                    <li>Betrachtung von außen</li>
+                    <li>Schriftliche Zusammenfassung · rund 5 Stunden Aufwand</li>
+                    <li>Wird bei Folgeauftrag binnen 3 Monaten voll angerechnet</li>
+                </ul>
+                <span class="card-price">450 € Pauschal</span>
+                <a class="card-link" href="#contact" onclick="prefillService('1b Aufnahme und Beratung vor Ort'); return false;">Jetzt anfragen →</a>
+            </div>
+        </div>
+
+        <div class="service-card">
+            <div class="card-visual">
+                <div class="icon-ring">🏢</div>
+            </div>
+            <div class="card-body">
+                <h3 class="card-title">1c · Vor-Ort-Check klein</h3>
+                <ul class="card-list">
+                    <li>Alles aus 1b</li>
+                    <li>Netz- und Geräteaufnahme</li>
+                    <li>Router und WLAN</li>
+                    <li>Arbeitsplätze und Netzwerkspeicher</li>
+                    <li>Bericht und Nachbesprechung · rund 9,5 Stunden Aufwand</li>
+                    <li>Für Betriebe bis ca. 5 Arbeitsplätze</li>
+                </ul>
+                <span class="card-price">850 € Pauschal</span>
+                <a class="card-link" href="#contact" onclick="prefillService('1c Vor-Ort-Check klein'); return false;">Jetzt anfragen →</a>
+            </div>
+        </div>
+
+        <div class="service-card">
+            <div class="card-visual">
+                <div class="icon-ring">✅</div>
+            </div>
+            <div class="card-body">
+                <h3 class="card-title">1e · Nachprüfung nach Behebung</h3>
+                <ul class="card-list">
+                    <li>Verifikation der behobenen Punkte</li>
+                    <li>Kurzbericht · rund 2 Stunden Aufwand</li>
+                    <li>Zu jeder Check-Variante zubuchbar</li>
+                </ul>
+                <span class="card-price">190 € Pauschal</span>
+                <a class="card-link" href="#contact" onclick="prefillService('1e Nachprüfung nach Behebung'); return false;">Jetzt anfragen →</a>
+            </div>
+        </div>
+
+        <div class="service-card">
+            <div class="card-visual">
+                <div class="icon-ring">🔧</div>
+            </div>
+            <div class="card-body">
+                <h3 class="card-title">Härtungs-Tag</h3>
+                <ul class="card-list">
+                    <li>Router- und WLAN-Härtung, Gäste-Netz trennen</li>
+                    <li>Absender-Absicherung der Domain einrichten</li>
+                    <li>Zwei-Faktor-Anmeldung aktivieren</li>
+                    <li>Alte Fernwartungs- und Benutzerzugänge schließen</li>
+                    <li>Datensicherung prüfen und Rückspielung testen</li>
+                    <li>8 Stunden, weitere Stunden 95 €/h</li>
+                </ul>
+                <span class="card-price">720 € Pauschal</span>
+                <a class="card-link" href="#contact" onclick="prefillService('Härtungs-Tag'); return false;">Jetzt anfragen →</a>
+                <p style="font-family:var(--font-mono); font-size:0.66rem; color:#6a6a86; margin-top:10px; line-height:1.5;">
+                    Bei diesem Termin wird aktiv in Ihre Systeme eingegriffen. Umfang, Reihenfolge und die
+                    Haftung dafür werden vor Beginn schriftlich im Angebot festgelegt; Eingriffe erfolgen nur
+                    nach Ihrer ausdrücklichen Freigabe und werden mit Vorher-Nachher-Stand dokumentiert.
+                </p>
+            </div>
+        </div>
+
+        <div class="service-card">
+            <div class="card-visual">
+                <div class="icon-ring">👥</div>
+            </div>
+            <div class="card-body">
+                <h3 class="card-title">Sicherheits-Unterweisung für das Team</h3>
+                <ul class="card-list">
+                    <li>Gefälschte Rechnungen und geänderte Bankverbindungen</li>
+                    <li>Die Chef-Masche: angebliche Eilüberweisung</li>
+                    <li>Phishing in Alltagssprache, echte Beispiele</li>
+                    <li>Passwörter und Zwei-Faktor-Anmeldung praktisch</li>
+                    <li>2 Stunden vor Ort, gesamtes Team</li>
+                </ul>
+                <span class="card-price">290 € · ab 10 Teilnehmenden 49 €/Person</span>
+                <a class="card-link" href="#contact" onclick="prefillService('Sicherheits-Unterweisung'); return false;">Jetzt anfragen →</a>
+            </div>
+        </div>
+
+        <div class="service-card">
+            <div class="card-visual">
+                <div class="icon-ring">🔁</div>
+            </div>
+            <div class="card-body">
+                <h3 class="card-title">Jahres-Check</h3>
+                <ul class="card-list">
+                    <li>Einmal jährlich, gleicher Umfang wie beim ersten Mal</li>
+                    <li>Erinnerung durch Cyber Aspis</li>
+                    <li>Bericht zeigt Verbesserungen und Verschlechterungen</li>
+                    <li>Kein Abo, keine Reaktionszeiten, keine Bereitschaft</li>
+                </ul>
+                <span class="card-price">Regelpreis des Checks abzüglich 15 %</span>
+                <a class="card-link" href="#contact" onclick="prefillService('Jahres-Check'); return false;">Jetzt anfragen →</a>
             </div>
         </div>
 
@@ -1276,24 +1425,8 @@
                     <li>OSINT-Recherche</li>
                     <li>Wiederholungs-Scan nach 30 Tagen</li>
                 </ul>
-                <span class="card-price">ab 760 € (8h-Paket)</span>
+                <span class="card-price">720 € (8 h) · 1.440 € (16 h)</span>
                 <a class="card-link" href="services/vulnerability-assessment.html">Mehr erfahren →</a>
-            </div>
-        </div>
-
-        <div class="service-card">
-            <div class="card-visual">
-                <div class="icon-ring">🦠</div>
-            </div>
-            <div class="card-body">
-                <h3 class="card-title">Malware-Scan &amp; Bereinigung</h3>
-                <ul class="card-list">
-                    <li>Memory- &amp; Prozessanalyse</li>
-                    <li>Dateisystem-Scan</li>
-                    <li>Forensik-Report</li>
-                    <li>Präventions-Empfehlungen</li>
-                </ul>
-                <span class="card-price">349 € Pauschal</span>
             </div>
         </div>
 
@@ -1305,11 +1438,13 @@
                 <h3 class="card-title">Backup-Strategie Setup</h3>
                 <ul class="card-list">
                     <li>3-2-1-Backup-Konzept</li>
-                    <li>Automation &amp; Monitoring</li>
+                    <li>Tool-Auswahl und Einrichtung</li>
                     <li>Recovery-Test (live)</li>
                     <li>30 Tage Support</li>
+                    <li>Bis 8 Stunden, darüber 95 €/h</li>
                 </ul>
-                <span class="card-price">499 € Paketpreis</span>
+                <span class="card-price">720 € Paketpreis</span>
+                <a class="card-link" href="#contact" onclick="prefillService('Backup-Strategie Setup'); return false;">Jetzt anfragen →</a>
             </div>
         </div>
 
@@ -1326,6 +1461,88 @@
                     <li>Umsetzungs-Roadmap</li>
                 </ul>
                 <span class="card-price">95 €/Stunde</span>
+                <a class="card-link" href="#contact" onclick="prefillService('Security-Policy Beratung'); return false;">Jetzt anfragen →</a>
+            </div>
+        </div>
+
+        <div class="service-card">
+            <div class="card-visual">
+                <div class="icon-ring">🤖</div>
+            </div>
+            <div class="card-body">
+                <h3 class="card-title">AI-Quick-Check</h3>
+                <ul class="card-list">
+                    <li>Für selbst gehostete KI (Ollama, Open-WebUI, vLLM, LocalAI)</li>
+                    <li>Container-Exposure und Auth-Layer</li>
+                    <li>Prompt-Injection- und Sysprompt-Leak-Tests</li>
+                    <li>KI-Modell-Audit: welches Modell läuft, ist ein Wechsel möglich</li>
+                    <li>Rund 5 Stunden Aufwand</li>
+                    <li>Optional: erweiterte Jailbreak-Analyse 595 €</li>
+                </ul>
+                <span class="card-price">450 € Pauschal</span>
+                <a class="card-link" href="#contact" onclick="prefillService('AI-Quick-Check'); return false;">Jetzt anfragen →</a>
+            </div>
+        </div>
+
+        <div class="service-card">
+            <div class="card-visual">
+                <div class="icon-ring">⌨️</div>
+            </div>
+            <div class="card-body">
+                <h3 class="card-title">AI-Coding-Quick-Check</h3>
+                <ul class="card-list">
+                    <li>Für Teams mit Claude Code, Cursor, Windsurf, Copilot</li>
+                    <li>Settings-Härtung und Datei-Zugriffssperren</li>
+                    <li>Code-Context-Leak-Tests</li>
+                    <li>Secret-in-Context-Audit</li>
+                    <li>Modell-Wechselbarkeit ohne Vendor-Lock</li>
+                    <li>Rund 3,5 Stunden Aufwand</li>
+                </ul>
+                <span class="card-price">320 € Pauschal</span>
+                <a class="card-link" href="#contact" onclick="prefillService('AI-Coding-Quick-Check'); return false;">Jetzt anfragen →</a>
+            </div>
+        </div>
+
+        <div class="service-card">
+            <div class="card-visual">
+                <div class="icon-ring">📑</div>
+            </div>
+            <div class="card-body">
+                <h3 class="card-title">Technische Datenschutz-Prüfung</h3>
+                <ul class="card-list">
+                    <li>Technische und organisatorische Maßnahmen nach Art. 32 DSGVO</li>
+                    <li>Verschlüsselung und Zugriffskontrolle</li>
+                    <li>Protokollierung und Wiederherstellbarkeit</li>
+                    <li>Löschkonzept in der technischen Umsetzung</li>
+                </ul>
+                <span class="card-price">899 € Paketpreis</span>
+                <a class="card-link" href="services/compliance-audit.html">Mehr erfahren →</a>
+                <p style="font-family:var(--font-mono); font-size:0.66rem; color:#6a6a86; margin-top:10px; line-height:1.5;">
+                    Ausdrücklich keine Rechtsberatung. Die rechtliche Bewertung von Datenschutzerklärungen,
+                    Verarbeitungsverzeichnissen oder Einwilligungen ist Rechtsdienstleistung und bleibt Anwälten
+                    und Datenschutzberatungen vorbehalten. Cyber Aspis prüft die Technik und benennt
+                    Auffälligkeiten, bewertet sie aber nicht rechtlich.
+                </p>
+            </div>
+        </div>
+
+        <div class="service-card">
+            <div class="card-visual">
+                <div class="icon-ring">🚨</div>
+            </div>
+            <div class="card-body">
+                <h3 class="card-title">Notfall-Unterstützung</h3>
+                <ul class="card-list">
+                    <li>Während oder nach einem Sicherheitsvorfall</li>
+                    <li>Reaktion innerhalb von 24 Stunden an Werktagen</li>
+                    <li>Abrechnung nach tatsächlichem Aufwand</li>
+                </ul>
+                <span class="card-price">149 €/Stunde</span>
+                <a class="card-link" href="#contact" onclick="prefillService('Notfall-Unterstützung'); return false;">Jetzt anfragen →</a>
+                <p style="font-family:var(--font-mono); font-size:0.66rem; color:#6a6a86; margin-top:10px; line-height:1.5;">
+                    Bewusst keine 24/7-Bereitschaft. Cyber Aspis wird im Nebenerwerb betrieben; eine
+                    durchgehende Erreichbarkeit kann nicht zugesagt werden.
+                </p>
             </div>
         </div>
 
@@ -1334,14 +1551,17 @@
                 <div class="icon-ring">📡</div>
             </div>
             <div class="card-body">
-                <h3 class="card-title">Managed Security Monitoring</h3>
+                <h3 class="card-title">Laufende Überwachung — in Vorbereitung</h3>
                 <ul class="card-list">
-                    <li>Wazuh SIEM Einrichtung &amp; Konfiguration</li>
-                    <li>Log-Analyse, Intrusion Detection</li>
-                    <li>Monatlicher Security-Report</li>
-                    <li>Incident-Benachrichtigung &amp; Erstreaktion</li>
+                    <li>Derzeit nicht bestellbar, kein Preis, keine Reaktionszeit</li>
+                    <li>Interessenten können sich vormerken lassen</li>
+                    <li>Ein Angebot erfolgt erst, wenn die Leistung zuverlässig erbracht werden kann</li>
                 </ul>
-                <span class="card-price">699 € Setup · ab 199 €/Monat</span>
+                <span class="card-price">In Vorbereitung</span>
+                <p style="font-family:var(--font-mono); font-size:0.66rem; color:#6a6a86; margin-top:10px; line-height:1.5;">
+                    „Laufende Überwachung ist in Vorbereitung. Ich biete sie erst an, wenn ich sie zuverlässig
+                    leisten kann. Ein Bereitschaftsversprechen, das im Ernstfall nicht hält, nützt Ihnen nichts."
+                </p>
             </div>
         </div>
 
@@ -1351,8 +1571,11 @@
 <!-- ═══ SERVICE BUNDLES ═══ -->
 <section id="bundles">
     <h2 class="section-title">Kombinations-Pakete</h2>
-    <p style="text-align:center; color:var(--text-muted); font-size:0.95rem; margin-top:-1.5rem; margin-bottom:3rem;">
-        Mehrere Leistungen kombiniert — günstiger als einzeln gebucht.
+    <p style="text-align:center; color:var(--text-muted); font-size:0.95rem; margin-top:-1.5rem; margin-bottom:1rem;">
+        Mehrere Leistungen kombiniert zu einem Festpreis.
+    </p>
+    <p style="text-align:center; color:var(--text-muted); font-size:0.82rem; margin-bottom:3rem;">
+        Alle Preise netto, Kleinunternehmerregelung nach § 19 UStG. <strong>Preise Stand 31.07.2026.</strong>
     </p>
     <div class="bundles-grid">
 
@@ -1362,19 +1585,16 @@
             <div class="bundle-name">Security Starter</div>
             <div class="bundle-tagline">Ideal für die erste Absicherung</div>
             <ul class="bundle-includes">
-                <li>Security Quick-Check (Netzwerk, Web, Config)</li>
-                <li>PDF-Report + Review-Call</li>
+                <li>Sicherheits-Check 1a (Quick-Check remote)</li>
+                <li>Bericht + Nachbesprechung</li>
                 <li>Backup-Strategie Setup (3-2-1-Konzept)</li>
-                <li>Automation & Monitoring</li>
                 <li>Recovery-Test (live)</li>
                 <li>30 Tage Support inklusive</li>
             </ul>
             <div class="bundle-pricing">
-                <span class="bundle-original">Einzelpreis: 798 €</span>
-                <span class="bundle-price">599 €</span>
-                <span class="bundle-savings">Sie sparen 199 €</span>
+                <span class="bundle-price">950 €</span>
             </div>
-            <a href="#contact" class="bundle-cta" data-goatcounter-click="bundle-starter" onclick="prefillService('Security Starter Bundle')">
+            <a href="#contact" class="bundle-cta" data-goatcounter-click="bundle-starter" onclick="prefillService('Paket Security Starter'); return false;">
                 Paket anfragen →
             </a>
         </div>
@@ -1388,40 +1608,34 @@
             <ul class="bundle-includes">
                 <li>Vulnerability Assessment (OWASP Top-10, SSL/TLS, OSINT)</li>
                 <li>Wiederholungs-Scan nach 30 Tagen</li>
-                <li>Malware-Scan & Bereinigung inkl. Forensik-Report</li>
+                <li>Sicherheits-Check 1c (Vor-Ort-Check klein)</li>
                 <li>Security-Policy Beratung (4 Stunden)</li>
                 <li>Gap-Analyse & Richtlinien-Entwicklung</li>
                 <li>Umsetzungs-Roadmap</li>
             </ul>
             <div class="bundle-pricing">
-                <span class="bundle-original">Einzelpreis: ab 1.489 €</span>
-                <span class="bundle-price">ab 1.190 €</span>
-                <span class="bundle-savings">Sie sparen 299 €</span>
+                <span class="bundle-price">1.250 €</span>
             </div>
-            <a href="#contact" class="bundle-cta" data-goatcounter-click="bundle-kmu-shield" onclick="prefillService('KMU Shield Bundle')">
+            <a href="#contact" class="bundle-cta" data-goatcounter-click="bundle-kmu-shield" onclick="prefillService('Paket KMU Shield'); return false;">
                 Paket anfragen →
             </a>
         </div>
 
-        <!-- Bundle 3: Full Protect -->
+        <!-- Bundle 3: Rundum sicher -->
         <div class="bundle-card">
             <div class="bundle-icon">🔒</div>
-            <div class="bundle-name">Full Protect</div>
-            <div class="bundle-tagline">Kontinuierlicher Schutz & Monitoring</div>
+            <div class="bundle-name">Rundum sicher</div>
+            <div class="bundle-tagline">Check, Umsetzung und Wiederholung</div>
             <ul class="bundle-includes">
-                <li>Vulnerability Assessment + 30-Tage Rescan</li>
-                <li>Security-Policy Beratung (4 Stunden)</li>
-                <li>Managed Security Monitoring (Wazuh SIEM)</li>
-                <li>Log-Analyse & Intrusion Detection</li>
-                <li>Monatlicher Security-Report</li>
-                <li>Incident-Benachrichtigung & Erstreaktion</li>
+                <li>Sicherheits-Check 1c (Vor-Ort-Check klein)</li>
+                <li>Härtungs-Tag: Umsetzung der wichtigsten Maßnahmen</li>
+                <li>Sicherheits-Unterweisung für das Team</li>
+                <li>Jahres-Check im Folgejahr zum Vorzugspreis vorgemerkt</li>
             </ul>
             <div class="bundle-pricing">
-                <span class="bundle-original">Einzelpreis: ab 1.839 €</span>
-                <span class="bundle-price">ab 1.390 € + 179 €/Mo</span>
-                <span class="bundle-savings">Sie sparen 450 €</span>
+                <span class="bundle-price">1.590 €</span>
             </div>
-            <a href="#contact" class="bundle-cta" data-goatcounter-click="bundle-full-protect" onclick="prefillService('Full Protect Bundle')">
+            <a href="#contact" class="bundle-cta" data-goatcounter-click="bundle-rundum-sicher" onclick="prefillService('Paket Rundum sicher'); return false;">
                 Paket anfragen →
             </a>
         </div>
@@ -1455,7 +1669,7 @@
                 <p>Wie lange dauert ein Projekt und wann sehe ich erste Ergebnisse?</p>
             </div>
             <div class="faq-a">
-                <p>Ein Quick-Check ist in 2–4 Stunden erledigt. Ein vollständiges Vulnerability Assessment liefert Ergebnisse in 5–10 Werktagen nach Auftragserteilung – inklusive Wiederholungs-Scan nach 30 Tagen.</p>
+                <p>Der Quick-Check remote (1a) umfasst rund 4,5 Stunden Arbeit, ein Vor-Ort-Check klein (1c) rund 9,5 Stunden. Ein vollständiges Vulnerability Assessment liefert Ergebnisse in 5–10 Werktagen nach Auftragserteilung – inklusive Wiederholungs-Scan nach 30 Tagen.</p>
             </div>
         </div>
     </div>
@@ -1606,15 +1820,24 @@
                     <label class="form-label" for="cf-service">Interesse an</label>
                     <select class="form-select" id="cf-service" name="service">
                         <option value="">— Bitte wählen —</option>
-                        <option value="Security Quick-Check">Security Quick-Check (299 €)</option>
-                        <option value="Vulnerability Assessment">Vulnerability Assessment</option>
-                        <option value="Malware-Scan & Bereinigung">Malware-Scan &amp; Bereinigung</option>
-                        <option value="Backup-Strategie Setup">Backup-Strategie Setup</option>
-                        <option value="Security-Policy Beratung">Security-Policy Beratung</option>
-                        <option value="Managed Security Monitoring">Managed Security Monitoring</option>
-                        <option value="Security Starter Bundle">📦 Security Starter Bundle</option>
-                        <option value="KMU Shield Bundle">📦 KMU Shield Bundle</option>
-                        <option value="Full Protect Bundle">📦 Full Protect Bundle</option>
+                        <option value="1a Quick-Check remote">1a · Quick-Check remote (400 €)</option>
+                        <option value="1b Aufnahme und Beratung vor Ort">1b · Aufnahme &amp; Beratung vor Ort (450 €)</option>
+                        <option value="1c Vor-Ort-Check klein">1c · Vor-Ort-Check klein (850 €)</option>
+                        <option value="1e Nachprüfung nach Behebung">1e · Nachprüfung nach Behebung (190 €)</option>
+                        <option value="Härtungs-Tag">Härtungs-Tag (720 €)</option>
+                        <option value="Sicherheits-Unterweisung">Sicherheits-Unterweisung für das Team (290 €)</option>
+                        <option value="Jahres-Check">Jahres-Check (Regelpreis −15 %)</option>
+                        <option value="Vulnerability Assessment">Vulnerability Assessment (ab 720 €)</option>
+                        <option value="Backup-Strategie Setup">Backup-Strategie Setup (720 €)</option>
+                        <option value="Security-Policy Beratung">Security-Policy Beratung (95 €/h)</option>
+                        <option value="AI-Quick-Check">AI-Quick-Check (450 €)</option>
+                        <option value="AI-Coding-Quick-Check">AI-Coding-Quick-Check (320 €)</option>
+                        <option value="Technische Datenschutz-Prüfung">Technische Datenschutz-Prüfung (899 €)</option>
+                        <option value="Notfall-Unterstützung">Notfall-Unterstützung (149 €/h)</option>
+                        <option value="Paket Security Starter">📦 Paket Security Starter (950 €)</option>
+                        <option value="Paket KMU Shield">📦 Paket KMU Shield (1.250 €)</option>
+                        <option value="Paket Rundum sicher">📦 Paket Rundum sicher (1.590 €)</option>
+                        <option value="Vormerkung Laufende Überwachung">Laufende Überwachung — nur vormerken lassen</option>
                         <option value="Sonstiges">Sonstiges / Ich bin unsicher</option>
                     </select>
                 </div>

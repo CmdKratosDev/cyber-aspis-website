@@ -36,3 +36,6 @@ services-content.md
 
 # Interne Content-Drafts (Social-Post-Stubs) — nur polierte /lernen-Inhalte bleiben public
 content/lernen/*-linkedin-stub-*.md
+
+# Design-Handoffs und geparkte Markup-Bausteine (nur lokal, oeffentliches Repo)
+design/
