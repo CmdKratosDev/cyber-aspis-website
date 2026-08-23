@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="description" content="Warum das Argument &quot;ich habe nichts zu verbergen&quot; bei zurueckgehaltenen Sicherheitsluecken nicht greift - eine technische Einordnung mit dem dokumentierten Fall EternalBlue und vier Schritten fuer KMU.">
+<meta name="author" content="Georgios Papagiannis">
+<link rel="canonical" href="https://cyber-aspis.de/analysen/gehortete-sicherheitsluecken.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Cyber Aspis IT-Security">
+<meta property="og:locale" content="de_DE">
+<meta property="og:url" content="https://cyber-aspis.de/analysen/gehortete-sicherheitsluecken.html">
+<meta property="og:title" content="Wer eine Sicherheitslücke zurückhält, trifft auch die, die nichts zu verbergen haben">
+<meta property="og:description" content="&bdquo;Ich habe nichts zu verbergen&ldquo; beendet die Überwachungsdebatte meist unentschieden. Bei einer zurückgehaltenen Sicherheitslücke greift der Satz nicht. Der dokumentierte Fall EternalBlue zeigt, warum.">
+<meta property="og:image" content="https://cyber-aspis.de/assets/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<title>Wer eine Sicherheitslücke zurückhält, trifft auch die, die nichts zu verbergen haben | Cyber Aspis</title>
+<style>
+  :root {
+    --paper:   #f5f3ee;
+    --surface: #ffffff;
+    --ink:     #2d2a24;
+    --muted:   #6b6457;
+    --rule:    #d8d3c7;
+    --accent:  #5a4a3a;
+    --link:    #00586a;
+    --ok:      #2f6d5b;
+    --warn:    #a24b2f;
+  }
+  @media not all { /* Dark-Mode bewusst aus: Lese-Oberflaeche wie die Bestandsartikel */
+    :root {
+      --paper:   #1b1917;
+      --surface: #24211d;
+      --ink:     #ece7dd;
+      --muted:   #a89f8f;
+      --rule:    #38332c;
+      --accent:  #cba883;
+      --link:    #64b9cf;
+    }
+  }
+  :root[data-theme="light"] {
+    --paper:#f5f3ee; --surface:#ffffff; --ink:#2d2a24; --muted:#6b6457; --rule:#d8d3c7;
+    --accent:#5a4a3a; --link:#00586a; --ok:#2f6d5b; --warn:#a24b2f;
+  }
+  :root[data-theme="dark"] {
+    --paper:#1b1917; --surface:#24211d; --ink:#ece7dd; --muted:#a89f8f; --rule:#38332c;
+    --accent:#cba883; --link:#64b9cf; --ok:#74c2a8; --warn:#e2926f;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: Georgia, 'Times New Roman', serif;
+    line-height: 1.6; -webkit-text-size-adjust: 100%;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 20px 64px; }
+
+  h1, h2, h3, .label, .brand, .badge { font-family: ui-sans-serif, system-ui, 'Segoe UI', Roboto, sans-serif; }
+
+  /* ---- Header band ---- */
+  header { background: var(--surface); border-bottom: 2px solid var(--accent); }
+  .head-inner { max-width: 720px; margin: 0 auto; padding: 26px 20px 30px; display: flex; flex-direction: column; gap: 14px; }
+  .brand-row { display: flex; align-items: center; gap: 12px; }
+  .brand-row svg { width: 40px; height: 40px; flex: none; }
+  .brand { font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); font-size: 15px; }
+  .kicker { font-family: ui-monospace, Consolas, monospace; font-size: 12px; color: var(--muted); letter-spacing: 0.03em; }
+  h1 { font-size: clamp(22px, 6vw, 30px); line-height: 1.15; margin: 4px 0 0; text-wrap: balance; color: var(--ink); }
+  .subtitle { font-style: italic; color: var(--accent); font-size: clamp(14px, 3.6vw, 17px); margin: 0; }
+  .meta { display: grid; grid-template-columns: auto 1fr; gap: 3px 14px; font-family: ui-monospace, Consolas, monospace;
+          font-size: 12.5px; margin-top: 6px; }
+  .meta b { color: var(--muted); font-weight: 400; }
+
+  /* ---- Body sections ---- */
+  h2 { font-size: clamp(18px, 4.6vw, 22px); margin: 40px 0 8px; padding-bottom: 5px;
+       border-bottom: 1.5px solid var(--accent); text-wrap: balance; }
+  p { margin: 0 0 14px; }
+  a { color: var(--link); }
+
+  ol.steps { margin: 6px 0 14px; padding-left: 22px; }
+  ol.steps li { margin: 10px 0; }
+
+  sup a { font-size: 68%; font-weight: 700; color: var(--accent); text-decoration: none; padding: 0 1px; }
+
+  .disclaimer { background: var(--surface); border-left: 3px solid var(--rule); border-radius: 3px;
+                padding: 14px 16px; margin: 32px 0 0; font-size: 13.5px; color: var(--muted); }
+  .disclaimer b { color: var(--accent); font-family: ui-sans-serif, system-ui, sans-serif; display: block; margin-bottom: 5px; }
+
+  .note { font-size: 12.5px; color: var(--muted); font-style: italic; }
+
+  .endnotes { margin-top: 14px; font-size: 13px; color: var(--muted); }
+  .endnotes li { margin: 8px 0; }
+  .endnotes a { color: var(--link); }
+  footer { text-align: center; font-family: ui-monospace, Consolas, monospace; font-size: 11px;
+           color: var(--muted); margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--rule); }
+</style>
+<!-- Analytics: self-hosted GoatCounter (cookielos, DSGVO-konform, kein Drittanbieter-CDN) -->
+<script data-goatcounter="https://stats.cyber-aspis.de/count"
+        async src="https://stats.cyber-aspis.de/count.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="head-inner">
+    <div class="brand-row">
+      <svg viewBox="0 0 64 64" role="img" aria-label="Cyber Aspis">
+        <line x1="32" y1="58" x2="32" y2="8" stroke="#5a4a3a" stroke-width="2.5" stroke-linecap="round"/>
+        <path fill="#5a4a3a" d="M 32 4 L 27 14 L 32 12 L 37 14 Z"/>
+        <rect x="29" y="58" width="6" height="3" fill="#5a4a3a"/>
+        <circle cx="32" cy="32" r="19" fill="none" stroke="#5a4a3a" stroke-width="3"/>
+        <circle cx="32" cy="32" r="16" fill="none" stroke="#5a4a3a" stroke-width="0.8" opacity="0.4"/>
+        <path fill="#5a4a3a" fill-rule="evenodd" d="M 32 20 L 22 44 L 26 44 L 28 39 L 36 39 L 38 44 L 42 44 Z M 30 35 L 34 35 L 32 30 Z"/>
+      </svg>
+      <span class="brand">Cyber Aspis</span>
+    </div>
+    <div class="kicker">Einordnung · Drittanbieter-Risiko · 2026</div>
+    <h1>Wer eine Sicherheitslücke zurückhält, trifft auch die, die nichts zu verbergen haben</h1>
+    <p class="subtitle">Warum das stärkste Argument der Überwachungsdebatte bei einer zurückgehaltenen Sicherheitslücke nicht greift — und was daraus für einen Betrieb ohne eigene IT-Abteilung folgt</p>
+    <div class="meta">
+      <b>Autor</b><span>Georgios Papagiannis</span>
+      <b>Datum</b><span>24. August 2026</span>
+      <b>Typ</b><span>Einordnung</span>
+    </div>
+  </div>
+</header>
+
+<div style="max-width:720px;margin:0 auto;padding:14px 20px 0;font-family:ui-sans-serif,system-ui,'Segoe UI',sans-serif;font-size:13px">
+  <a href="/analysen/" style="color:var(--link);text-decoration:none">&larr; Wissen &amp; Analysen</a>
+  <span style="color:var(--rule);margin:0 8px">&middot;</span>
+  <a href="/lernen/" style="color:var(--link);text-decoration:none">Lernen</a>
+</div>
+
+<main class="wrap">
+
+  <h2>Der Satz, der das Thema sonst beendet</h2>
+  <p>„Ich habe nichts zu verbergen." Bei Überwachung endet die Diskussion meist mit diesem Satz, unentschieden: Wer ihn sagt, meint seine Daten, und wer widerspricht, argumentiert wieder über Daten. Bei einer zurückgehaltenen Sicherheitslücke greift er nicht. Dort bleibt ein bekannter Fehler in einem verbreiteten Gerät offen, und dieser Fehler unterscheidet nicht zwischen Verdächtigen und Unverdächtigen.</p>
+
+  <h2>Was eine gehortete Lücke technisch ist</h2>
+  <p>Gemeint ist ein Fehler in verbreiteter Software, den eine staatliche Stelle kennt und dem Hersteller nicht meldet, weil er als Zugangsweg gebraucht wird. Ohne Meldung kein Patch, und ohne Patch bleibt jedes betroffene Gerät verwundbar, auch das im Serverraum eines Handwerksbetriebs. Die Rechnung setzt voraus, dass der Halter die Kontrolle behält. Kontrolle ist aber eine Annahme, keine Eigenschaft. Sie endet auf zwei Wegen: Jemand findet denselben Fehler unabhängig, oder das Werkzeug verlässt das Haus.</p>
+
+  <h2>Der dokumentierte Fall, mit offener Zeitachse</h2>
+  <p>Für den zweiten Weg gibt es einen dokumentierten Fall, und er beginnt lange vor 2017. Nach Recherchen der <i>Washington Post</i> vom 16. Mai 2017 nutzte die NSA ein Werkzeug namens EternalBlue mehr als fünf Jahre lang, ohne den zugrunde liegenden Fehler an Microsoft zu melden. Ehemalige Mitarbeiter berichteten der Zeitung, man habe intern erörtert, ob der Fehler zu gefährlich sei, um ihn zu behalten. Den Ausschlag gab dem Bericht zufolge ein anderer Umstand: Das Werkzeug war der Behörde abhandengekommen, und sie warnte Microsoft erst, nachdem sie davon erfahren hatte.<sup><a href="#q1" id="r1">1</a></sup> Das ermöglichte den Patch im März.</p>
+
+  <p>Was danach kam, ist offen dokumentiert. Am 14. März 2017 erschien das Sicherheitsupdate MS17-010 für eine kritische Lücke im SMB-Protokoll von Windows.<sup><a href="#q2" id="r2">2</a></sup> Einen Monat später stellte eine Gruppe namens Shadow Brokers die Angriffswerkzeuge ins Netz, darunter EternalBlue für genau diese Lücke.<sup><a href="#q3" id="r3">3</a></sup> Ab dem 12. Mai lief die Ransomware WannaCry weltweit darüber, in Deutschland sichtbar an den ausgefallenen Anzeigetafeln der Deutschen Bahn.<sup><a href="#q4" id="r4">4</a></sup> Zwei Tage später sprach Microsofts Präsident Brad Smith von einer „vulnerability stolen from the NSA".<sup><a href="#q5" id="r5">5</a></sup></p>
+
+  <p>Das Patch-Fenster war da seit fast zwei Monaten offen; wer das Update einspielen konnte, war geschützt. Der tragfähige Vorwurf lautet deshalb nicht, das Zurückhalten habe den Schaden verursacht. Er lautet: Der Fehler blieb über Jahre offen, in denen er hätte geschlossen sein können. Als das Werkzeug frei war, blieben acht Wochen, und der Patch half nur denen, die ihn in acht Wochen einspielen konnten. Ende Juni 2017 folgte NotPetya, dort allerdings über einen anderen Einstieg; EternalBlue war laut BSI nur einer von mehreren Wegen der Weiterverbreitung.<sup><a href="#q6" id="r6">6</a></sup></p>
+
+  <h2>Wen es wirklich trifft</h2>
+  <p>Nachrichtendienste sind der Anlass des Hortens. Getroffen wird ein Betrieb von dem, was danach kommt. Ein Monero-Miner namens Adylkuzz nutzte dieselbe Lücke schon im Mai 2017,<sup><a href="#q7" id="r7">7</a></sup> im Juni kamen Fernsteuerungs-Trojaner dazu,<sup><a href="#q8" id="r8">8</a></sup> ein weiterer Miner setzte EternalBlue noch Ende 2019 ein,<sup><a href="#q9" id="r9">9</a></sup> und 2020 führten CISA und FBI sie unter den zehn am häufigsten ausgenutzten Schwachstellen zwischen 2016 und 2019.<sup><a href="#q10" id="r10">10</a></sup> Für einen Maschinenbauer mit sechzig Beschäftigten entscheidet sich das Risiko deshalb an einer anderen Frage: Was passiert mit Konstruktionsdaten, Kalkulationen und Kundenlisten, wenn dasselbe Werkzeug zwei Jahre später in einem billigen Baukasten steckt?</p>
+
+  <h2>Warum es in langlebiger Technik schlimmer ist</h2>
+  <p>Ich komme technisch aus der Gefahrenmeldetechnik. Dort ist die Firmware-Pflege an den Lebensweg des Geräts gebunden, und wann ein Update ankommt, entscheidet nicht der Betreiber. Das BSI beschreibt den Mechanismus nüchtern: Updates lassen sich in solchen Anlagen erst nach Freigabe durch Hersteller oder Integrator und in Wartungsfenstern installieren, bis dahin bleiben die Systeme verwundbar.<sup><a href="#q6" id="r6b">6</a></sup> In einer Sicherheitsinformation zur Gebäudeautomation von 2023, die Brandmeldeanlagen ausdrücklich nennt, hält das BSI fest: „Ein koordiniertes Patchmanagement findet nicht statt. Geräte erhalten keine notwendigen Sicherheitsupdates oder nutzen veraltete unsichere Protokolle."<sup><a href="#q11" id="r11">11</a></sup> Das ist keine Nachlässigkeit von Betreibern oder Errichtern. Beide arbeiten innerhalb von Freigabe- und Wartungsregeln, die sie nicht selbst setzen; so funktioniert dieser Produktmarkt. Wie weit das reichen kann, zeigt eine Brandmeldezentrale eines schwedischen Herstellers. 2025 wurde eine unveränderbare eingebaute Zugangskennung veröffentlicht; in der ursprünglichen Fassung des Advisory vom 29. Mai hieß es, für das Gerät sei kein Fix geplant. Rund ein halbes Jahr später lag eine korrigierte Version vor. Die Empfehlung, für erweiterte Sicherheitsfunktionen auf die neuere Gerätereihe zu wechseln, steht im aktualisierten Advisory weiterhin.<sup><a href="#q12" id="r12">12</a></sup></p>
+
+  <h2>Der Verfahrensmangel</h2>
+  <p>Ein Verfahren für den Umgang mit staatlich bekannten Schwachstellen wird seit Jahren gefordert. Der Koalitionsvertrag von 2021 hielt fest, der Staat werde „keine Sicherheitslücken ankaufen oder offenhalten", sondern sich „immer um die schnellstmögliche Schließung bemühen".<sup><a href="#q13" id="r13">13</a></sup> Geregelt wurde es nicht. 2024 berichtete netzpolitik.org, die zuständige Arbeitsgruppe sei zu keiner Einigung gekommen, weil das Bundesinnenministerium Lücken für Strafverfolgung und Gefahrenabwehr offenhalten wollte;<sup><a href="#q14" id="r14">14</a></sup> im Koalitionsvertrag von 2025 kommt die Zusage nicht mehr vor.<sup><a href="#q15" id="r15">15</a></sup> Dahinter steht ein struktureller Interessenkonflikt: Dieselbe Ressortlinie verantwortet die Abwehr und zugleich die Behörden, für die ein Offenhalten operativ von Nutzen wäre. Das Ministerium begründet seine Haltung mit dem Bedarf von Strafverfolgung, Nachrichtendiensten und Gefahrenabwehr; ich habe es zu der hier vorgetragenen Einordnung nicht um eine Stellungnahme gebeten. Ein Verfahren wäre ohnehin erst die Mindestbedingung. Auch dort, wo EternalBlue entstand, existierte eines, und es hat den Verlust nicht verhindert. In derselben Recherche hält ein früherer Mitarbeiter des Verteidigungsministeriums dagegen, das Verfahren habe in diesem Fall funktioniert; versagt habe allein die Dringlichkeit der Warnung.<sup><a href="#q1" id="r1b">1</a></sup> Auch dann bleibt offen, wer entscheidet, nach welchen Kriterien, mit welcher Frist und unter welcher Kontrolle.</p>
+
+  <h2>Die eigene Position</h2>
+  <p>Ich bin kein Jurist; was folgt, ist die Einordnung eines Technikers.</p>
+
+  <p>Der Staat hat die Pflicht, seine Bürger zu schützen, und dazu gehören wirksame Werkzeuge. Dass Ermittlungs- und Gefahrenabwehrbehörden sie einsetzen, auch vorbeugend gegen Kriminalität und Terror, halte ich für richtig. Zwei Bedingungen gehören für mich dazu: eine tragfähige Rechtsgrundlage samt Anlass im Einzelfall, und Eingriffe, die Grundrechte nicht verletzen, sondern nur so weit einschränken, wie es für die konkrete Ermittlung relevant ist. Die Privatsphäre ist ein Recht des Einzelnen, der Schutz der Bevölkerung eine Pflicht des Staates; beides hat Verfassungsrang und steht nebeneinander. Maßnahmen, die alle vorab erfassen, ohne dass es im Einzelfall einen Anlass gibt, halte ich dagegen für falsch. Dass Sicherheitsbehörden das anders bewerten und dafür Gründe anführen, die aus ihrer Aufgabe folgen, ist mir bewusst.</p>
+
+  <p>Bei der Meldefrage bin ich festgelegt: Sicherheitslücken sollten immer sofort gemeldet werden. Das Gegenargument, dass jede Meldung eine Fähigkeit verbrennt, die für Ermittlungen gebraucht wird, ist nachvollziehbar und wird von Leuten vertreten, die ihre Arbeit kennen. Im selben Bericht nennt der frühere stellvertretende NSA-Direktor Richard Ledgett eine vollständige Offenlegung „unilateral disarmament", und General Keith Alexander gibt an, rund 90 Prozent der gefundenen Fehler würden den Herstellern gemeldet.<sup><a href="#q1" id="r1c">1</a></sup> Ich teile die Linie trotzdem nicht, aus zwei Gründen. Die Rechnung geht an Betriebe, die an der Abwägung nie beteiligt waren und von der offenen Lücke nichts wissen, sie aber mitsamt ihren Geschäftsgeheimnissen im Haus haben. Und die Kalkulation hängt an einer Annahme, von der dieser Fall zeigt, dass sie reißen kann, und dass der Halter es erst erfährt, wenn es zu spät ist. Wo davon abgewichen wird, muss die Abwägung dokumentiert, befristet und überprüfbar sein, sonst bleibt sie eine Gewohnheit.</p>
+
+  <h2>Was ein KMU daraus machen kann</h2>
+  <p>Vier Schritte, die unabhängig von politischen Entscheidungen wirken.</p>
+  <ol class="steps">
+    <li><b>Patch-Fähigkeit als Beschaffungskriterium bei langlebiger Technik.</b> Vor der Bestellung klären, wie lange Firmware-Updates zugesagt sind und ob sie ohne Gerätetausch eingespielt werden können.</li>
+    <li><b>Inventar.</b> Welche Geräte im Haus bekommen überhaupt noch Updates, und wer stellt sie bereit?</li>
+    <li><b>Die Vertragsfrage an Dienstleister.</b> Was ist vereinbart, wenn der Vorfall beim Dienstleister passiert statt im eigenen Haus, wer informiert wen, in welcher Frist und mit welchem Nachweis? Ob und wann Sie informiert werden, ergibt sich nicht von selbst: Es steht im Vertrag oder es steht nicht drin. Verbindliche Fristen für Prüfen und Einspielen von Updates gehören für mich in solche Verträge; was die eigenen hergeben, gehört mit Rechtsbeistand bewertet.</li>
+    <li><b>Netzwerktrennung.</b> Bei Anlagen mit Aufschaltung auf eine Leitstelle gelten für Übertragungswege eigene normative Anforderungen; eine solche Änderung gehört mit dem errichtenden Fachbetrieb geplant.</li>
+  </ol>
+
+  <div class="disclaimer">
+    <b>Hinweis</b>
+    Dieser Text ist eine allgemeine technische Einordnung und kein auf einen einzelnen Betrieb bezogener Rat. Er ist keine Rechtsberatung. Ob und wie die beschriebenen Schritte im Einzelfall sinnvoll oder zulässig sind, hängt von der konkreten Anlage, den Verträgen und den geltenden Anforderungen ab. Für Anlagen mit Aufschaltung auf eine Leitstelle ist vor Änderungen an Netzen oder Übertragungswegen der errichtende Fachbetrieb einzubeziehen.
+  </div>
+
+  <h2>Quellen</h2>
+  <ol class="endnotes">
+    <li id="q1">Ellen Nakashima und Craig Timberg: „NSA officials worried about the day its potent hacking tool would get loose. Then it did.", <i>The Washington Post</i>, 16.05.2017. Frei zugängliche Volltext-Fassung (Syndikat, gleiche Autoren, Washington Post als Quelle ausgewiesen): <a href="https://www.adn.com/nation-world/2017/05/16/nsa-officials-worried-about-the-day-its-potent-hacking-tool-would-get-loose-then-it-did/" rel="noopener">Anchorage Daily News</a>. <a href="#r1">↩</a> <a href="#r1b">↩</a> <a href="#r1c">↩</a></li>
+    <li id="q2">Microsoft: <i>Security Bulletin MS17-010 — Critical</i>, 14.03.2017. <a href="https://learn.microsoft.com/en-us/security-updates/securitybulletins/2017/ms17-010" rel="noopener">learn.microsoft.com</a>. <a href="#r2">↩</a></li>
+    <li id="q3">Microsoft Security Response Center: „Protecting customers and evaluating risk", 14.04.2017. <a href="https://www.microsoft.com/en-us/msrc/blog/2017/04/protecting-customers-and-evaluating-risk" rel="noopener">microsoft.com</a>. <a href="#r3">↩</a></li>
+    <li id="q4">heise online: „Ransomware WannaCry befällt Rechner der Deutschen Bahn", 13.05.2017. <a href="https://www.heise.de/news/Ransomware-WannaCry-befaellt-Rechner-der-Deutschen-Bahn-3713426.html" rel="noopener">heise.de</a>. <a href="#r4">↩</a></li>
+    <li id="q5">Brad Smith (Microsoft): „The need for urgent collective action to keep people safe online", 14.05.2017. <a href="https://blogs.microsoft.com/on-the-issues/2017/05/14/need-urgent-collective-action-keep-people-safe-online-lessons-last-weeks-cyberattack/" rel="noopener">blogs.microsoft.com</a>. <a href="#r5">↩</a></li>
+    <li id="q6">Bundesamt für Sicherheit in der Informationstechnik: <i>Die Lage der IT-Sicherheit in Deutschland 2017</i>, S. 24 bis 26 und S. 41. <a href="https://www.bsi.bund.de/SharedDocs/Downloads/DE/BSI/Publikationen/Lageberichte/Lagebericht2017.pdf" rel="noopener">bsi.bund.de (PDF)</a>. <a href="#r6">↩</a> <a href="#r6b">↩</a></li>
+    <li id="q7">Proofpoint: „Adylkuzz Cryptocurrency Mining Malware Spreading for Weeks Via EternalBlue/DoublePulsar", 15.05.2017. <a href="https://www.proofpoint.com/us/blog/threat-insight/adylkuzz-cryptocurrency-mining-malware-spreading-for-weeks-eternalblue-doublepulsar" rel="noopener">proofpoint.com</a>. <a href="#r7">↩</a></li>
+    <li id="q8">FireEye/Mandiant: „Threat Actors Leverage EternalBlue Exploit to Deliver Non-WannaCry Payloads", 02.06.2017. <a href="https://cloud.google.com/blog/topics/threat-intelligence/threat-actors-leverage-eternalblue-exploit-deliver-non-wannacry-payloads" rel="noopener">cloud.google.com</a>. <a href="#r8">↩</a></li>
+    <li id="q9">CrowdStrike: „Weeding Out WannaMine v4.0", 12.11.2019. <a href="https://www.crowdstrike.com/en-us/blog/weeding-out-wannamine-v4-0-analyzing-and-remediating-this-mineware-nightmare/" rel="noopener">crowdstrike.com</a>. <a href="#r9">↩</a></li>
+    <li id="q10">CISA und FBI: Alert AA20-133A, <i>Top 10 Routinely Exploited Vulnerabilities</i>, 12.05.2020. <a href="https://www.cisa.gov/news-events/cybersecurity-advisories/aa20-133a" rel="noopener">cisa.gov</a>. <a href="#r10">↩</a></li>
+    <li id="q11">Bundesamt für Sicherheit in der Informationstechnik: IT-Sicherheitsinformation <i>Informationssicherheit in der Gebäudeautomation</i>, CSW-Nr. 2023-222993-1031, 04.04.2023. <a href="https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2023/2023-222993-1031.pdf" rel="noopener">bsi.bund.de (PDF)</a>. <a href="#r11">↩</a></li>
+    <li id="q12">CISA: ICS Advisory ICSA-25-148-03, <i>Consilium Safety CS5000 Fire Panel (Update A)</i>, 29.05.2025, Update A vom 04.12.2025. <a href="https://www.cisa.gov/news-events/ics-advisories/icsa-25-148-03" rel="noopener">cisa.gov</a>. Der Wortlaut der ursprünglichen Fassung vom 29.05.2025 („Currently, no fixes are planned for the CS5000 Fire Panel.") ist in der aktuellen CISA-Fassung nicht mehr enthalten; er ist beim meldenden Finder dokumentiert: <a href="https://www.tisalabs.com/advisories/consilium-safety-cs5000-fire-panel/" rel="noopener">tisalabs.com</a>. <a href="#r12">↩</a></li>
+    <li id="q13">Koalitionsvertrag 2021 bis 2025 zwischen SPD, Bündnis 90/Die Grünen und FDP, S. 13 und S. 87. <a href="https://www.spd.de/fileadmin/Dokumente/Koalitionsvertrag/Koalitionsvertrag_2021-2025.pdf" rel="noopener">spd.de (PDF)</a>. <a href="#r13">↩</a></li>
+    <li id="q14">netzpolitik.org: „Schwachstellen: Ampel diskutiert Bruch des Koalitionsvertrags", 15.01.2024. <a href="https://netzpolitik.org/2024/schwachstellen-ampel-diskutiert-bruch-des-koalitionsvertrags/" rel="noopener">netzpolitik.org</a>. <a href="#r14">↩</a></li>
+    <li id="q15">Koalitionsvertrag 2025 zwischen CDU, CSU und SPD, S. 60 und S. 61. <a href="https://www.spd.de/fileadmin/Dokumente/Koalitionsvertrag2025_bf.pdf" rel="noopener">spd.de (PDF)</a>. <a href="#r15">↩</a></li>
+  </ol>
+  <p class="note">Alle Online-Quellen zuletzt geprüft am 24.08.2026. Die Original-URL des Washington-Post-Artikels liefert beim Abruf HTTP 403; der Volltext wurde über einen Archiv-Snapshot derselben URL und zwei unabhängige Syndikations-Kopien verifiziert. Verlinkt ist die frei zugängliche Syndikats-Fassung. Zwei Microsoft-Adressen beantworten automatisierte Abrufe ebenfalls mit HTTP 403, im Browser öffnen sie sich normal.</p>
+
+  <footer>Cyber Aspis · IT-Sicherheit für den Mittelstand<br>
+  <a href="/impressum.html">Impressum</a> · <a href="/datenschutz.html">Datenschutz</a></footer>
+</main>
+
+</body>
+</html>

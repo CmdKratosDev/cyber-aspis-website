@@ -39,3 +39,10 @@ content/lernen/*-linkedin-stub-*.md
 
 # Design-Handoffs und geparkte Markup-Bausteine (nur lokal, oeffentliches Repo)
 design/
+
+# Interner Projektstand und Agenten-Protokolle — NICHT ins Public-Repo (ergaenzt 15.08.2026)
+# Anlass: STATE.md wurde neu angelegt und war weder getrackt noch ignoriert. Da der Deploy-Pfad
+# einen Push erzwingt, haette ein beilaeufiges `git add -A` Preise, Rechtsfragen und offene
+# Blocker oeffentlich gemacht. Repo-Sichtbarkeit per `gh repo view`: PUBLIC.
+STATE.md
+protokoll/
