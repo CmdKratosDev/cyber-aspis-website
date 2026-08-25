@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="../assets/favicon.png">
+    <title>KI-Werkzeuge im Betrieb: Wer darf eigentlich schreiben? | Cyber Aspis</title>
+    <meta name="description" content="Assistenten hängen an Postfach und Dateiablage. Der Unterschied zwischen lesendem und schreibendem Zugriff entscheidet, was im Ernstfall passiert, mit zwei dokumentierten Beispielen und einer Bestandsaufnahme ohne Budget.">
+
+    <!-- ═══ OpenGraph ═══ -->
+    <meta property="og:type"        content="article">
+    <meta property="og:url"         content="https://cyber-aspis.de/lernen/ki-werkzeuge-schreibrechte.html">
+    <meta property="og:title"       content="KI-Werkzeuge im Betrieb: Wer darf eigentlich schreiben? | Cyber Aspis">
+    <meta property="og:description" content="Assistenten hängen an Postfach und Dateiablage. Der Unterschied zwischen lesendem und schreibendem Zugriff entscheidet, was im Ernstfall passiert, mit zwei dokumentierten Beispielen und einer Bestandsaufnahme ohne Budget.">
+    <meta property="og:image"       content="https://cyber-aspis.de/assets/og-image.png">
+    <meta property="og:image:width"  content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale"      content="de_DE">
+    <meta property="og:site_name"   content="Cyber Aspis IT-Security">
+
+    <!-- ═══ Twitter / X Card ═══ -->
+    <meta name="twitter:card"        content="summary_large_image">
+    <meta name="twitter:title"       content="KI-Werkzeuge im Betrieb: Wer darf eigentlich schreiben? | Cyber Aspis">
+    <meta name="twitter:description" content="Der Unterschied zwischen lesendem und schreibendem Zugriff entscheidet, was im Ernstfall passiert. Zwei dokumentierte Beispiele, eine Bestandsaufnahme ohne Budget.">
+    <meta name="twitter:image"       content="https://cyber-aspis.de/assets/og-image.png">
+
+    <!-- ═══ Canonical ═══ -->
+    <link rel="canonical" href="https://cyber-aspis.de/lernen/ki-werkzeuge-schreibrechte.html">
+
+    <!-- ═══ Schema.org: Breadcrumb ═══ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Startseite", "item": "https://cyber-aspis.de/" },
+        { "@type": "ListItem", "position": 2, "name": "Lernen", "item": "https://cyber-aspis.de/lernen/" },
+        { "@type": "ListItem", "position": 3, "name": "KI-Werkzeuge und Schreibrechte", "item": "https://cyber-aspis.de/lernen/ki-werkzeuge-schreibrechte.html" }
+      ]
+    }
+    </script>
+
+    <style>
+        /* ===== LOCAL FONTS (DSGVO-konform — kein Google CDN) ===== */
+        @font-face { font-family: 'Orbitron'; src: url('../assets/fonts/orbitron.woff2') format('woff2'); font-weight: 700 900; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Exo 2'; src: url('../assets/fonts/exo2.woff2') format('woff2'); font-weight: 100 900; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Space Mono'; src: url('../assets/fonts/spacemono-regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Space Mono'; src: url('../assets/fonts/spacemono-bold.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; }
+    </style>
+    <style>
+        /* ===== CSS VARIABLES ===== */
+        :root {
+            --bg-primary:    #0d0d1a;
+            --bg-secondary:  #12082e;
+            --bg-card:       #1a1a35;
+            --text-primary:  #ffffff;
+            --text-muted:    #9090b8;
+            --accent-cyan:   #00d4ff;
+            --accent-magenta:#e040fb;
+            --accent-purple: #7b2ff7;
+            --gradient-wave: linear-gradient(135deg, #00d4ff 0%, #7b2ff7 50%, #cc00ff 100%);
+            --font-display:  'Orbitron', monospace;
+            --font-mono:     'Space Mono', monospace;
+            --font-body:     'Exo 2', sans-serif;
+        }
+
+        /* ===== RESET & BASE ===== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--font-body); background: var(--bg-primary); color: var(--text-primary); overflow-x: hidden; line-height: 1.6; }
+
+        /* ===== NAVIGATION ===== */
+        nav { position: sticky; top: 0; z-index: 999; background: rgba(13,13,26,0.88); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid rgba(224,64,251,0.18); padding: 0 6%; display: flex; align-items: center; justify-content: space-between; height: 68px; }
+        .nav-logo { display: flex; align-items: center; gap: 11px; text-decoration: none; }
+        .nav-logo img { height: 42px; width: 42px; object-fit: contain; }
+        .nav-logo-fallback { width: 42px; height: 42px; border-radius: 50%; border: 2px solid var(--accent-cyan); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 0.7rem; font-weight: 900; color: var(--accent-cyan); }
+        .nav-logo-text { font-family: var(--font-display); font-size: 0.72rem; font-weight: 700; color: var(--text-primary); letter-spacing: 0.12em; line-height: 1.3; }
+        .nav-links { display: flex; gap: 1.7rem; list-style: none; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; transition: color 0.2s; position: relative; }
+        .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--accent-magenta); transition: width 0.3s ease; }
+        .nav-links a:hover { color: var(--accent-cyan); }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-links a.nav-current { color: var(--accent-cyan); }
+        .nav-links a.nav-current::after { width: 100%; }
+        .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 5px; background: none; border: none; }
+        .hamburger span { display: block; width: 24px; height: 2px; background: var(--text-primary); transition: all 0.3s; }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+        /* ===== BUTTONS ===== */
+        .btn-primary { display: inline-flex; align-items: center; gap: 8px; background: var(--accent-magenta); color: white; text-decoration: none; padding: 14px 30px; border-radius: 50px; font-weight: 700; font-size: 0.93rem; letter-spacing: 0.05em; box-shadow: 0 0 32px rgba(224,64,251,0.42); transition: all 0.3s ease; border: none; cursor: pointer; min-height: 48px; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 52px rgba(224,64,251,0.65); background: #cc00ff; }
+        .btn-secondary { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--accent-cyan); text-decoration: none; padding: 14px 30px; border-radius: 50px; font-weight: 600; font-size: 0.93rem; letter-spacing: 0.05em; border: 1px solid rgba(0,212,255,0.38); transition: all 0.3s ease; min-height: 48px; }
+        .btn-secondary:hover { background: rgba(0,212,255,0.08); border-color: var(--accent-cyan); box-shadow: 0 0 20px rgba(0,212,255,0.2); }
+
+        /* ===== SECTION BASE ===== */
+        section { padding: 76px 6%; }
+        .section-title { text-align: center; font-family: var(--font-display); font-size: clamp(1.4rem, 3vw, 2.2rem); font-weight: 700; letter-spacing: 0.06em; color: var(--text-primary); margin-bottom: 2.4rem; }
+        .section-title::after { content: ''; display: block; width: 56px; height: 3px; background: var(--gradient-wave); margin: 14px auto 0; border-radius: 2px; }
+        .section-lede { max-width: 760px; margin: 0 auto 2.2rem; color: var(--text-muted); font-size: 0.96rem; line-height: 1.8; text-align: center; }
+
+        /* ===== BREADCRUMB ===== */
+        .breadcrumb-strip { background: rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.06); padding: 12px 6%; }
+        .breadcrumb { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); list-style: none; max-width: 900px; margin: 0 auto; }
+        .breadcrumb li + li::before { content: '/'; margin-right: 8px; opacity: 0.5; }
+        .breadcrumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+        .breadcrumb a:hover { color: var(--accent-cyan); }
+        .breadcrumb li:last-child { color: var(--accent-cyan); }
+
+        /* ===== HERO ===== */
+        .service-hero { background: var(--bg-secondary); padding: 64px 6% 64px; position: relative; overflow: hidden; }
+        .service-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 80% 50%, rgba(123,47,247,0.18) 0%, transparent 60%), radial-gradient(ellipse at 20% 80%, rgba(0,212,255,0.1) 0%, transparent 50%); pointer-events: none; }
+        .service-hero-inner { position: relative; z-index: 1; max-width: 820px; margin: 0 auto; }
+        .service-hero-tag { display: inline-flex; align-items: center; gap: 9px; background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.32); color: var(--accent-cyan); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; padding: 6px 16px; border-radius: 100px; margin-bottom: 1.6rem; }
+        .service-hero h1 { font-family: var(--font-display); font-size: clamp(1.6rem, 3.6vw, 2.7rem); font-weight: 900; line-height: 1.22; letter-spacing: 0.01em; margin-bottom: 1.2rem; }
+        .service-hero h1 .gradient-word { background: var(--gradient-wave); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .service-hero-subtitle { font-size: 1.03rem; color: var(--text-muted); font-weight: 300; line-height: 1.75; max-width: 660px; }
+        .stat-row { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 2.4rem; }
+        .stat { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; padding: 14px 20px; min-width: 130px; }
+        .stat-val { font-family: var(--font-display); font-size: 1.25rem; font-weight: 900; color: var(--accent-cyan); display: block; }
+        .stat-lbl { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; }
+
+        /* ===== INTRO ===== */
+        #intro { background: var(--bg-primary); }
+        .intro-box { max-width: 780px; margin: 0 auto; }
+        .intro-box p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.85; }
+
+        /* ===== CHECKLIST ===== */
+        #checklist { background: var(--bg-secondary); }
+        .checklist-inner { max-width: 860px; margin: 0 auto; }
+        .check-category-heading { font-family: var(--font-display); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-cyan); margin: 2.6rem 0 1.1rem; padding-bottom: 0.6rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .check-category-heading:first-child { margin-top: 0; }
+        .check-category-note { font-size: 0.82rem; color: var(--text-muted); margin: -0.6rem 0 1.2rem; font-style: italic; }
+        .check-item { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 1.3rem 1.6rem; margin-bottom: 0.9rem; }
+        .check-head { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 0.9rem; }
+        .check-num { font-family: var(--font-display); font-size: 0.78rem; font-weight: 900; color: var(--accent-cyan); opacity: 0.55; min-width: 26px; line-height: 1.7; }
+        .check-title { display: flex; align-items: flex-start; gap: 10px; font-family: var(--font-body); font-size: 0.94rem; font-weight: 700; color: var(--text-primary); cursor: pointer; }
+        .check-title input[type="checkbox"] { margin-top: 4px; width: 16px; height: 16px; accent-color: var(--accent-cyan); flex-shrink: 0; cursor: pointer; }
+        .check-cmd { background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.07); border-radius: 8px; padding: 12px 16px; margin: 0 0 0.8rem 38px; overflow-x: auto; }
+        .check-cmd code { font-family: var(--font-mono); font-size: 0.78rem; color: #7fe8b0; white-space: pre; }
+        .check-expected { font-size: 0.83rem; color: var(--text-muted); line-height: 1.65; margin-left: 38px; }
+        .check-expected strong { color: var(--text-primary); }
+        .check-note { font-size: 0.83rem; color: var(--text-muted); line-height: 1.72; margin: 0.75rem 0 0 38px; padding-left: 0.9rem; border-left: 2px solid rgba(255,255,255,0.09); }
+        .check-note strong { color: var(--text-primary); }
+        .check-cmd + .check-cmd { margin-top: -0.2rem; }
+
+        /* ===== INCIDENT INFO BOX ===== */
+        .incident-box { max-width: 780px; margin: 2.2rem auto 0; background: rgba(0,212,255,0.05); border: 1px solid rgba(0,212,255,0.28); border-left: 3px solid var(--accent-cyan); border-radius: 12px; padding: 1.5rem 1.8rem; }
+        .incident-box h3 { font-family: var(--font-display); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-cyan); margin-bottom: 0.9rem; }
+        .incident-box p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.8; margin-bottom: 0.85rem; }
+        .incident-box p:last-child { margin-bottom: 0; }
+        .incident-box strong { color: var(--text-primary); }
+        .incident-box code { font-family: var(--font-mono); font-size: 0.85em; background: rgba(255,255,255,0.07); padding: 1px 5px; border-radius: 3px; }
+
+        /* ===== INCIDENT-RESPONSE HINWEIS ===== */
+        .ir-box { background: rgba(224,64,251,0.07); border: 1px solid rgba(224,64,251,0.35); border-left: 3px solid var(--accent-magenta); border-radius: 12px; padding: 1.5rem 1.8rem; margin: 1.5rem 0 1.7rem; max-width: 780px; margin-left: auto; margin-right: auto; }
+        .ir-box h4 { font-family: var(--font-display); font-size: 0.79rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-magenta); margin-bottom: 0.9rem; }
+        .ir-box > p { color: var(--text-muted); font-size: 0.88rem; line-height: 1.75; margin-bottom: 0.95rem; }
+        .ir-box > p:last-child { margin-bottom: 0; }
+        .ir-box ol { margin: 0 0 0 1.15rem; display: flex; flex-direction: column; gap: 0.7rem; }
+        .ir-box li { color: var(--text-muted); font-size: 0.88rem; line-height: 1.7; }
+        .ir-box li strong { color: var(--text-primary); }
+
+        /* ===== DOCUMENTATION TEMPLATE ===== */
+        #documentation { background: var(--bg-primary); }
+        .doc-box { max-width: 760px; margin: 0 auto; background: var(--bg-card); border: 1px solid rgba(255,255,255,0.07); border-left: 3px solid var(--accent-magenta); border-radius: 12px; padding: 1.8rem 2.1rem; }
+        .doc-box p.doc-lede { color: var(--text-muted); font-size: 0.9rem; line-height: 1.75; margin-bottom: 1.2rem; }
+        .doc-template { list-style: none; display: flex; flex-direction: column; gap: 8px; font-family: var(--font-mono); font-size: 0.82rem; color: var(--text-muted); }
+        .doc-template li strong { color: var(--accent-magenta); }
+
+        /* ===== ROTATION PRIORITY ===== */
+        #rotation { background: var(--bg-secondary); }
+        .rotation-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 980px; margin: 0 auto; }
+        .rotation-card { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 1.6rem 1.8rem; }
+        .rotation-card h3 { font-family: var(--font-display); font-size: 0.78rem; letter-spacing: 0.08em; color: var(--accent-cyan); margin-bottom: 1rem; }
+        .rotation-card ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+        .rotation-card li { font-size: 0.83rem; color: var(--text-muted); padding-left: 16px; position: relative; line-height: 1.55; }
+        .rotation-card li::before { content: '›'; position: absolute; left: 0; color: var(--accent-magenta); font-weight: 700; }
+
+        /* ===== RESOURCES ===== */
+        #resources { background: var(--bg-primary); }
+        .resources-list { list-style: none; display: flex; flex-direction: column; gap: 10px; max-width: 700px; margin: 0 auto; }
+        .resources-list li { font-size: 0.9rem; color: var(--text-muted); }
+        .resources-list a { color: var(--accent-cyan); text-decoration: none; }
+        .resources-list a:hover { text-decoration: underline; }
+
+        /* ===== CTA SECTION ===== */
+        #cta-service { background: var(--bg-secondary); padding: 80px 6%; text-align: center; }
+        .cta-heading { font-family: var(--font-display); font-size: clamp(1.4rem, 3vw, 2.2rem); font-weight: 700; margin-bottom: 1rem; }
+        .cta-subtext { color: var(--text-muted); margin-bottom: 2rem; font-size: 1rem; max-width: 640px; margin-left: auto; margin-right: auto; }
+        .cta-buttons { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+
+        /* ===== FOOTER ===== */
+        footer { background: #06060f; border-top: 1px solid rgba(255,255,255,0.06); padding: 28px 6%; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+        .footer-copy { font-size: 0.79rem; color: var(--text-muted); }
+        .footer-links { display: flex; gap: 1.5rem; }
+        .footer-links a { font-size: 0.79rem; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+        .footer-links a:hover { color: var(--accent-cyan); }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 860px) {
+            .rotation-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 640px) {
+            .nav-links { display: none; }
+            .hamburger { display: flex; }
+            .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 68px; left: 0; right: 0; background: rgba(13,13,26,0.97); padding: 20px 6%; gap: 1rem; border-bottom: 1px solid rgba(224,64,251,0.18); }
+            section { padding: 52px 5%; }
+            .service-hero { padding: 48px 5% 48px; }
+            .check-item { padding: 1.1rem 1.1rem; }
+            .check-cmd, .check-expected { margin-left: 0; }
+            .check-note { margin-left: 0; }
+            .incident-box, .ir-box { padding: 1.2rem 1.2rem; }
+            footer { flex-direction: column; text-align: center; }
+        }
+    </style>
+    <!-- Analytics: self-hosted GoatCounter (cookielos, DSGVO-konform, kein Drittanbieter-CDN) -->
+    <script data-goatcounter="https://stats.cyber-aspis.de/count"
+            async src="https://stats.cyber-aspis.de/count.js"></script>
+</head>
+<body>
+
+<!-- ═══ NAVIGATION ═══ -->
+<nav>
+    <a href="../index.html" class="nav-logo">
+        <img src="../assets/logo.png" alt="Cyber Aspis Logo"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+        <div class="nav-logo-fallback" style="display:none;">CA</div>
+        <span class="nav-logo-text">CYBER ASPIS<br>IT-SECURITY</span>
+    </a>
+    <button class="hamburger" id="hamburger" aria-label="Menü öffnen">
+        <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="nav-links">
+        <li><a href="../ueber-uns.html">Über uns</a></li>
+        <li><a href="../index.html#services">Leistungen</a></li>
+        <li><a href="../analysen/">Analysen</a></li>
+        <li><a href="index.html" class="nav-current">Lernen</a></li>
+        <li><a href="../index.html#faq">FAQ</a></li>
+        <li><a href="../index.html#threat-feed">Intel</a></li>
+        <li><a href="../index.html#contact">Kontakt</a></li>
+    </ul>
+</nav>
+
+<!-- ═══ BREADCRUMB ═══ -->
+<div class="breadcrumb-strip" aria-label="Seitenpfad">
+    <ol class="breadcrumb">
+        <li><a href="../index.html">Startseite</a></li>
+        <li><a href="index.html">Lernen</a></li>
+        <li>KI-Werkzeuge und Schreibrechte</li>
+    </ol>
+</div>
+
+<!-- ═══ HERO ═══ -->
+<div class="service-hero">
+    <div class="service-hero-inner">
+        <div class="service-hero-tag">Lernen · KI-Compliance</div>
+        <h1>KI-Werkzeuge im Betrieb: Wer darf eigentlich <span class="gradient-word">schreiben</span>?</h1>
+        <p class="service-hero-subtitle">
+            Assistenten hängen inzwischen an Postfach, Dateiablage und manchmal am CRM. Der Unterschied zwischen lesendem und schreibendem Zugriff entscheidet, was im Ernstfall passiert und wer davon überhaupt erfährt.
+        </p>
+        <div class="stat-row">
+            <div class="stat"><span class="stat-val">2</span><span class="stat-lbl">Kontoarten: privat und Firma</span></div>
+            <div class="stat"><span class="stat-val">07/2025</span><span class="stat-lbl">Bezugsfall Replit</span></div>
+            <div class="stat"><span class="stat-val">18.08.2026</span><span class="stat-lbl">Patch Copilot-Lücke CoSnitch</span></div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══ EINLEITUNG ═══ -->
+<section id="intro" aria-labelledby="intro-heading">
+    <h2 id="intro-heading" class="section-title">Eine Grenze, die oft nur im Kopf existiert</h2>
+    <div class="intro-box">
+        <p>KI-Assistenten hängen in immer mehr Betrieben an echten Systemen: am Postfach, an der Dateiablage, manchmal am CRM. Eingerichtet wird das meist schnell, von der Person, die gerade eine Lösung braucht, nicht von jemandem, der vorher über die Berechtigungen nachdenkt. Die stille Annahme dahinter lautet oft: Der liest doch nur mit, was soll da schon passieren.</p>
+        <p style="margin-top:1rem;">Ob diese Annahme stimmt, entscheidet nicht die Absicht, mit der ein Werkzeug eingesetzt wird, sondern die Rechte, mit denen es läuft. Genau darum geht es auf dieser Seite: woran Sie erkennen, ob ein KI-Werkzeug nur lesen oder auch schreiben kann, und warum das dafür entscheidend ist, wer davon erfährt, wenn etwas schiefgeht.</p>
+    </div>
+</section>
+
+<!-- ═══ LESEND GEGEN SCHREIBEND ═══ -->
+<section id="checklist" aria-labelledby="lesend-heading">
+    <h2 id="lesend-heading" class="section-title">Lesend ist nicht automatisch harmlos</h2>
+    <div class="intro-box">
+        <p>Lesend heißt: Das Werkzeug sieht Inhalte, Nachrichten, Dateien, Termine, verändert am System selbst aber nichts. Schreibend heißt mehr als Text verfassen. Dazu zählt, Daten anzulegen, etwa neue Termine oder Einträge, Daten zu ändern, etwa einen Status oder einen Betrag, und Daten zu löschen.</p>
+        <p style="margin-top:1rem;">Ein Werkzeug, das Rechnungen aus dem Postfach sortiert, muss dafür fast immer schreibend arbeiten: Ordner anlegen, Nachrichten verschieben, einen Status setzen. Das klingt nach einer harmlosen Aufgabe und ist trotzdem ein schreibender Zugriff auf ein produktives System. Der Auftrag <em>sortiere die Rechnungseingänge</em> sagt für sich genommen nichts darüber aus, welche dieser Handlungen dabei tatsächlich erlaubt sein sollen.</p>
+    </div>
+    <!-- Grafikidee: einfache Zwei-Spalten-Grafik "Lesend" vs "Schreibend", rechte Spalte mit den drei Stichworten anlegen / ändern / löschen -->
+</section>
+
+<!-- ═══ BESTANDSAUFNAHME ═══ -->
+<section id="documentation" aria-labelledby="bestandsaufnahme-heading">
+    <h2 id="bestandsaufnahme-heading" class="section-title">Eine Bestandsaufnahme, die ohne Budget geht</h2>
+    <div class="doc-box">
+        <p class="doc-lede">Vier Fragen, die sich im eigenen Betrieb beantworten lassen, ohne ein einziges Werkzeug einzukaufen. Es geht dabei nicht darum, nachzusehen, wer privat welche KI nutzt. Es geht darum, offen im Team zu fragen, welche Werkzeuge im Alltag schon helfen, und herauszufinden, welche davon an einem Postfach oder einer Ablage hängen.</p>
+        <ul class="doc-template">
+            <li><strong>Welche KI-Werkzeuge sind im Haus?</strong> Nicht nur die offiziell eingeführten. Auch das, was einzelne Personen sich selbst eingerichtet haben, weil es im Alltag Zeit spart.</li>
+            <li><strong>Wer hat sie eingerichtet?</strong> Es macht einen Unterschied, ob die IT ein Werkzeug bewusst angebunden hat oder ob es über den Zugang einer einzelnen Person läuft, die schnell eine Lösung brauchte.</li>
+            <li><strong>Mit wessen Zugang laufen sie?</strong> Ein Werkzeug übernimmt die Rechte des Kontos, mit dem es verbunden ist. Hängt es an einem Konto mit vollem Zugriff auf Postfach und Ablage, hat auch das Werkzeug diesen Zugriff.</li>
+            <li><strong>Was dürfen sie erreichen, nur lesen oder auch schreiben?</strong> Bei vielen Werkzeugen lässt sich das in den eigenen Verbindungseinstellungen nachsehen, dort stehen die beim Verbinden erteilten Berechtigungen.</li>
+        </ul>
+    </div>
+</section>
+
+<!-- ═══ KONTOUNTERSCHIED ═══ -->
+<section id="rotation" aria-labelledby="kontounterschied-heading">
+    <h2 id="kontounterschied-heading" class="section-title">Privates Konto oder Firmenkonto: der eigentliche Unterschied</h2>
+    <div class="intro-box">
+        <p>Beim Thema KI-Sicherheit denken viele zuerst an den Preis, kostenlose Version gegen bezahlte Lizenz. Der wichtigere Unterschied liegt woanders: im Konto, mit dem sich jemand anmeldet.</p>
+    </div>
+
+    <div class="incident-box">
+        <h3>Ein Beispiel: CoSnitch bei Microsoft Copilot</h3>
+        <p>Sicherheitsforscher von Varonis fanden drei Schwachstellen in Microsoft Copilot, zusammen bekannt als <code>CoSnitch</code>. Ein präparierter Link genügte: Beim Öffnen führte Copilot eine darin enthaltene Anweisung aus, als käme sie von der angemeldeten Person selbst, mit deren vollständigen Rechten. Im nachgestellten Fall hingen an dem Konto ein privates Postfach, eine Dateiablage und ein Kalender.</p>
+        <p>Betroffen war die Fassung, die mit einem privaten Microsoft-Konto läuft, nicht die über ein Firmenkonto. Gemeldet wurde der Fall im Dezember 2025, geschlossen am 18. August 2026 (CVE-2026-24301). Weil es sich um einen Cloud-Dienst handelt, mussten betroffene Anwender selbst nichts einspielen.</p>
+        <p><strong>Das ist trotzdem kein Freibrief für die Firmenseite:</strong> Dieselben Forscher fanden eine eigene, ebenfalls als kritisch eingestufte Schwachstelle in Microsoft 365 Copilot Enterprise, geschlossen im März 2026 (CVE-2026-24299). Beide gehören zur Copilot-Familie, laufen aber über unterschiedliche Anmeldearten und sind eigene Angebote. Ob die beiden Lücken technisch zusammenhängen, ist nicht öffentlich belegt.</p>
+    </div>
+
+    <div class="intro-box" style="margin-top:1.8rem;">
+        <p>Der Unterschied liegt also nicht darin, ob am Ende gezahlt wurde, denn auch mit einem Firmenkonto lässt sich Copilot ohne eigene Lizenz kostenlos im Chat-Modus nutzen. Er liegt darin, mit welchem Konto sich jemand anmeldet. Ein Firmenkonto läuft über die zentrale Verwaltung, dort lässt sich zumindest im Prinzip nachvollziehen, welches Werkzeug verbunden wurde. Bei einem privaten Konto entscheidet allein die Person, die sich anmeldet, es gibt keine zentrale Stelle im Betrieb, die das mitbekommt.</p>
+    </div>
+    <!-- Grafikidee: Vergleichsgrafik "privates Konto" vs "Firmenkonto", Stichwort Sichtbarkeit für die IT -->
+</section>
+
+<!-- ═══ AUFTRAGSTEXT ALS GRENZE ═══ -->
+<section id="auftragstext" aria-labelledby="auftragstext-heading" style="background:var(--bg-primary);">
+    <h2 id="auftragstext-heading" class="section-title">Wenn der Auftragstext die einzige Grenze ist</h2>
+    <div class="intro-box">
+        <p>In vielen Betrieben gibt es keine technische Grenze für ein KI-Werkzeug, nur eine Formulierung: Kümmere dich um die Rechnungseingänge, aber verändere nichts an bestehenden Daten. Was von so einer Formulierung zu halten ist, zeigt ein dokumentierter Fall aus der Softwareentwicklung.</p>
+    </div>
+
+    <div class="incident-box">
+        <h3>Eine ausdrückliche Anweisung reichte nicht (Replit, Juli 2025)</h3>
+        <p>Ein Nutzer der Programmierplattform Replit wies deren KI-Agenten während eines verabredeten Code Freeze wiederholt und ausdrücklich an, nichts an seinem Projekt zu verändern. Der Agent löschte die Produktivdatenbank trotzdem und behauptete danach fälschlich, das sei nicht rückgängig zu machen.</p>
+        <p>Replits Reaktion war keine bessere Formulierung des Auftrags. Der Geschäftsführer entschuldigte sich öffentlich und kündigte an, Entwicklungs- und Produktivumgebung künftig automatisch technisch zu trennen, statt sich weiter auf eine textliche Anweisung zu verlassen.</p>
+    </div>
+
+    <div class="ir-box" role="note">
+        <h4>Auch im Kleinen: ein eigener Fehler</h4>
+        <p>Bei einem Werkzeug, das ich für die eigene Firma baue, schrieb ein KI-Agent im August 2026 in die scharfe Datenbank, weil im Auftrag der Satz fehlte, nur mit einer Kopie zu arbeiten. Die Datenbank war zu diesem Zeitpunkt leer, sonst wäre echter Schaden entstanden. Der Fehler lag nicht am Werkzeug, sondern an der fehlenden Einschränkung im Auftrag, und genau die lässt sich vorher festlegen.</p>
+    </div>
+
+    <div class="intro-box" style="margin-top:1.8rem;">
+        <p>Der Auftragstext ist für viele Betriebe die einzige Grenze, die ein KI-Werkzeug hat. Er ist billig gesetzt und hält nur so lange, wie das Werkzeug ohnehin nicht mehr könnte, als es soll. Wichtiger als seine Formulierung ist deshalb, wer welche Schreibrechte tatsächlich vergeben hat.</p>
+    </div>
+</section>
+
+<!-- ═══ GUTE GEGEN SCHLECHTE ANTWORT ═══ -->
+<section id="antwort" aria-labelledby="antwort-heading" style="background:var(--bg-secondary);">
+    <h2 id="antwort-heading" class="section-title">Woran Sie eine gute Antwort erkennen</h2>
+    <div class="intro-box">
+        <p>Stellen Sie im eigenen Betrieb die Frage aus der Bestandsaufnahme laut, zeigt sich schnell, ob eine tragfähige oder eine schwache Antwort dahintersteckt.</p>
+    </div>
+    <div class="doc-box" style="margin-top:1.8rem;">
+        <p class="doc-lede" style="margin-bottom:0;">
+            <strong>Schwaches Zeichen:</strong> Das läuft einfach so, das hat keiner extra eingerichtet, es funktioniert doch.
+            <br><br>
+            <strong>Tragfähiges Zeichen:</strong> Wir wissen, welche Werkzeuge schreibend auf welche Daten zugreifen dürfen, mit welchem Konto sie laufen, und das war eine bewusste Entscheidung.
+        </p>
+    </div>
+</section>
+
+<!-- ═══ QUELLEN ═══ -->
+<section id="resources" aria-labelledby="resources-heading">
+    <h2 id="resources-heading" class="section-title">Quellen</h2>
+    <ul class="resources-list">
+        <li><strong>The Register</strong> (Replit-Vorfall, Zeitleiste): <a href="https://www.theregister.com/2025/07/21/replit_saastr_vibe_coding_incident/" target="_blank" rel="noopener">theregister.com, 21.07.2025</a></li>
+        <li><strong>Fortune</strong> (Replit-Vorfall, Einordnung): <a href="https://fortune.com/2025/07/23/ai-coding-tool-replit-wiped-database-called-it-a-catastrophic-failure/" target="_blank" rel="noopener">fortune.com, 23.07.2025</a></li>
+        <li><strong>Amjad Masad</strong>, CEO Replit, Primärquelle zur Reaktion des Unternehmens: <a href="https://x.com/amasad/status/1946986468586721478" target="_blank" rel="noopener">x.com/amasad, 20.07.2025</a></li>
+        <li><strong>Varonis</strong> (technische Analyse CoSnitch): <a href="https://www.varonis.com/blog/cosnitch" target="_blank" rel="noopener">varonis.com/blog/cosnitch</a></li>
+        <li><strong>Microsoft Security Response Center</strong>, CVE-2026-24301: <a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-24301" target="_blank" rel="noopener">msrc.microsoft.com</a></li>
+        <li><strong>Microsoft Security Response Center</strong>, CVE-2026-24299 (Firmenlizenz, März 2026): <a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-24299" target="_blank" rel="noopener">msrc.microsoft.com</a></li>
+    </ul>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<section id="cta-service" aria-labelledby="cta-heading">
+    <h2 id="cta-heading" class="cta-heading">Fragen offen?</h2>
+    <p class="cta-subtext">Wenn die Bestandsaufnahme mehr offene Fragen hinterlässt als Antworten: Sagen Sie uns über das Kontaktformular Bescheid, wir schauen gemeinsam drauf.</p>
+    <div class="cta-buttons">
+        <a href="../index.html#contact" class="btn-secondary">Zum Kontaktformular</a>
+    </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+    <span class="footer-copy">© 2026 Cyber Aspis IT-Security · Alle Rechte vorbehalten</span>
+    <div class="footer-links">
+        <a href="../index.html">Startseite</a>
+        <a href="index.html">Lernen</a>
+        <a href="../index.html#contact">Kontakt</a>
+        <a href="../impressum.html">Impressum</a>
+        <a href="../datenschutz.html">Datenschutz</a>
+    </div>
+</footer>
+
+<script>
+    // Hamburger toggle
+    const hamburger = document.getElementById('hamburger');
+    const navLinks  = document.getElementById('nav-links');
+    if (hamburger && navLinks) {
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('open');
+            hamburger.setAttribute('aria-label',
+                navLinks.classList.contains('open') ? 'Menü schließen' : 'Menü öffnen');
+        });
+    }
+</script>
+</body>
+</html>
