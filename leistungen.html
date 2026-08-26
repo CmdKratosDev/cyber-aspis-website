@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+    <title>Leistungen · IT-Sicherheit für Hannover und Niedersachsen · Cyber Aspis</title>
+    <meta name="description" content="Alle IT-Sicherheitsleistungen von Cyber Aspis für kleine und mittlere Unternehmen in Hannover und Niedersachsen: Sicherheits-Checks, Härtung, Vulnerability Assessment, KI-Sicherheit und Kombinationspakete mit Festpreisen.">
+
+    <!-- ═══ OpenGraph ═══ -->
+    <meta property="og:type"        content="website">
+    <meta property="og:url"         content="https://cyber-aspis.de/leistungen.html">
+    <meta property="og:title"       content="Leistungen · IT-Sicherheit für Hannover und Niedersachsen · Cyber Aspis">
+    <meta property="og:description" content="Alle IT-Sicherheitsleistungen für KMU in Hannover und Niedersachsen im Überblick: Sicherheits-Checks, Härtung, Vulnerability Assessment, KI-Sicherheit und Pakete mit Festpreisen.">
+    <meta property="og:image"       content="https://cyber-aspis.de/assets/og-image.png">
+    <meta property="og:image:width"  content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale"      content="de_DE">
+    <meta property="og:site_name"   content="Cyber Aspis IT-Security">
+
+    <!-- ═══ Twitter / X Card ═══ -->
+    <meta name="twitter:card"        content="summary_large_image">
+    <meta name="twitter:title"       content="Leistungen · IT-Sicherheit für Hannover und Niedersachsen · Cyber Aspis">
+    <meta name="twitter:description" content="Alle IT-Sicherheitsleistungen für KMU in Hannover und Niedersachsen im Überblick, mit Festpreisen.">
+    <meta name="twitter:image"       content="https://cyber-aspis.de/assets/og-image.png">
+
+    <!-- ═══ Canonical ═══ -->
+    <link rel="canonical" href="https://cyber-aspis.de/leistungen.html">
+
+    <style>
+        /* ===== LOCAL FONTS (DSGVO-konform, kein Google-CDN) ===== */
+        @font-face {
+            font-family: 'Orbitron';
+            src: url('assets/fonts/orbitron.woff2') format('woff2');
+            font-weight: 700 900;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Exo 2';
+            src: url('assets/fonts/exo2.woff2') format('woff2');
+            font-weight: 100 900;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Space Mono';
+            src: url('assets/fonts/spacemono-regular.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Space Mono';
+            src: url('assets/fonts/spacemono-bold.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        /* ===== DESIGN-TOKENS (aus scratchpad/studie.html übernommen) ===== */
+        :root {
+            --bg-primary:    #0d0d1a;
+            --bg-secondary:  #12082e;
+            --bg-card:       #1a1a35;
+            --accent-cyan:    #00d4ff;
+            --accent-magenta: #e040fb;
+            --accent-purple:  #7b2ff7;
+            --text-primary:  #ffffff;
+            --text-muted:    #9090b8;
+            --font-display:  'Orbitron', ui-monospace, monospace;
+            --font-body:     'Exo 2', system-ui, -apple-system, sans-serif;
+            --font-mono:     'Space Mono', ui-monospace, monospace;
+            --gradient-wave: linear-gradient(135deg, #00d4ff 0%, #7b2ff7 50%, #cc00ff 100%);
+            --grid-max: 1120px;
+            --grid-pad: clamp(20px, 5vw, 40px);
+        }
+
+        /* ===== RESET & BASE ===== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.65;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        h1, h2, h3 { text-wrap: balance; }
+        img { max-width: 100%; display: block; }
+        a:focus-visible, button:focus-visible {
+            outline: 2px solid var(--accent-cyan);
+            outline-offset: 3px;
+        }
+
+        /* Kornebene ueber der ganzen Seite, nimmt der Flaeche das rein Digitale. */
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: .045;
+            mix-blend-mode: overlay;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+        }
+
+        .wrap { max-width: var(--grid-max); margin-inline: auto; padding-inline: var(--grid-pad); }
+        .bg-a { background: var(--bg-primary); }
+        .bg-b { background: var(--bg-secondary); position: relative; }
+
+        section { padding: clamp(48px, 7vw, 88px) 0; }
+
+        .section-title {
+            text-align: center;
+            font-family: var(--font-display);
+            font-size: clamp(1.35rem, 1.05rem + 1.2vw, 2rem);
+            font-weight: 700; letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--text-primary); margin-bottom: 0.9rem;
+        }
+        .section-title::after {
+            content: ''; display: block;
+            width: 56px; height: 3px;
+            background: var(--gradient-wave);
+            margin: 14px auto 0; border-radius: 2px;
+        }
+        .section-sub {
+            text-align: center; max-width: 700px; margin: 0 auto clamp(28px, 4vw, 44px);
+            color: var(--text-muted); font-size: clamp(0.9rem, 0.86rem + 0.15vw, 1rem);
+            line-height: 1.7;
+        }
+
+        /* ===== NAVIGATION (immer sichtbar, kein Hamburger, Begruendung im Protokoll) ===== */
+        nav {
+            position: sticky; top: 0; z-index: 999;
+            background: rgba(13,13,26,0.92);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(224,64,251,0.18);
+            padding: 12px 6%;
+            display: flex; align-items: center; justify-content: space-between;
+            flex-wrap: wrap; gap: 10px 24px;
+        }
+        .nav-logo {
+            display: flex; align-items: center; gap: 11px;
+            text-decoration: none; flex-shrink: 0;
+        }
+        .nav-logo img { height: 38px; width: 38px; object-fit: contain; }
+        .nav-logo-text {
+            font-family: var(--font-display);
+            font-size: 0.68rem; font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: 0.1em; line-height: 1.3;
+        }
+        .nav-links {
+            display: flex; flex-wrap: wrap; justify-content: center;
+            gap: 0.3rem 1.3rem; list-style: none;
+        }
+        .nav-links a {
+            display: inline-flex; align-items: center; min-height: 48px;
+            color: var(--text-muted); text-decoration: none;
+            font-size: 0.8rem; font-weight: 600;
+            letter-spacing: 0.08em; text-transform: uppercase;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover,
+        .nav-links a[aria-current="page"] { color: var(--accent-cyan); }
+
+        /* ===== BREADCRUMB ===== */
+        .breadcrumb-strip {
+            background: rgba(255,255,255,0.03);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            padding: 12px 6%;
+        }
+        .breadcrumb {
+            display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+            font-family: var(--font-mono); font-size: 0.72rem;
+            color: var(--text-muted); list-style: none;
+            max-width: var(--grid-max); margin: 0 auto;
+        }
+        .breadcrumb li + li::before { content: '/'; margin-right: 8px; opacity: 0.5; }
+        .breadcrumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+        .breadcrumb a:hover { color: var(--accent-cyan); }
+        .breadcrumb li:last-child { color: var(--accent-cyan); }
+
+        /* ===== HERO ===== */
+        #hero-leistungen {
+            position: relative;
+            background:
+                radial-gradient(ellipse 900px 500px at 85% -10%, rgba(0,212,255,0.16), transparent 60%),
+                radial-gradient(ellipse 700px 500px at 10% 10%, rgba(123,47,247,0.18), transparent 60%),
+                var(--bg-primary);
+            padding: clamp(56px, 9vw, 96px) 0 clamp(40px, 6vw, 64px);
+        }
+        .hero-tag {
+            display: inline-flex; align-items: center; gap: 9px;
+            background: rgba(224,64,251,0.13);
+            border: 1px solid rgba(224,64,251,0.38);
+            color: var(--accent-magenta);
+            font-size: 0.7rem; font-weight: 700;
+            letter-spacing: 0.16em; text-transform: uppercase;
+            padding: 6px 16px; border-radius: 100px;
+            margin-bottom: 1.6rem;
+        }
+        .hero-tag-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-magenta); }
+        #hero-leistungen h1 {
+            font-family: var(--font-display);
+            font-size: clamp(1.9rem, 1.4rem + 2.2vw, 3.1rem);
+            font-weight: 900; line-height: 1.15;
+            letter-spacing: 0.01em;
+            margin-bottom: 1.2rem;
+            max-width: 820px;
+        }
+        .hero-lead {
+            font-size: clamp(1rem, 0.94rem + 0.25vw, 1.15rem);
+            color: var(--text-muted); max-width: 720px; line-height: 1.75;
+        }
+
+        /* ===== PREISHINWEIS ===== */
+        .price-note {
+            border-left: 2px solid var(--accent-cyan);
+            padding: 14px 20px; margin-top: 2.2rem;
+            background: rgba(0,212,255,0.05);
+            border-radius: 0 10px 10px 0;
+            max-width: 820px;
+        }
+        .price-note p {
+            font-family: var(--font-mono); font-size: 0.82rem;
+            color: var(--text-muted); line-height: 1.75;
+        }
+        .price-note strong { color: var(--text-primary); }
+
+        /* ═══════════════════════════════════════════════════════════
+           KARTEN-SYSTEM: eine Basisklasse (.pcard) fuer alle Gruppen.
+           Herkunft: scratchpad/studie-leistungen.html, vereinfacht von
+           4 auf beliebig viele Positionen (kein grid-template-areas
+           mehr, siehe Protokoll-Eintrag zur Sicherheits-Check-Gruppe).
+           ═══════════════════════════════════════════════════════════ */
+        .pgrid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            max-width: var(--grid-max);
+            margin: 0 auto;
+        }
+        @media (min-width: 640px)  { .pgrid { grid-template-columns: repeat(2, 1fr); gap: 22px; } }
+        @media (min-width: 900px)  { .pgrid--checks { grid-template-columns: repeat(3, 1fr); } }
+        @media (min-width: 1240px) { .pgrid--checks { grid-template-columns: repeat(5, 1fr); } }
+        @media (min-width: 900px)  { .pgrid--three { grid-template-columns: repeat(3, 1fr); } }
+        @media (min-width: 900px)  { .pgrid--two   { grid-template-columns: repeat(2, 1fr); max-width: 820px; } }
+        .pgrid--four { max-width: 900px; }
+
+        .pcard {
+            position: relative;
+            display: flex; flex-direction: column;
+            background: linear-gradient(160deg, rgba(26,26,53,0.92), rgba(18,8,46,0.96));
+            background-size: 160% 160%;
+            border: 1px solid rgba(0,212,255,0.18);
+            border-radius: 16px;
+            padding: clamp(22px, 2.6vw, 30px);
+            box-shadow: 0 18px 40px -20px rgba(0,0,0,0.65);
+            opacity: 0;
+            animation: pcard-in 0.6s ease forwards;
+            transition: transform 0.3s ease, box-shadow 0.35s ease, border-color 0.35s ease, background-position 0.6s ease;
+        }
+        .pgrid .pcard:nth-child(1) { animation-delay: .05s; }
+        .pgrid .pcard:nth-child(2) { animation-delay: .11s; }
+        .pgrid .pcard:nth-child(3) { animation-delay: .17s; }
+        .pgrid .pcard:nth-child(4) { animation-delay: .23s; }
+        .pgrid .pcard:nth-child(5) { animation-delay: .29s; }
+
+        @supports (animation-timeline: view()) {
+            .pcard { animation-timeline: view(); animation-fill-mode: both; animation-delay: 0s; animation-range: entry 5% cover 30%; }
+        }
+
+        .pcard::before {
+            content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-magenta) 55%, transparent 85%);
+            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor; mask-composite: exclude;
+            opacity: 0; transition: opacity 0.35s ease; pointer-events: none;
+        }
+        .pcard:hover, .pcard:focus-within {
+            transform: translateY(-4px);
+            box-shadow: 0 24px 48px -18px rgba(0,212,255,0.22);
+            border-color: rgba(0,212,255,0.4);
+            background-position: 100% 100%;
+        }
+        .pcard:hover::before, .pcard:focus-within::before { opacity: 1; }
+
+        .pcard--featured {
+            border-color: rgba(224,64,251,0.35);
+            background: linear-gradient(160deg, rgba(28,20,58,0.95), rgba(18,8,46,0.98));
+            box-shadow: 0 24px 56px -20px rgba(123,47,247,0.4);
+        }
+        .pcard__badge {
+            position: absolute; top: -14px; left: 22px;
+            background: linear-gradient(120deg, var(--accent-cyan), var(--accent-magenta));
+            color: var(--bg-primary);
+            font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700;
+            letter-spacing: 0.08em; text-transform: uppercase;
+            padding: 5px 13px; border-radius: 999px;
+            box-shadow: 0 8px 18px -6px rgba(224,64,251,0.55);
+            white-space: nowrap;
+        }
+
+        .pcard__icon { color: var(--accent-cyan); width: 36px; height: 36px; margin-bottom: 14px; }
+        .pcard--featured .pcard__icon { color: var(--accent-magenta); }
+        .pcard__icon svg { width: 100%; height: 100%; }
+
+        .pcard__title {
+            font-family: var(--font-display);
+            font-size: clamp(1rem, 0.95rem + 0.25vw, 1.18rem);
+            color: var(--text-primary);
+            margin-bottom: 12px; line-height: 1.35;
+        }
+
+        /* Preis: große Zahl (Sicherheits-Check-Familie) */
+        .pcard__price--big { display: flex; align-items: baseline; gap: 4px; line-height: 1; margin-bottom: 4px; }
+        .pcard__amount { font-family: var(--font-display); font-size: clamp(2.1rem, 1.8rem + 1.2vw, 2.8rem); color: var(--accent-cyan); font-weight: 700; }
+        .pcard--featured .pcard__amount { color: var(--accent-magenta); }
+        .pcard__currency { font-family: var(--font-mono); font-size: 1rem; color: var(--text-muted); }
+        .pcard__effort { font-family: var(--font-mono); font-size: 0.88rem; color: var(--text-muted); margin-bottom: 16px; }
+
+        /* Preis: Pille (alle anderen Gruppen) */
+        .pcard__price--pill {
+            display: inline-flex; align-self: flex-start; align-items: center;
+            max-width: 100%; overflow-wrap: break-word; word-break: break-word; white-space: normal;
+            background: rgba(224,64,251,0.1);
+            color: var(--accent-magenta);
+            border: 1px solid rgba(224,64,251,0.3);
+            padding: 7px 14px; border-radius: 16px;
+            font-family: var(--font-display); font-size: 0.76rem; font-weight: 700;
+            letter-spacing: 0.03em; line-height: 1.5; margin-bottom: 14px;
+        }
+
+        /* Preis: Paket (durchgestrichener Regelpreis + Endpreis) */
+        .pcard__price--pkg { margin-bottom: 4px; }
+        .pcard__price--pkg .pcard__strike {
+            font-family: var(--font-mono); font-size: 0.95rem; color: var(--text-muted);
+            text-decoration: line-through; margin-right: 8px;
+        }
+        .pcard__price--pkg .pcard__final {
+            font-family: var(--font-display); font-size: clamp(1.5rem, 1.3rem + 0.7vw, 1.85rem);
+            color: var(--text-primary); font-weight: 700;
+        }
+        .pcard__savings { font-family: var(--font-mono); font-size: 0.78rem; color: var(--accent-cyan); margin-bottom: 16px; display: block; }
+
+        .pcard__why {
+            font-size: 0.9rem; line-height: 1.65; color: var(--text-muted);
+            margin: 0 0 16px; padding-left: 14px; overflow-wrap: break-word;
+            border-left: 2px solid rgba(224,64,251,0.45);
+        }
+        .pcard__zielgruppe {
+            font-size: 0.85rem; line-height: 1.65; color: var(--text-muted);
+            margin-bottom: 14px; overflow-wrap: break-word;
+        }
+
+        .pcard__list { list-style: none; margin-bottom: 16px; flex-grow: 1; }
+        .pcard__list li {
+            position: relative; font-size: 0.88rem; line-height: 1.6;
+            color: var(--text-muted); padding-left: 20px; margin-bottom: 8px;
+            overflow-wrap: break-word;
+        }
+        .pcard__list li::before {
+            content: ""; position: absolute; left: 0; top: 0.55em;
+            width: 6px; height: 6px; border-radius: 50%; background: var(--accent-cyan);
+        }
+        .pcard--featured .pcard__list li::before { background: var(--accent-magenta); }
+        .pcard__list li.pcard__li--usp {
+            padding: 9px 11px; margin: 0 -11px 10px; list-style: none;
+            background: linear-gradient(120deg, rgba(0,212,255,0.14), rgba(123,47,247,0.14));
+            border: 1px solid rgba(0,212,255,0.3); border-radius: 10px;
+            color: var(--text-primary); font-weight: 600;
+        }
+        .pcard__list li.pcard__li--usp::before { content: none; }
+
+        .pcard__note {
+            font-family: var(--font-mono); font-size: 0.72rem; color: #8888ac;
+            line-height: 1.6; margin-bottom: 14px; overflow-wrap: break-word;
+        }
+
+        .pcard__btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            min-height: 48px; padding: 0 22px; margin-top: auto;
+            border-radius: 10px; border: 1px solid var(--accent-cyan);
+            background: rgba(0,212,255,0.06); color: var(--text-primary);
+            font-family: var(--font-body); font-weight: 600; font-size: 0.95rem;
+            text-decoration: none; text-align: center;
+            transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+        }
+        .pcard__btn:hover, .pcard__btn:focus-visible {
+            background: linear-gradient(120deg, var(--accent-cyan), var(--accent-purple));
+            color: var(--bg-primary); box-shadow: 0 12px 24px -10px rgba(0,212,255,0.5);
+            transform: translateY(-2px);
+        }
+        .pcard--featured .pcard__btn { border-color: var(--accent-magenta); background: rgba(224,64,251,0.08); }
+        .pcard--featured .pcard__btn:hover, .pcard--featured .pcard__btn:focus-visible {
+            background: linear-gradient(120deg, var(--accent-magenta), var(--accent-purple));
+            color: var(--bg-primary); box-shadow: 0 12px 24px -10px rgba(224,64,251,0.5);
+        }
+
+        /* Referenz-Karten (Gruppe 6: Verweise auf Detailseiten), kompakter */
+        .pcard--ref { padding: clamp(20px, 2.2vw, 26px); }
+        .pcard--ref .pcard__title { margin-bottom: 8px; }
+        .pcard--ref .pcard__note { color: var(--text-muted); font-family: var(--font-body); font-size: 0.88rem; margin-bottom: 18px; }
+
+        /* Nicht buchbare Karte (Laufende Ueberwachung): bewusst zurueckhaltend,
+           kein Hover-Glow, kein Preis, kein Anfragen-Knopf, damit sie sich von
+           den buchbaren Positionen sichtbar unterscheidet. */
+        .pcard--pending {
+            border-style: dashed;
+            border-color: rgba(144,144,184,0.4);
+            background: linear-gradient(160deg, rgba(22,22,42,0.85), rgba(16,10,36,0.9));
+        }
+        .pcard--pending::before { content: none; }
+        .pcard--pending:hover, .pcard--pending:focus-within {
+            transform: none; background-position: 0% 0%;
+            box-shadow: 0 18px 40px -20px rgba(0,0,0,0.5);
+            border-color: rgba(144,144,184,0.5);
+        }
+        .pcard__status {
+            display: inline-flex; align-self: flex-start; align-items: center;
+            font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted);
+            border: 1px dashed rgba(144,144,184,0.45); border-radius: 16px;
+            padding: 6px 14px; margin-bottom: 14px;
+        }
+        .pcard__quote {
+            font-style: italic; font-size: 0.9rem; line-height: 1.75; color: var(--text-primary);
+            border-left: 2px solid var(--text-muted); padding-left: 14px; margin: 0 0 16px;
+            overflow-wrap: break-word;
+        }
+
+        .pgroup__foot {
+            text-align: center; color: var(--text-muted);
+            font-family: var(--font-mono); font-size: 0.85rem;
+            max-width: var(--grid-max); margin: clamp(28px, 4vw, 40px) auto 0;
+            line-height: 1.7; padding-inline: var(--grid-pad);
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: #06060f;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            padding: 28px 6%;
+            display: flex; align-items: center; justify-content: space-between;
+            flex-wrap: wrap; gap: 1rem;
+        }
+        .footer-copy { font-size: 0.79rem; color: var(--text-muted); }
+        .footer-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+        .footer-links a { font-size: 0.79rem; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+        .footer-links a:hover { color: var(--accent-cyan); }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 480px) {
+            .breadcrumb { font-size: 0.66rem; }
+        }
+
+        /* ===== A11y · prefers-reduced-motion ===== */
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            .pcard {
+                opacity: 1; animation: none; transition: none; background-position: 0% 0%;
+            }
+            .pcard::before { transition: none; }
+            .pcard:hover, .pcard:focus-within { transform: none; background-position: 0% 0%; }
+            .pcard__btn { transition: none; }
+            .pcard__btn:hover, .pcard__btn:focus-visible { transform: none; }
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
+        @keyframes pcard-in {
+            from { opacity: 0; transform: translateY(22px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ═══ NAVIGATION ═══ -->
+<nav>
+    <a href="index.html" class="nav-logo">
+        <img src="assets/logo.png" alt="Cyber Aspis Logo">
+        <span class="nav-logo-text">CYBER ASPIS<br>IT-SECURITY</span>
+    </a>
+    <ul class="nav-links">
+        <li><a href="index.html">Startseite</a></li>
+        <li><a href="ueber-uns.html">Über uns</a></li>
+        <li><a href="leistungen.html" aria-current="page">Leistungen</a></li>
+        <li><a href="index.html#faq">FAQ</a></li>
+        <li><a href="index.html#contact">Kontakt</a></li>
+    </ul>
+</nav>
+
+<!-- ═══ BREADCRUMB ═══ -->
+<div class="breadcrumb-strip" aria-label="Seitenpfad">
+    <ol class="breadcrumb">
+        <li><a href="index.html">Startseite</a></li>
+        <li>Leistungen</li>
+    </ol>
+</div>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero-leistungen" class="bg-a">
+    <div class="wrap">
+        <p class="hero-tag"><span class="hero-tag-dot"></span>Leistungsübersicht</p>
+        <h1>IT-Sicherheitsleistungen für Hannover und Niedersachsen</h1>
+        <p class="hero-lead">
+            Von der Quick-Check-Prüfung aus der Ferne bis zum kombinierten Rundum-Paket:
+            hier stehen alle Leistungen von Cyber Aspis IT-Security für kleine und mittlere
+            Unternehmen mit Festpreis, Aufwand und Umfang im Überblick.
+        </p>
+        <div class="price-note">
+            <p>
+                Alle Preise in Euro. Cyber Aspis wendet die Kleinunternehmerregelung nach § 19 UStG an,
+                Umsatzsteuer wird nicht ausgewiesen und nicht berechnet. Der angegebene Preis ist der
+                Endpreis. Anfahrt bis 50 km ist enthalten, darüber 0,30 €/km und die halbe Fahrzeit.
+                <strong>Preise Stand 31.07.2026.</strong>
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ GRUPPE 1: SICHERHEITS-CHECKS ═══ -->
+<section id="checks" class="bg-b" aria-labelledby="checks-heading">
+    <div class="wrap">
+        <h2 id="checks-heading" class="section-title">Sicherheits-Checks</h2>
+        <p class="section-sub">
+            Fünf Tiefen, je nach Umgebung und Budget. Die Nachprüfung nach Behebung ist zu jeder
+            Variante zubuchbar.
+        </p>
+
+        <div class="pgrid pgrid--checks">
+
+            <!-- 1a -->
+            <article class="pcard">
+                <div class="pcard__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                        <circle cx="12" cy="12" r="9"></circle>
+                        <path d="M3 12h18"></path>
+                        <path d="M12 3c2.5 2.5 4 5.5 4 9s-1.5 6.5-4 9c-2.5-2.5-4-5.5-4-9s1.5-6.5 4-9z"></path>
+                    </svg>
+                </div>
+                <h3 class="pcard__title">1a · Quick-Check aus der Ferne</h3>
+                <p class="pcard__price--big"><span class="pcard__amount">400</span><span class="pcard__currency">€</span></p>
+                <p class="pcard__effort">rund 4,5 Stunden</p>
+                <ul class="pcard__list">
+                    <li>Website und TLS-Verschlüsselung, inklusive Zertifikatslaufzeit</li>
+                    <li>Absender-Absicherung der Domain (SPF, DKIM, DMARC)</li>
+                    <li>Sicherheits-Header</li>
+                    <li>Technische Prüfung eingebundener Drittdienste</li>
+                    <li>Dokumentierte Vorabprüfung der Online-Präsenz</li>
+                    <li>Bericht und Nachbesprechung</li>
+                </ul>
+                <a class="pcard__btn" href="index.html#contact">Anfragen</a>
+            </article>
+
+            <!-- 1b -->
+            <article class="pcard">
+                <div class="pcard__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                        <rect x="6" y="4" width="12" height="17" rx="1"></rect>
+                        <path d="M9 4V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1"></path>
+                        <path d="M9 10h6M9 13.5h6M9 17h4"></path>
+                    </svg>
+                </div>
+                <h3 class="pcard__title">1b · Aufnahme und Beratung vor Ort</h3>
+                <p class="pcard__price--big"><span class="pcard__amount">450</span><span class="pcard__currency">€</span></p>
+                <p class="pcard__effort">rund 5 Stunden</p>
+                <ul class="pcard__list">
+                    <li>Aufnahmegespräch im Betrieb</li>
+                    <li>Sichtprüfung ohne Eingriff in Ihre Systeme</li>
+                    <li>Betrachtung von außen</li>
+                    <li>Schriftliche Zusammenfassung</li>
+                    <li>Wird bei Folgeauftrag binnen 3 Monaten voll angerechnet</li>
+                </ul>
+                <a class="pcard__btn" href="index.html#contact">Anfragen</a>
+            </article>
+
+            <!-- 1c -->
+            <article class="pcard">
+                <div class="pcard__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                        <rect x="5" y="3" width="14" height="18" rx="1"></rect>
+                        <path d="M9 7h1M14 7h1M9 11h1M14 11h1M9 15h1M14 15h1"></path>
+                    </svg>
+                </div>
+                <h3 class="pcard__title">1c · Vor-Ort-Check klein</h3>
+                <p class="pcard__price--big"><span class="pcard__amount">850</span><span class="pcard__currency">€</span></p>
+                <p class="pcard__effort">rund 9,5 Stunden</p>
+                <ul class="pcard__list">
+                    <li>Alles aus 1b</li>
+                    <li>Netz- und Geräteaufnahme</li>
+                    <li>Router und WLAN</li>
+                    <li>Arbeitsplätze und Netzwerkspeicher</li>
+                    <li>Für Betriebe bis etwa 5 Arbeitsplätze</li>
+                </ul>
+                <a class="pcard__btn" href="index.html#contact">Anfragen</a>
+            </article>
+
+            <!-- 1d, featured -->
+            <article class="pcard pcard--featured">
+                <span class="pcard__badge">Alleinstellung</span>
+                <div class="pcard__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                        <path d="M4 21V9l8-5 8 5v12"></path>
+                        <path d="M9 21v-6h6v6"></path>
+                    </svg>
+                </div>
+                <h3 class="pcard__title">1d · Vor-Ort-Check erweitert</h3>
+                <p class="pcard__price--big"><span class="pcard__amount">1.250</span><span class="pcard__currency">€</span></p>
+                <p class="pcard__effort">rund 14 Stunden</p>
+                <p class="pcard__why">
+                    Prüft zusätzlich, was eine reine IT-Prüfung auslässt: Gebäude- und
+                    Sicherheitstechnik am Netz. Diese Tiefe kann im DACH-Solo-Markt praktisch
+                    kein Wettbewerber fachlich beurteilen.
+                </p>
+                <ul class="pcard__list">
+                    <li>Alles aus dem kleinen Vor-Ort-Check</li>
+                    <li class="pcard__li--usp">Gebäude- und Sicherheitstechnik am Netz</li>
+                    <li>Fernwartungszugänge</li>
+                    <li>Mobile Geräte</li>
+                    <li>Eigener Server</li>
+                </ul>
+                <a class="pcard__btn" href="index.html#contact">Anfragen</a>
+            </article>
+
+            <!-- 1e -->
+            <article class="pcard">
+                <div class="pcard__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                        <path d="M20 12a8 8 0 1 1-2.34-5.66"></path>
+                        <path d="M20 4v5h-5"></path>
+                        <path d="M9 12l2 2 4-4"></path>
+                    </svg>
+                </div>
+                <h3 class="pcard__title">1e · Nachprüfung nach Behebung</h3>
+                <p class="pcard__price--big"><span class="pcard__amount">190</span><span class="pcard__currency">€</span></p>
+                <p class="pcard__effort">rund 2 Stunden</p>
+                <ul class="pcard__list">
+                    <li>Verifikation der behobenen Punkte</li>
+                    <li>Kurzbericht</li>
+                    <li>Zu jeder Variante zubuchbar</li>
+                </ul>
+                <a class="pcard__btn" href="index.html#contact">Anfragen</a>
+            </article>
+
+        </div>
+
+        <p class="pgroup__foot">
+            In jeder Variante enthalten: Vorbereitung, Auswertung, schriftlicher Bericht in
+            KMU-Sprache, Nachbesprechung und Rückfragen bis 30 Tage.
+        </p>
+    </div>
+</section>
+
+<!-- ═══ GRUPPE 2: UMSETZUNG, SCHULUNG UND WIEDERHOLUNG ═══ -->
+<section id="umsetzung" class="bg-a" aria-labelledby="umsetzung-heading">
+    <div class="wrap">
+        <h2 id="umsetzung-heading" class="section-title">Umsetzung, Schulung und Wiederholung</h2>
+        <p class="section-sub">
+            Der naheliegendste Anschluss an einen Sicherheits-Check: Empfehlungen umsetzen,
+            das Team schulen, jährlich wiederholen oder den Außenauftritt vierteljährlich
+            im Blick behalten.
+        </p>
+
+        <div class="pgrid pgrid--four">
+
+            <article class="pcard">
+                <h3 class="pcard__title">Härtungs-Tag</h3>
+                <p class="pcard__price--pill">720 € Pauschal · weitere Stunden 95 €/Stunde</p>
+                <p class="pcard__effort">8 Stunden</p>
+                <ul class="pcard__list">
+                    <li>Router- und WLAN-Härtung, Gäste-Netz trennen</li>
+                    <li>Absender-Absicherung der Domain einrichten (SPF, DKIM, DMARC)</li>
+                    <li>Zwei-Faktor-Anmeldung für E-Mail und zentrale Dienste aktivieren</li>
+                    <li>Nicht mehr benötigte Fernwartungs- und Benutzerzugänge schließen</li>
+                    <li>Freigaben und Berechtigungen auf dem Netzwerkspeicher aufräumen</li>
+                    <li>Datensicherung prüfen und eine Rückspielung testen</li>
+                </ul>
+                <p class="pcard__note">
+                    Umgesetzte Maßnahmen, dokumentiert mit Vorher-Nachher-Stand. Kurzprotokoll,
+                    was gemacht wurde und was bewusst offen blieb. Umfang, Reihenfolge und
+                    Haftung werden vorab schriftlich im Angebot festgelegt, Eingriffe erfolgen
+                    nur nach ausdrücklicher Freigabe.
+                </p>
+                <a class="pcard__btn" href="index.html#contact">Anfragen</a>
+            </article>
+
+            <article class="pcard">
+                <h3 class="pcard__title">Sicherheits-Unterweisung für das Team</h3>
+                <p class="pcard__price--pill">290 € Pauschal · ab 10 Teilnehmenden 49 € pro Person</p>
+                <p class="pcard__effort">2 Stunden vor Ort</p>
+                <p class="pcard__zielgruppe">Für Kleinstbetriebe bis etwa 10 Beschäftigte.</p>
+                <ul class="pcard__list">
+                    <li>Gefälschte Rechnungen und geänderte Bankverbindungen erkennen</li>
+                    <li>Die Chef-Masche: angebliche Eilüberweisung im Namen der Geschäftsführung</li>
+                    <li>Phishing in Alltagssprache, mit echten Beispielen aus der Branche</li>
+                    <li>Passwörter und Zwei-Faktor-Anmeldung praktisch erklärt</li>
+                    <li>Umgang mit Firmendaten auf privaten Handys</li>
+                    <li>Was tun, wenn doch etwas passiert ist</li>
+                </ul>
+                <p class="pcard__note">
+                    Unterweisung vor Ort ohne Folienvortrag, am konkreten Betrieb orientiert.
+                    Aushänge zum Aufhängen, kurze Teilnahmebestätigung für die eigenen Unterlagen.
+                </p>
+                <a class="pcard__btn" href="index.html#contact">Anfragen</a>
+            </article>
+
+            <article class="pcard">
+                <h3 class="pcard__title">Jahres-Check</h3>
+                <p class="pcard__price--pill">Regelpreis des jeweiligen Sicherheits-Checks abzüglich 15 %</p>
+                <p class="pcard__zielgruppe">Für Bestandskunden nach einem ersten Check.</p>
+                <ul class="pcard__list">
+                    <li>Einmal jährlich, gleicher Umfang wie beim ersten Mal</li>
+                    <li>Erinnerung durch Cyber Aspis</li>
+                    <li>Bericht zeigt, was sich verbessert und was sich verschlechtert hat</li>
+                    <li>Kein Abo, keine Reaktionszeiten, keine Bereitschaft</li>
+                </ul>
+                <a class="pcard__btn" href="index.html#contact">Anfragen</a>
+            </article>
+
+            <article class="pcard">
+                <h3 class="pcard__title">Wiederkehrender Außen-Check</h3>
+                <p class="pcard__price--pill">190 € je Durchlauf · 680 € pro Jahr im Quartalstakt (4 Durchläufe), zahlbar 170 € je Quartal · 350 € pro Jahr halbjährlich</p>
+                <p class="pcard__effort">4 feste Termine im Jahr, je 2 Stunden</p>
+                <p class="pcard__zielgruppe">
+                    Für Bestandskunden nach einem ersten Check, deren Außenauftritt
+                    (Website, Domain, E-Mail) sich verändert. Geprüft wird ausschließlich
+                    von außen: kein Zugang zu Kundensystemen, kein Eingriff, keine
+                    Freigabe des Hosters nötig.
+                </p>
+                <ul class="pcard__list">
+                    <li>Absender-Absicherung erneut prüfen (SPF, DKIM, DMARC)</li>
+                    <li>Verschlüsselung und Sicherheits-Header</li>
+                    <li>Öffentliche Angriffsfläche: Änderungen seit dem letzten Lauf</li>
+                    <li>Datenschutz-Sichtung der Website auf Änderungen</li>
+                    <li>Abgleich auf neue Datenlecks (Domain, Adressen)</li>
+                    <li>Kurzbericht: Ampel, Veränderungen, Stand der offenen Punkte</li>
+                </ul>
+                <p class="pcard__note">
+                    Kein Alarmkanal. Befunde wandern in den nächsten Quartalsbericht, es gibt
+                    keine Sofortmeldung und keine Reaktionszeit.<br>
+                    Vier Termine im Jahr reichen aus: in einem Kleinbetrieb ändert sich in
+                    vier Wochen selten etwas, das einen eigenen Bericht rechtfertigt, und
+                    zwölf Termine würden nur eine laufende Betreuung erwarten lassen, die
+                    hier nicht angeboten wird.
+                </p>
+                <a class="pcard__btn" href="index.html#contact">Anfragen</a>
+            </article>
+
+        </div>
+    </div>
+</section>
+
+<!-- ═══ GRUPPE 3: VERTIEFTE PRÜFUNGEN ═══ -->
+<section id="vertieft" class="bg-b" aria-labelledby="vertieft-heading">
+    <div class="wrap">
+        <h2 id="vertieft-heading" class="section-title">Vertiefte Prüfungen</h2>
+        <p class="section-sub">
+            Für KMU mit Web-Präsenz, sensiblen Daten oder eigener IT-Infrastruktur.
+        </p>
+
+        <div class="pgrid pgrid--three">
+
+            <article class="pcard">
+                <h3 class="pcard__title">Vulnerability Assessment</h3>
+                <p class="pcard__price--pill">720 € Tagespaket (8 Stunden) · 1.440 € Zweitagespaket (16 Stunden) · darüber 95 €/Stunde</p>
+                <p class="pcard__effort">8 bis 16 Stunden, je nach Umfang</p>
+                <ul class="pcard__list">
+                    <li>Detaillierte Netzwerk-Analyse (nmap Scripts, Service-Detection)</li>
+                    <li>Web-Application-Security-Test mit Fokus auf OWASP Top-10</li>
+                    <li>SSL/TLS-Prüfung (testssl.sh)</li>
+                    <li>OSINT-Recherche</li>
+                    <li>Social-Engineering-Assessment (Phishing-Simulation optional)</li>
+                </ul>
+                <p class="pcard__note">
+                    Lieferumfang: technischer Report (15 bis 30 Seiten) mit CVE-Referenzen und
+                    CVSS-Scores, Remediation-Anleitung, Wiederholungs-Scan nach 30 Tagen.
+                </p>
+                <a class="pcard__btn" href="services/vulnerability-assessment.html">Mehr erfahren</a>
+            </article>
+
+            <article class="pcard">
+                <h3 class="pcard__title">Backup-Strategie Setup</h3>
+                <p class="pcard__price--pill">720 € Paketpreis bis 8 Stunden, darüber 95 €/Stunde</p>
+                <p class="pcard__effort">6 bis 10 Stunden</p>
+                <ul class="pcard__list">
+                    <li>Anforderungsanalyse: kritische Daten, RTO/RPO definieren</li>
+                    <li>Backup-Konzept nach der 3-2-1-Regel</li>
+                    <li>Tool-Auswahl und Einrichtung (Borg, Duplicati, rsync, Cloud-Backup)</li>
+                    <li>Automation-Setup: Cron-Jobs, Monitoring, Alerting</li>
+                    <li>Recovery-Test: die Wiederherstellung wird demonstriert</li>
+                </ul>
+                <p class="pcard__note">
+                    Lieferumfang: Backup-Konzept-Dokument als PDF, versionierte Skripte und
+                    Konfigurationsdateien, Recovery-Anleitung Schritt für Schritt, 30 Tage Support.
+                </p>
+                <a class="pcard__btn" href="index.html#contact">Anfragen</a>
+            </article>
+
+            <article class="pcard">
+                <h3 class="pcard__title">Security-Policy Beratung</h3>
+                <p class="pcard__price--pill">95 € pro Stunde</p>
+                <p class="pcard__effort">4 bis 12 Stunden, je nach Umfang</p>
+                <ul class="pcard__list">
+                    <li>Gap-Analyse: aktuelle Richtlinien gegen Best Practices</li>
+                    <li>Richtlinien-Entwicklung: Acceptable Use Policy, Password Policy, Incident Response</li>
+                    <li>Mitarbeiter-Schulungskonzept</li>
+                    <li>Implementierungs-Plan für Rollout und Durchsetzung</li>
+                </ul>
+                <p class="pcard__note">
+                    Lieferumfang: anpassbare Policy-Vorlagen, Schulungsmaterial mit Präsentation
+                    und Handout, Umsetzungs-Roadmap über 3, 6 und 12 Monate.
+                </p>
+                <a class="pcard__btn" href="index.html#contact">Anfragen</a>
+            </article>
+
+        </div>
+    </div>
+</section>
+
+<!-- ═══ GRUPPE 4: KI-SICHERHEIT ═══ -->
+<section id="ki-sicherheit" class="bg-a" aria-labelledby="ki-sicherheit-heading">
+    <div class="wrap">
+        <h2 id="ki-sicherheit-heading" class="section-title">KI-Sicherheit</h2>
+        <p class="section-sub">
+            Für Unternehmen, die selbst gehostete KI betreiben oder KI-Coding-Assistenten im
+            Entwicklungsteam einsetzen.
+        </p>
+
+        <div class="pgrid pgrid--two">
+
+            <article class="pcard">
+                <h3 class="pcard__title">AI-Quick-Check</h3>
+                <p class="pcard__price--pill">450 € Pauschal</p>
+                <p class="pcard__effort">4 bis 6 Stunden</p>
+                <p class="pcard__zielgruppe">Für KMU mit selbst gehosteter KI-Infrastruktur (Ollama, Open-WebUI, vLLM, LocalAI).</p>
+                <ul class="pcard__list">
+                    <li>Container-Exposure-Audit: Ollama-, vLLM- und TGI-Binding, Docker-Netzwerk-Isolierung</li>
+                    <li>Auth-Layer-Audit: First-User-Race, Standardpasswörter, JWT-Persistenz</li>
+                    <li>Ressourcen-Kontrolle: Model-Pull- und Delete-Endpunkte, Rate-Limiting</li>
+                    <li>Defense-in-Depth: sechs HTTP-Security-Header, Reverse-Proxy-Härtung</li>
+                    <li>Prompt-Injection-Resistenz: Direct-Injection- und Sysprompt-Leak-Tests</li>
+                    <li>KI-Agent-Modell-Audit: welches Modell läuft, ist ein Wechsel möglich, gibt es Vendor-Lock</li>
+                </ul>
+                <p class="pcard__note">
+                    Lieferumfang: PDF-Report (10 bis 15 Seiten) in Technik- und KMU-Sprache,
+                    CVSS-basiertes Severity-Mapping, priorisierte Top-3-Maßnahmenliste,
+                    30-minütiger Review-Call, 30 Tage Support.<br>
+                    Nicht enthalten: Umsetzung der Maßnahmen (separates Engagement, 95 € pro
+                    Stunde), vollständige Garak-Jailbreak-Analyse (595 €), individuelle
+                    Sysprompt-Härtung (95 € pro Stunde).
+                </p>
+                <a class="pcard__btn" href="index.html#contact">Anfragen</a>
+            </article>
+
+            <article class="pcard">
+                <h3 class="pcard__title">AI-Coding-Quick-Check</h3>
+                <p class="pcard__price--pill">320 € Pauschal</p>
+                <p class="pcard__effort">3 bis 4 Stunden</p>
+                <p class="pcard__zielgruppe">Für KMU-Entwicklungsteams mit Claude Code, Cursor, Windsurf, Continue.dev oder Copilot.</p>
+                <ul class="pcard__list">
+                    <li>Settings-Härtung: Datei-Zugriffssperren für .env, Zugangsdaten und Geheimnisse</li>
+                    <li>Code-Context-Leak-Tests: findet der Assistent Ausschnitte aus anderen Projekten oder Sitzungen in der automatischen Vervollständigung</li>
+                    <li>Secret-in-Context-Audit: könnten Zugangsschlüssel oder Passwörter aus dem Editor-Kontext im generierten Code landen</li>
+                    <li>Modell-Wechselbarkeit: kann das Team ohne Anbieterbindung das Modell wechseln, zum Beispiel von OpenAI zu Anthropic</li>
+                </ul>
+                <p class="pcard__note">
+                    Lieferumfang: PDF-Report (6 bis 10 Seiten, KMU-freundlich), sofort umsetzbare
+                    Top-3-Maßnahmenliste, Härtungs-Vorlage für Editor-Einstellungen zum Einfügen,
+                    optionaler 15-minütiger Kurz-Review-Call, 30 Tage Support.
+                </p>
+                <a class="pcard__btn" href="index.html#contact">Anfragen</a>
+            </article>
+
+        </div>
+    </div>
+</section>
+
+<!-- ═══ GRUPPE 5: IM ERNSTFALL UND LAUFENDE BETREUUNG ═══ -->
+<section id="ernstfall" class="bg-b" aria-labelledby="ernstfall-heading">
+    <div class="wrap">
+        <h2 id="ernstfall-heading" class="section-title">Im Ernstfall und laufende Betreuung</h2>
+        <p class="section-sub">
+            Notfall-Unterstützung ist heute buchbar. Laufende Überwachung mit Reaktion ist es
+            noch nicht, aus ehrlichem Grund.
+        </p>
+
+        <div class="pgrid pgrid--two">
+
+            <article class="pcard">
+                <h3 class="pcard__title">Notfall-Unterstützung</h3>
+                <p class="pcard__price--pill">149 € pro Stunde</p>
+                <p class="pcard__effort">Reaktion innerhalb von 24 Stunden an Werktagen</p>
+                <p class="pcard__zielgruppe">Für Unternehmen während oder nach einem Sicherheitsvorfall.</p>
+                <p class="pcard__note">
+                    Bewusst keine 24/7-Bereitschaft. Solange Cyber Aspis im Nebenerwerb betrieben
+                    wird, kann eine durchgehende Erreichbarkeit nicht zugesagt werden. Ein
+                    Versprechen, das im Ernstfall bricht, richtet mehr Schaden an als ein
+                    ehrliches Zeitfenster.
+                </p>
+                <a class="pcard__btn" href="index.html#contact">Anfragen</a>
+            </article>
+
+            <article class="pcard pcard--pending">
+                <h3 class="pcard__title">Laufende Überwachung</h3>
+                <p class="pcard__status">In Vorbereitung, noch nicht buchbar</p>
+                <p class="pcard__zielgruppe">
+                    Zur Abgrenzung: Der Wiederkehrende Außen-Check ist ein buchbarer Termin ohne
+                    Reaktionszusage. Laufende Überwachung meint echte Überwachung mit Reaktion,
+                    und genau die kann im Nebenerwerb derzeit nicht zuverlässig zugesagt werden.
+                </p>
+                <blockquote class="pcard__quote">
+                    „Laufende Überwachung ist in Vorbereitung. Ich biete sie erst an, wenn ich sie
+                    zuverlässig leisten kann. Ein Bereitschaftsversprechen, das im Ernstfall nicht
+                    hält, nützt Ihnen nichts."
+                </blockquote>
+                <p class="pcard__note">
+                    Interessierte können sich unverbindlich vormerken lassen. Ein Angebot folgt
+                    erst, wenn die Leistung zuverlässig erbracht werden kann.
+                </p>
+            </article>
+
+        </div>
+    </div>
+</section>
+
+<!-- ═══ GRUPPE 6: PAKETE ═══ -->
+<section id="pakete" class="bg-a" aria-labelledby="pakete-heading">
+    <div class="wrap">
+        <h2 id="pakete-heading" class="section-title">Kombinations-Pakete</h2>
+        <p class="section-sub">
+            Mehrere Leistungen kombiniert zu einem Festpreis.
+        </p>
+
+        <div class="pgrid pgrid--three">
+
+            <article class="pcard">
+                <h3 class="pcard__title">Security Starter</h3>
+                <p class="pcard__price--pkg">
+                    <span class="pcard__strike">1.120 €</span><span class="pcard__final">950 €</span>
+                </p>
+                <span class="pcard__savings">Sie sparen 170 €</span>
+                <ul class="pcard__list">
+                    <li>Sicherheits-Check 1a (Quick-Check aus der Ferne), inklusive Bericht und Nachbesprechung</li>
+                    <li>Backup-Strategie Setup (3-2-1-Konzept, Automation, Recovery-Test)</li>
+                    <li>30 Tage Support inklusive</li>
+                </ul>
+                <a class="pcard__btn" href="index.html#contact">Paket anfragen</a>
+            </article>
+
+            <article class="pcard pcard--featured">
+                <span class="pcard__badge">Empfohlen</span>
+                <h3 class="pcard__title">KMU Shield</h3>
+                <p class="pcard__price--pkg">
+                    <span class="pcard__strike">1.460 €</span><span class="pcard__final">1.250 €</span>
+                </p>
+                <span class="pcard__savings">Sie sparen 210 €</span>
+                <ul class="pcard__list">
+                    <li>Vulnerability Assessment (OWASP Top-10, SSL/TLS, OSINT), inklusive Wiederholungs-Scan</li>
+                    <li>Sicherheits-Check 1c (Vor-Ort-Check klein)</li>
+                    <li>Security-Policy Beratung (4 Stunden): Gap-Analyse, Richtlinien-Entwicklung, Umsetzungs-Roadmap</li>
+                </ul>
+                <a class="pcard__btn" href="index.html#contact">Paket anfragen</a>
+            </article>
+
+            <article class="pcard">
+                <h3 class="pcard__title">Rundum sicher</h3>
+                <p class="pcard__price--pkg">
+                    <span class="pcard__strike">1.860 €</span><span class="pcard__final">1.590 €</span>
+                </p>
+                <span class="pcard__savings">Sie sparen 270 €</span>
+                <ul class="pcard__list">
+                    <li>Sicherheits-Check 1c (Vor-Ort-Check klein)</li>
+                    <li>Härtungs-Tag: Umsetzung der wichtigsten Maßnahmen</li>
+                    <li>Sicherheits-Unterweisung für das Team</li>
+                    <li>Jahres-Check im Folgejahr zum Vorzugspreis vorgemerkt</li>
+                </ul>
+                <a class="pcard__btn" href="index.html#contact">Paket anfragen</a>
+            </article>
+
+        </div>
+
+        <p class="pgroup__foot">
+            Alle Preise netto, Kleinunternehmerregelung nach § 19 UStG, keine Umsatzsteuer.
+            <strong>Preise Stand 31.07.2026.</strong>
+        </p>
+    </div>
+</section>
+
+<!-- ═══ GRUPPE 7: AUSFÜHRLICHE LEISTUNGSSEITEN ═══ -->
+<section id="detailseiten" class="bg-b" aria-labelledby="detailseiten-heading">
+    <div class="wrap">
+        <h2 id="detailseiten-heading" class="section-title">Ausführliche Leistungsseiten</h2>
+        <p class="section-sub">
+            Für drei Leistungen gibt es eine eigene, ausführliche Seite mit Ablauf, Branchenbezug
+            und häufigen Fragen.
+        </p>
+
+        <div class="pgrid pgrid--three">
+
+            <article class="pcard pcard--ref">
+                <h3 class="pcard__title">Penetrationstest</h3>
+                <p class="pcard__price--pill">Ab 1.500 € (Scope-abhängig)</p>
+                <p class="pcard__note">
+                    Für Web-Anwendungen, Online-Shops und SaaS-Anbieter. Wir prüfen aktiv, ob ein
+                    Angreifer in Ihre Systeme eindringen könnte, bevor er es tut.
+                </p>
+                <a class="pcard__btn" href="services/penetrationstest.html">Mehr erfahren</a>
+            </article>
+
+            <article class="pcard pcard--ref">
+                <h3 class="pcard__title">Vulnerability Assessment</h3>
+                <p class="pcard__price--pill">Ab 720 €</p>
+                <p class="pcard__note">
+                    Der ausführliche Ablauf, Branchenbezug und die Fragen, die KMU dazu am
+                    häufigsten stellen.
+                </p>
+                <a class="pcard__btn" href="services/vulnerability-assessment.html">Mehr erfahren</a>
+            </article>
+
+            <article class="pcard pcard--ref">
+                <h3 class="pcard__title">Technische Datenschutz-Prüfung</h3>
+                <p class="pcard__price--pill">899 € Paketpreis</p>
+                <p class="pcard__note">
+                    Technische und organisatorische Maßnahmen nach Art. 32 DSGVO: Verschlüsselung,
+                    Zugriffskontrolle, Protokollierung, Wiederherstellbarkeit und Löschkonzept.
+                    Ausdrücklich keine Rechtsberatung.
+                </p>
+                <a class="pcard__btn" href="services/compliance-audit.html">Mehr erfahren</a>
+            </article>
+
+        </div>
+    </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+    <span class="footer-copy">© 2026 Cyber Aspis IT-Security · Alle Rechte vorbehalten</span>
+    <div class="footer-links">
+        <a href="index.html">Startseite</a>
+        <a href="index.html#contact">Kontakt</a>
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutzerklärung</a>
+    </div>
+</footer>
+
+</body>
+</html>
