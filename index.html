@@ -325,36 +325,59 @@
 
         /* Netzebene */
         .hero__radar-net { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+        /* Die Linien liegen hinter allem anderen: schwaecher und minimal
+           weichgezeichnet. Dadurch treten die Knoten davor hervor, statt mit
+           ihnen auf einer Ebene zu liegen. */
+        .hero__radar-net-lines {
+            filter: blur(0.5px);
+        }
         .hero__radar-net-lines path {
-            fill: none; stroke: rgba(0, 212, 255, 0.3); stroke-width: 1;
+            fill: none; stroke: rgba(0, 212, 255, 0.22); stroke-width: 1;
             /* non-scaling-stroke rechnet in echten Pixeln, nicht in viewBox-
                Einheiten — deshalb hier 1 und nicht ein Bruchteil davon. */
             vector-effect: non-scaling-stroke;
         }
         /* Jeder Knoten blinkt auf, wenn der Strahl ueber ihn zieht. Statt 14
            eigener Keyframe-Saetze laeuft ueberall dieselbe Animation, nur mit
-           negativem Versatz: delay = 0,22s - (Winkel/360) * 11s. Der Winkel
-           ist der des Knotens ab 12 Uhr im Uhrzeigersinn. */
+           negativem Versatz.
+
+           🔴 Formel, zweimal falsch gehabt: Ein animation-delay von -X heisst,
+           die Animation ist zum Zeitpunkt 0 SCHON X Sekunden gelaufen. Der
+           Hoehepunkt (bei 2% = 0,22s) faellt also auf den globalen Zeitpunkt,
+           an dem (t + X) mod 11 = 0,22 gilt. Aufgeloest:
+
+               delay = (Winkel / 360) * 11s - 11,22s
+
+           NICHT "0,22s - Anteil * 11s". Der Unterschied faellt im Standbild
+           nicht auf, verschiebt aber jeden Knoten um mehrere Sekunden. */
         .hero__radar-net-nodes circle {
             fill: rgba(0, 212, 255, 0.55);
             filter: drop-shadow(0 0 3px rgba(0, 212, 255, 0.5));
-            opacity: 0.4;
+            opacity: 0.38;
             animation: hero-node-ping 11s linear infinite;
         }
-        .hero__radar-net-nodes circle:nth-child(1)  { animation-delay: -10.78s; } /*   0 Grad */
-        .hero__radar-net-nodes circle:nth-child(2)  { animation-delay:  -0.74s; } /*  31 Grad */
-        .hero__radar-net-nodes circle:nth-child(3)  { animation-delay:  -1.94s; } /*  71 Grad */
-        .hero__radar-net-nodes circle:nth-child(4)  { animation-delay:  -2.00s; } /*  73 Grad */
-        .hero__radar-net-nodes circle:nth-child(5)  { animation-delay:  -2.77s; } /*  98 Grad */
-        .hero__radar-net-nodes circle:nth-child(6)  { animation-delay:  -3.56s; } /* 124 Grad */
-        .hero__radar-net-nodes circle:nth-child(7)  { animation-delay:  -4.59s; } /* 158 Grad */
-        .hero__radar-net-nodes circle:nth-child(8)  { animation-delay:  -5.73s; } /* 195 Grad */
-        .hero__radar-net-nodes circle:nth-child(9)  { animation-delay:  -6.04s; } /* 205 Grad */
-        .hero__radar-net-nodes circle:nth-child(10) { animation-delay:  -6.48s; } /* 219 Grad */
-        .hero__radar-net-nodes circle:nth-child(11) { animation-delay:  -7.40s; } /* 249 Grad */
-        .hero__radar-net-nodes circle:nth-child(12) { animation-delay:  -8.10s; } /* 272 Grad */
-        .hero__radar-net-nodes circle:nth-child(13) { animation-delay:  -8.79s; } /* 295 Grad */
-        .hero__radar-net-nodes circle:nth-child(14) { animation-delay:  -9.55s; } /* 320 Grad */
+        .hero__radar-net-nodes circle:nth-child(1)  { animation-delay:  -0.22s; } /*   0 Grad */
+        .hero__radar-net-nodes circle:nth-child(2)  { animation-delay: -10.26s; } /*  31 Grad */
+        .hero__radar-net-nodes circle:nth-child(3)  { animation-delay:  -9.06s; } /*  71 Grad */
+        .hero__radar-net-nodes circle:nth-child(4)  { animation-delay:  -9.00s; } /*  73 Grad */
+        .hero__radar-net-nodes circle:nth-child(5)  { animation-delay:  -8.23s; } /*  98 Grad */
+        .hero__radar-net-nodes circle:nth-child(6)  { animation-delay:  -7.44s; } /* 124 Grad */
+        .hero__radar-net-nodes circle:nth-child(7)  { animation-delay:  -6.41s; } /* 158 Grad */
+        .hero__radar-net-nodes circle:nth-child(8)  { animation-delay:  -5.27s; } /* 195 Grad */
+        .hero__radar-net-nodes circle:nth-child(9)  { animation-delay:  -4.96s; } /* 205 Grad */
+        .hero__radar-net-nodes circle:nth-child(10) { animation-delay:  -4.52s; } /* 219 Grad */
+        .hero__radar-net-nodes circle:nth-child(11) { animation-delay:  -3.60s; } /* 249 Grad */
+        .hero__radar-net-nodes circle:nth-child(12) { animation-delay:  -2.90s; } /* 272 Grad */
+        .hero__radar-net-nodes circle:nth-child(13) { animation-delay:  -2.22s; } /* 295 Grad */
+        .hero__radar-net-nodes circle:nth-child(14) { animation-delay:  -1.45s; } /* 320 Grad */
+
+        /* Tiefenstaffelung: ein Teil der Knoten liegt "hinten" — kleiner,
+           blasser, leicht unscharf. Das erzeugt Raum, ohne dass irgendwo
+           ein Bild oder ein weiterer Effekt dazukommt. */
+        .hero__radar-net-nodes circle.is-far {
+            fill: rgba(0, 212, 255, 0.28);
+            filter: blur(0.9px) drop-shadow(0 0 2px rgba(0, 212, 255, 0.35));
+        }
 
         /* Schein hinter dem Schild — gibt der Scheibe Tiefe, statt sie flach
            auf den Hintergrund zu legen. Rein statisch, kein Pulsieren. */
@@ -362,9 +385,12 @@
             position: absolute; inset: 22%; border-radius: 50%; pointer-events: none;
             background: radial-gradient(circle, rgba(0, 212, 255, 0.22), rgba(123, 47, 247, 0.12) 55%, transparent 72%);
         }
+        /* Hinterste Ebene der Tiefenstaffelung — leicht unscharf, damit die
+           Ringe nicht mit dem Netz um dieselbe Bildebene streiten. */
         .hero__radar-ring {
             position: absolute; inset: 0; border-radius: 50%;
             border: 1px solid rgba(0, 212, 255, 0.18);
+            filter: blur(0.7px);
         }
         .hero__radar-ring--2 { inset: 16%; border-color: rgba(224, 64, 251, 0.16); }
         .hero__radar-ring--3 { inset: 32%; border-color: rgba(0, 212, 255, 0.14); }
@@ -393,7 +419,14 @@
             display: flex; align-items: center; justify-content: center;
             pointer-events: none;
         }
-        .hero__radar-icon { width: 40%; height: 40%; filter: drop-shadow(0 0 18px rgba(0, 212, 255, 0.55)); }
+        /* Vorderste Ebene: als einziges Element voellig scharf, mit zwei
+           gestaffelten Schatten. Der Kontrast zu den weichgezeichneten Ebenen
+           dahinter ist das, was die Tiefe erzeugt. */
+        .hero__radar-icon {
+            width: 40%; height: 40%;
+            filter: drop-shadow(0 0 6px rgba(0, 212, 255, 0.7))
+                    drop-shadow(0 0 26px rgba(123, 47, 247, 0.45));
+        }
 
         /* Die beiden Farben tragen eine Aussage, statt zu dekorieren:
            Cyan ist das gepruefte Netz, Magenta ist ein Befund. Vorher waren
@@ -405,9 +438,13 @@
             box-shadow: 0 0 12px 4px rgba(224, 64, 251, 0.85);
             transform: translate(-50%, -50%); opacity: 0;
         }
-        .hero__radar-blip--1 { top: 29%; left: 84%; animation: hero-blip-1 11s linear infinite; }
-        .hero__radar-blip--2 { top: 90%; left: 55%; animation: hero-blip-2 11s linear infinite; }
-        .hero__radar-blip--3 { top: 42%; left: 11%; animation: hero-blip-3 11s linear infinite; }
+        /* Gleiches Delay-Verfahren wie bei den Netzknoten, damit es nur EINE
+           Stelle gibt, an der die Formel stehen kann — und damit nur eine,
+           an der sie falsch sein kann. */
+        .hero__radar-blip { animation: hero-blip-ping 11s linear infinite; }
+        .hero__radar-blip--1 { top: 29%; left: 84%; animation-delay: -9.44s; } /*  58,3 Grad */
+        .hero__radar-blip--2 { top: 90%; left: 55%; animation-delay: -5.94s; } /* 172,9 Grad */
+        .hero__radar-blip--3 { top: 42%; left: 11%; animation-delay: -2.62s; } /* 281,6 Grad */
 
         /* Erfasste Punkte benennen sich selbst — macht aus dem Radar einen Beleg
            statt einer Dekoration. Erst ab 900px sichtbar: darunter ist die Scheibe
@@ -442,10 +479,31 @@
         @keyframes hero-label-2 { 0%, 49% { opacity: 0; } 52%, 63% { opacity: 1; } 68%, 100% { opacity: 0; } }
         @keyframes hero-label-3 { 0%, 79% { opacity: 0; } 82%, 93% { opacity: 1; } 98%, 100% { opacity: 0; } }
         @keyframes hero-radar-spin { to { transform: rotate(360deg); } }
-        @keyframes hero-blip-1 { 0%, 16.2% { opacity: 0; } 17.2% { opacity: 1; } 24%, 100% { opacity: 0; } }
-        @keyframes hero-blip-2 { 0%, 48% { opacity: 0; } 49% { opacity: 1; } 56%, 100% { opacity: 0; } }
-        @keyframes hero-blip-3 { 0%, 78.2% { opacity: 0; } 79.2% { opacity: 1; } 86%, 100% { opacity: 0; } }
-        @keyframes hero-node-ping { 0% { opacity: .4; } 2% { opacity: 1; } 9% { opacity: .4; } 100% { opacity: .4; } }
+
+        /* Nachglimmen statt Blinken. Ein echter Radarschirm laesst einen
+           erfassten Punkt langsam verloeschen; hart aus- und einschalten ist
+           das, was vorher billig aussah. Der Abfall ist absichtlich nicht
+           linear — anfangs schnell, dann immer langsamer, wie Leuchtstoff.
+           Der Hoehepunkt MUSS bei 2% liegen, daran haengt die Delay-Formel. */
+        @keyframes hero-blip-ping {
+            0%   { opacity: 0; }
+            2%   { opacity: 1; }
+            5%   { opacity: .82; }
+            10%  { opacity: .55; }
+            17%  { opacity: .32; }
+            26%  { opacity: .15; }
+            35%  { opacity: .05; }
+            42%, 100% { opacity: 0; }
+        }
+        @keyframes hero-node-ping {
+            0%   { opacity: .38; }
+            2%   { opacity: 1; }
+            6%   { opacity: .8; }
+            12%  { opacity: .62; }
+            20%  { opacity: .48; }
+            29%  { opacity: .38; }
+            100% { opacity: .38; }
+        }
         @keyframes hero-fade-up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
 
         /* Desktop: Text links, Schild asymmetrisch rechts ueber die Rasterkante hinausbluten lassen */
@@ -1444,13 +1502,13 @@
                Winkel des Knotens, damit er genau dann blinkt, wenn der Strahl
                ihn ueberstreicht. Beim Umsortieren die Delays mitziehen. -->
           <g class="hero__radar-net-nodes">
-            <circle cx="50" cy="15" r="1.1" /><circle cx="72" cy="14" r="1.1" />
-            <circle cx="90" cy="36" r="1.1" /><circle cx="79" cy="41" r="1.1" />
-            <circle cx="86" cy="55" r="1.1" /><circle cx="68" cy="62" r="1.1" />
-            <circle cx="62" cy="79" r="1.1" /><circle cx="40" cy="88" r="1.1" />
-            <circle cx="44" cy="63" r="1.1" /><circle cx="32" cy="72" r="1.1" />
-            <circle cx="18" cy="62" r="1.1" /><circle cx="24" cy="49" r="1.1" />
-            <circle cx="13" cy="33" r="1.1" /><circle cx="28" cy="24" r="1.1" />
+            <circle cx="50" cy="15" r="0.85" class="is-far" /><circle cx="72" cy="14" r="1.3" />
+            <circle cx="90" cy="36" r="1.05" />                <circle cx="79" cy="41" r="0.8" class="is-far" />
+            <circle cx="86" cy="55" r="1.25" />                <circle cx="68" cy="62" r="1.1" />
+            <circle cx="62" cy="79" r="0.85" class="is-far" /><circle cx="40" cy="88" r="1.3" />
+            <circle cx="44" cy="63" r="0.75" class="is-far" /><circle cx="32" cy="72" r="1.1" />
+            <circle cx="18" cy="62" r="1.25" />                <circle cx="24" cy="49" r="0.85" class="is-far" />
+            <circle cx="13" cy="33" r="1.05" />                <circle cx="28" cy="24" r="0.8" class="is-far" />
           </g>
         </svg>
         <div class="hero__radar-ring hero__radar-ring--1"></div>
