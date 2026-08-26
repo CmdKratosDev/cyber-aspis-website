@@ -93,6 +93,10 @@
             --font-display:  'Orbitron', monospace;
             --font-mono:     'Space Mono', monospace;
             --font-body:     'Exo 2', sans-serif;
+
+            /* Das EINE Raster fuer die neu gebauten Abschnitte (Hero, Leistungen, Ablauf) */
+            --grid-max: 1120px;
+            --grid-pad: clamp(20px, 5vw, 40px);
         }
 
         /* ===== RESET & BASE ===== */
@@ -102,8 +106,27 @@
             font-family: var(--font-body);
             background: var(--bg-primary);
             color: var(--text-primary);
+            /* "clip" statt "hidden": hidden stuft die andere Achse still von
+               visible auf auto hoch und macht body damit zum Scroll-Container.
+               Scroll-gesteuerte Animationen haengen sich dann an diesen
+               Container statt ans Fenster — und der scrollt nie. clip
+               beschneidet genauso, erzeugt aber keinen Scroll-Container.
+               hidden bleibt als Rueckfallwert fuer alte Browser stehen. */
             overflow-x: hidden;
+            overflow-x: clip;
             line-height: 1.6;
+        }
+
+        /* Kornebene ueber der ganzen Seite — nimmt der Flaeche das Digitale */
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: .045;
+            mix-blend-mode: overlay;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
         }
 
         /* ===== CONSTRUCTION BANNER ===== */
@@ -203,119 +226,243 @@
         .hamburger.active span:nth-child(2) { opacity: 0; }
         .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
 
-        /* ===== HERO ===== */
-        #hero {
-            min-height: 100vh;
+        /* ===== HERO (Redesign 2026-08) ===== */
+        .hero {
             position: relative;
-            display: flex; align-items: center;
             overflow: hidden;
+            isolation: isolate;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            /* padding-inline:0, weil die globale "section{padding:96px 6%}"-Regel
+               sonst zusaetzlich zum --grid-pad im .hero__inner greift (doppelter Rand) */
+            padding-inline: 0;
+            padding-block: clamp(56px, 12vw, 88px);
+            max-height: 85vh;
         }
-        /* Animated blobs */
-        .blob {
-            position: absolute; border-radius: 50%;
-            filter: blur(90px); pointer-events: none;
-            animation: blobFloat 9s ease-in-out infinite;
+        .hero__bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+        .hero__glow {
+            position: absolute; inset: 0;
+            background:
+                radial-gradient(circle at 82% 18%, rgba(0, 212, 255, 0.16), transparent 58%),
+                radial-gradient(circle at 12% 86%, rgba(123, 47, 247, 0.14), transparent 55%),
+                radial-gradient(circle at 50% 0%, rgba(224, 64, 251, 0.1), transparent 60%);
         }
-        .blob-1 {
-            width: 650px; height: 650px;
-            background: radial-gradient(circle, rgba(0,212,255,0.5) 0%, transparent 70%);
-            right: 5%; top: -15%;
-            animation-delay: 0s;
+        .hero__grid {
+            position: absolute; inset: 0;
+            background-image:
+                repeating-linear-gradient(0deg, rgba(144, 144, 184, 0.08) 0 1px, transparent 1px 42px),
+                repeating-linear-gradient(90deg, rgba(144, 144, 184, 0.08) 0 1px, transparent 1px 42px);
+            -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 95%);
+            mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 95%);
         }
-        .blob-2 {
-            width: 500px; height: 500px;
-            background: radial-gradient(circle, rgba(123,47,247,0.6) 0%, transparent 70%);
-            right: 28%; top: 25%;
-            animation-delay: -3.5s;
+        .hero__noise {
+            position: absolute; inset: 0;
+            opacity: 0.04; mix-blend-mode: overlay; background-repeat: repeat;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
         }
-        .blob-3 {
-            width: 420px; height: 420px;
-            background: radial-gradient(circle, rgba(204,0,255,0.45) 0%, transparent 70%);
-            right: 2%; bottom: 5%;
-            animation-delay: -7s;
-        }
-        @keyframes blobFloat {
-            0%, 100% { transform: translate(0,0) scale(1); }
-            33%       { transform: translate(-25px,20px) scale(1.04); }
-            66%       { transform: translate(18px,-25px) scale(0.96); }
-        }
-        .wave-overlay {
-            position: absolute; inset: 0; z-index: 1;
-            pointer-events: none; opacity: 0.18;
-        }
-        .hero-content {
+        .hero__inner {
             position: relative; z-index: 2;
-            padding: 0 6%; max-width: 720px;
+            max-width: var(--grid-max);
+            margin-inline: auto;
+            padding-inline: var(--grid-pad);
+            display: flex; flex-direction: column; gap: 36px;
         }
-        .hero-tag {
-            display: inline-flex; align-items: center; gap: 9px;
-            background: rgba(224,64,251,0.13);
-            border: 1px solid rgba(224,64,251,0.38);
-            color: var(--accent-magenta);
-            font-size: 0.72rem; font-weight: 700;
-            letter-spacing: 0.18em; text-transform: uppercase;
-            padding: 6px 16px; border-radius: 100px;
-            margin-bottom: 2rem;
+        .hero__content { max-width: 640px; }
+        .hero__kicker {
+            font-family: var(--font-mono);
+            text-transform: uppercase; letter-spacing: 0.14em;
+            font-size: clamp(12px, 2.4vw, 14px);
+            color: var(--accent-cyan); margin: 0 0 18px;
+            animation: hero-fade-up 0.6s ease-out both;
         }
-        .hero-tag-dot {
-            width: 6px; height: 6px; border-radius: 50%;
-            background: var(--accent-magenta);
-            animation: tagPulse 2s ease-in-out infinite;
+        .hero__title {
+            font-family: var(--font-display); font-weight: 700;
+            font-size: clamp(30px, 5.6vw, 52px);
+            line-height: 1.16; margin: 0 0 20px;
+            color: var(--text-primary);
+            animation: hero-fade-up 0.6s ease-out both; animation-delay: 80ms;
         }
-        @keyframes tagPulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50%       { opacity: 0.3; transform: scale(1.6); }
+        .hero__subline {
+            font-size: clamp(15px, 2.6vw, 18px); line-height: 1.65;
+            color: var(--text-muted); max-width: 54ch; margin: 0 0 28px;
+            animation: hero-fade-up 0.6s ease-out both; animation-delay: 160ms;
         }
-        .hero-title {
-            font-family: var(--font-display);
-            font-size: clamp(2.2rem, 5vw, 4.6rem);
-            font-weight: 900; line-height: 1.1;
-            letter-spacing: 0.02em; text-transform: uppercase;
-            color: var(--text-primary); margin-bottom: 1.6rem;
+        .hero__actions {
+            display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 20px;
+            animation: hero-fade-up 0.6s ease-out both; animation-delay: 240ms;
         }
-        .hero-title .gradient-word {
-            display: block;
-            padding-right: 0.1em;
-            background: var(--gradient-wave);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        .hero__btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            min-height: 48px; padding: 0 28px; border-radius: 999px;
+            font-family: var(--font-body); font-weight: 600; font-size: 16px;
+            text-decoration: none; white-space: nowrap;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-        .hero-subtitle {
-            font-size: 1.1rem; color: var(--text-muted);
-            margin-bottom: 2.5rem; font-weight: 300;
-            letter-spacing: 0.03em; line-height: 1.7;
+        .hero__btn:hover { transform: translateY(-2px); }
+        .hero__btn--primary {
+            background: linear-gradient(120deg, var(--accent-cyan), var(--accent-magenta));
+            color: var(--bg-primary);
+            box-shadow: 0 0 28px rgba(0, 212, 255, 0.25);
         }
-        .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+        .hero__btn--secondary {
+            background: transparent; color: var(--text-primary);
+            border: 1px solid rgba(0, 212, 255, 0.45);
+        }
+        .hero__trust {
+            font-family: var(--font-mono);
+            font-size: clamp(12px, 2.2vw, 13px);
+            color: var(--text-muted); letter-spacing: 0.02em; margin: 0;
+            animation: hero-fade-up 0.6s ease-out both; animation-delay: 320ms;
+        }
 
-        /* ===== BUTTONS ===== */
-        .btn-primary {
-            display: inline-flex; align-items: center; gap: 8px;
-            background: var(--accent-magenta); color: white;
-            text-decoration: none; padding: 14px 30px;
-            border-radius: 50px; font-weight: 700; font-size: 0.93rem;
-            letter-spacing: 0.05em;
-            box-shadow: 0 0 32px rgba(224,64,251,0.42);
-            transition: all 0.3s ease; border: none; cursor: pointer;
+        /* Radar / Schild-Motiv */
+        /* Auf schmalen Schirmen bewusst gedaempft, damit die Scheibe nicht mit
+           der Ueberschrift konkurriert. Ab 900px darf sie leuchten — dort steht
+           sie neben dem Text, nicht darunter. */
+        .hero__shield { align-self: center; width: min(220px, 58vw); margin-inline: auto; opacity: 0.62; }
+        .hero__radar { position: relative; width: 100%; aspect-ratio: 1 / 1; border-radius: 50%; }
+
+        /* Netzebene */
+        .hero__radar-net { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+        .hero__radar-net-lines path {
+            fill: none; stroke: rgba(0, 212, 255, 0.3); stroke-width: 1;
+            /* non-scaling-stroke rechnet in echten Pixeln, nicht in viewBox-
+               Einheiten — deshalb hier 1 und nicht ein Bruchteil davon. */
+            vector-effect: non-scaling-stroke;
         }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 52px rgba(224,64,251,0.65);
-            background: #cc00ff;
+        /* Jeder Knoten blinkt auf, wenn der Strahl ueber ihn zieht. Statt 14
+           eigener Keyframe-Saetze laeuft ueberall dieselbe Animation, nur mit
+           negativem Versatz: delay = 0,22s - (Winkel/360) * 11s. Der Winkel
+           ist der des Knotens ab 12 Uhr im Uhrzeigersinn. */
+        .hero__radar-net-nodes circle {
+            fill: rgba(0, 212, 255, 0.55);
+            filter: drop-shadow(0 0 3px rgba(0, 212, 255, 0.5));
+            opacity: 0.4;
+            animation: hero-node-ping 11s linear infinite;
         }
-        .btn-secondary {
-            display: inline-flex; align-items: center; gap: 8px;
-            background: transparent; color: var(--accent-cyan);
-            text-decoration: none; padding: 14px 30px;
-            border-radius: 50px; font-weight: 600; font-size: 0.93rem;
-            letter-spacing: 0.05em;
-            border: 1px solid rgba(0,212,255,0.38);
-            transition: all 0.3s ease;
+        .hero__radar-net-nodes circle:nth-child(1)  { animation-delay: -10.78s; } /*   0 Grad */
+        .hero__radar-net-nodes circle:nth-child(2)  { animation-delay:  -0.74s; } /*  31 Grad */
+        .hero__radar-net-nodes circle:nth-child(3)  { animation-delay:  -1.94s; } /*  71 Grad */
+        .hero__radar-net-nodes circle:nth-child(4)  { animation-delay:  -2.00s; } /*  73 Grad */
+        .hero__radar-net-nodes circle:nth-child(5)  { animation-delay:  -2.77s; } /*  98 Grad */
+        .hero__radar-net-nodes circle:nth-child(6)  { animation-delay:  -3.56s; } /* 124 Grad */
+        .hero__radar-net-nodes circle:nth-child(7)  { animation-delay:  -4.59s; } /* 158 Grad */
+        .hero__radar-net-nodes circle:nth-child(8)  { animation-delay:  -5.73s; } /* 195 Grad */
+        .hero__radar-net-nodes circle:nth-child(9)  { animation-delay:  -6.04s; } /* 205 Grad */
+        .hero__radar-net-nodes circle:nth-child(10) { animation-delay:  -6.48s; } /* 219 Grad */
+        .hero__radar-net-nodes circle:nth-child(11) { animation-delay:  -7.40s; } /* 249 Grad */
+        .hero__radar-net-nodes circle:nth-child(12) { animation-delay:  -8.10s; } /* 272 Grad */
+        .hero__radar-net-nodes circle:nth-child(13) { animation-delay:  -8.79s; } /* 295 Grad */
+        .hero__radar-net-nodes circle:nth-child(14) { animation-delay:  -9.55s; } /* 320 Grad */
+
+        /* Schein hinter dem Schild — gibt der Scheibe Tiefe, statt sie flach
+           auf den Hintergrund zu legen. Rein statisch, kein Pulsieren. */
+        .hero__radar-core {
+            position: absolute; inset: 22%; border-radius: 50%; pointer-events: none;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.22), rgba(123, 47, 247, 0.12) 55%, transparent 72%);
         }
-        .btn-secondary:hover {
-            background: rgba(0,212,255,0.08);
-            border-color: var(--accent-cyan);
-            box-shadow: 0 0 20px rgba(0,212,255,0.2);
+        .hero__radar-ring {
+            position: absolute; inset: 0; border-radius: 50%;
+            border: 1px solid rgba(0, 212, 255, 0.18);
+        }
+        .hero__radar-ring--2 { inset: 16%; border-color: rgba(224, 64, 251, 0.16); }
+        .hero__radar-ring--3 { inset: 32%; border-color: rgba(0, 212, 255, 0.14); }
+        .hero__radar-sweep {
+            position: absolute; inset: 0; border-radius: 50%;
+            /* Helle Vorderkante bei 360 Grad, Schweif DAVOR — also entgegen der
+               Drehrichtung. Steht der helle Anteil am Anfang des Verlaufs,
+               laeuft der Schweif der Kante voraus statt hinterher: Der Kegel
+               ueberstreicht einen Punkt dann, BEVOR die Kante ihn erreicht,
+               und die Blips (auf die Kante getaktet) blitzen sichtbar zu spaet.
+               Genau dieser Fehler stand hier bis 26.08.2026.
+               Der Sprung von 0.55 auf 0 bei 0%/100% ist dieselbe Winkelstelle
+               und ergibt die scharfe Vorderkante. */
+            background: conic-gradient(from 0deg,
+                rgba(0, 212, 255, 0) 0%,
+                rgba(0, 212, 255, 0) 82%,
+                rgba(0, 212, 255, 0.06) 89%,
+                rgba(0, 212, 255, 0.22) 96%,
+                rgba(0, 212, 255, 0.55) 100%);
+            mix-blend-mode: screen;
+            animation: hero-radar-spin 11s linear infinite;
+            transform-origin: 50% 50%;
+        }
+        .hero__radar-icon-wrap {
+            position: absolute; inset: 0;
+            display: flex; align-items: center; justify-content: center;
+            pointer-events: none;
+        }
+        .hero__radar-icon { width: 40%; height: 40%; filter: drop-shadow(0 0 18px rgba(0, 212, 255, 0.55)); }
+
+        /* Die beiden Farben tragen eine Aussage, statt zu dekorieren:
+           Cyan ist das gepruefte Netz, Magenta ist ein Befund. Vorher waren
+           zwei Blips cyan und einer magenta, ohne dass der Unterschied etwas
+           bedeutet haette. */
+        .hero__radar-blip {
+            position: absolute; width: 6px; height: 6px; border-radius: 50%;
+            background: var(--accent-magenta);
+            box-shadow: 0 0 12px 4px rgba(224, 64, 251, 0.85);
+            transform: translate(-50%, -50%); opacity: 0;
+        }
+        .hero__radar-blip--1 { top: 29%; left: 84%; animation: hero-blip-1 11s linear infinite; }
+        .hero__radar-blip--2 { top: 90%; left: 55%; animation: hero-blip-2 11s linear infinite; }
+        .hero__radar-blip--3 { top: 42%; left: 11%; animation: hero-blip-3 11s linear infinite; }
+
+        /* Erfasste Punkte benennen sich selbst — macht aus dem Radar einen Beleg
+           statt einer Dekoration. Erst ab 900px sichtbar: darunter ist die Scheibe
+           nur 220px breit und auf 0.55 gedimmt, dort waere Text unlesbar. */
+        .hero__radar-label {
+            position: absolute;
+            font-family: var(--font-mono); font-size: 11px; letter-spacing: .04em;
+            white-space: nowrap; color: var(--accent-magenta);
+            text-shadow: 0 0 12px rgba(13, 13, 26, .95), 0 0 4px rgba(13, 13, 26, 1);
+            opacity: 0; pointer-events: none; display: none;
+        }
+        /* Ueber den Punkt statt daneben — links davon lief die Schrift ins Schild */
+        .hero__radar-label--1 { top: 29%; left: 84%; transform: translate(-92%, -175%); }
+        .hero__radar-label--2 { top: 90%; left: 55%; transform: translate(-50%, -170%); }
+        .hero__radar-label--3 { top: 42%; left: 11%; transform: translate(14%, -50%); }
+
+        @media (min-width: 900px) {
+            /* Neben dem Text statt darunter — hier darf die Scheibe leuchten */
+            .hero__shield { opacity: 0.95; }
+            .hero__radar-label { display: block; }
+            .hero__radar-label--1 { animation: hero-label-1 11s linear infinite; }
+            .hero__radar-label--2 { animation: hero-label-2 11s linear infinite; }
+            .hero__radar-label--3 { animation: hero-label-3 11s linear infinite; }
+        }
+
+        /* Laenger sichtbar als der Blip selbst — ein Punkt blitzt, ein Wort will gelesen werden */
+        /* Die Prozentwerte sind keine Geschmackssache, sondern der Winkel des
+           jeweiligen Punktes geteilt durch 360. Nichts darf VOR seinem Winkel
+           anfangen — sonst leuchtet der Punkt, bevor der Strahl ihn erreicht.
+           16,2 % = 58,3 Grad · 48,0 % = 172,9 Grad · 78,2 % = 281,6 Grad */
+        @keyframes hero-label-1 { 0%, 17% { opacity: 0; } 20%, 31% { opacity: 1; } 36%, 100% { opacity: 0; } }
+        @keyframes hero-label-2 { 0%, 49% { opacity: 0; } 52%, 63% { opacity: 1; } 68%, 100% { opacity: 0; } }
+        @keyframes hero-label-3 { 0%, 79% { opacity: 0; } 82%, 93% { opacity: 1; } 98%, 100% { opacity: 0; } }
+        @keyframes hero-radar-spin { to { transform: rotate(360deg); } }
+        @keyframes hero-blip-1 { 0%, 16.2% { opacity: 0; } 17.2% { opacity: 1; } 24%, 100% { opacity: 0; } }
+        @keyframes hero-blip-2 { 0%, 48% { opacity: 0; } 49% { opacity: 1; } 56%, 100% { opacity: 0; } }
+        @keyframes hero-blip-3 { 0%, 78.2% { opacity: 0; } 79.2% { opacity: 1; } 86%, 100% { opacity: 0; } }
+        @keyframes hero-node-ping { 0% { opacity: .4; } 2% { opacity: 1; } 9% { opacity: .4; } 100% { opacity: .4; } }
+        @keyframes hero-fade-up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Desktop: Text links, Schild asymmetrisch rechts ueber die Rasterkante hinausbluten lassen */
+        @media (min-width: 900px) {
+            .hero__inner {
+                position: relative; flex-direction: row;
+                align-items: center; justify-content: flex-start;
+                min-height: min(66vh, 560px);
+            }
+            .hero__content { flex: 0 1 560px; }
+            .hero__shield {
+                position: absolute; top: 50%;
+                right: clamp(-64px, -4vw, -20px);
+                transform: translateY(-50%);
+                width: clamp(280px, 30vw, 420px);
+                opacity: 0.85; margin: 0;
+            }
         }
 
         /* ===== SECTION BASE ===== */
@@ -336,40 +483,13 @@
 
         /* ===== ABOUT ===== */
         #about { background: var(--bg-secondary); }
+        /* Redesign 2026-08: das nmap-Terminal ist von hier in den neuen Abschnitt
+           "#ablauf" umgezogen (macOS-Ampelfarben raus, echte Befehle rein). Nur noch
+           eine Spalte, da der Terminal-Slot links wegfaellt. */
         .about-inner {
-            display: grid; grid-template-columns: 1fr 1fr;
-            gap: 64px; align-items: center;
-            max-width: 1200px; margin: 0 auto;
+            display: grid; grid-template-columns: 1fr;
+            max-width: 720px; margin: 0 auto;
         }
-        /* Terminal */
-        .terminal {
-            background: #080810; border-radius: 14px;
-            overflow: hidden;
-            border: 1px solid rgba(0,212,255,0.18);
-            box-shadow: 0 0 50px rgba(0,212,255,0.08), 0 24px 64px rgba(0,0,0,0.55);
-        }
-        .terminal-bar {
-            background: #14142a; padding: 13px 16px;
-            display: flex; align-items: center; gap: 8px;
-        }
-        .dot { width: 12px; height: 12px; border-radius: 50%; }
-        .dot-r { background: #ff5f57; }
-        .dot-y { background: #ffbd2e; }
-        .dot-g { background: #28ca41; }
-        .terminal-label {
-            font-family: var(--font-mono); font-size: 0.72rem;
-            color: var(--text-muted); margin-left: 8px;
-        }
-        .terminal-body {
-            padding: 22px 24px;
-            font-family: var(--font-mono); font-size: 0.79rem;
-            line-height: 1.85; min-height: 290px;
-        }
-        .t-cmd    { color: var(--accent-cyan); display: block; }
-        .t-out    { color: #00e548; display: block; padding-left: 1em; }
-        .t-warn   { color: #ffc107; display: block; padding-left: 1em; }
-        .t-ok     { color: #28ca41; display: block; padding-left: 1em; }
-        .t-gap    { display: block; height: 0.8em; }
         /* About text */
         .about-label {
             font-size: 0.75rem; font-weight: 700;
@@ -404,97 +524,222 @@
             text-transform: uppercase; letter-spacing: 0.1em;
         }
 
-        /* ===== SERVICES ===== */
-        #services { background: var(--bg-primary); }
-        .services-wrap {
-            max-width: 1160px; margin: 0 auto;
-            display: flex; flex-wrap: wrap;
-            justify-content: center; gap: 22px;
+        /* ===== LEISTUNGEN (Redesign 2026-08, ersetzt die alte 15-Karten-#services) ===== */
+        /* padding-inline:0, weil die globale "section{padding:96px 6%}"-Regel sonst
+           zusaetzlich zum --grid-pad im .lst__inner greift (doppelter Rand) */
+        /* overflow-x: clip statt hidden — siehe Begruendung bei body.
+           Mit hidden wird .lst zum Scroll-Container, und view() der Karten
+           misst dann gegen .lst statt gegen das Fenster. .lst scrollt nie,
+           also stehen die Karten fuer immer im Startzustand. */
+        .lst { background: var(--bg-secondary); padding-inline: 0; padding-block: clamp(56px, 8vw, 96px); font-family: var(--font-body); overflow-x: hidden; overflow-x: clip; }
+        .lst__inner { max-width: var(--grid-max); margin-inline: auto; padding-inline: var(--grid-pad); }
+        .lst__head { text-align: center; max-width: 640px; margin-inline: auto; margin-bottom: clamp(36px, 6vw, 56px); }
+        .lst__title {
+            font-family: var(--font-display);
+            font-size: clamp(1.6rem, 1.3rem + 1.4vw, 2.4rem);
+            letter-spacing: 0.04em; color: var(--text-primary);
+            margin: 0 0 14px; text-transform: uppercase;
         }
-        .service-card {
-            flex: 0 0 calc(33.333% - 16px);
-            min-width: 260px;
-            background: var(--bg-card); border-radius: 14px;
-            overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-            /* Karten einer Reihe sind gleich hoch — der Innenraum muss die
-               überschüssige Höhe aufnehmen, sonst rutscht alles unter der
-               unterschiedlich langen Liste nach oben weg. */
-            display: flex; flex-direction: column;
+        .lst__sub { font-size: clamp(0.9375rem, 0.9rem + 0.2vw, 1.0625rem); line-height: 1.6; color: var(--text-muted); margin: 0; }
+        .lst__ref { font-size: 0.9375rem; line-height: 1.6; color: var(--text-muted); margin: 18px 0 0; padding: 14px 18px; border-left: 2px solid var(--accent-cyan); background: rgba(0, 212, 255, 0.05); border-radius: 0 6px 6px 0; }
+        .lst__ref strong { color: var(--text-primary); }
+
+        .lst__grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        @media (min-width: 640px) {
+            .lst__grid {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-areas: "c1 c2" "c3 c3" "c4 c4";
+                gap: 24px;
+            }
+            .l-card--1 { grid-area: c1; }
+            .l-card--2 { grid-area: c2; }
+            .l-card--3 { grid-area: c3; }
+            .l-card--4 { grid-area: c4; }
         }
-        .service-card:hover {
-            transform: translateY(-7px);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.45), 0 0 32px rgba(224,64,251,0.15);
-            border-color: rgba(224,64,251,0.28);
-        }
-        .card-visual {
-            height: 175px; flex: 0 0 175px;
-            display: flex; align-items: center; justify-content: center;
-            position: relative; overflow: hidden;
-        }
-        .card-visual::before {
-            content: ''; position: absolute; inset: 0;
-            background: var(--gradient-wave); opacity: 0.14;
-        }
-        .icon-ring {
-            position: relative; z-index: 1;
-            width: 78px; height: 78px; border-radius: 50%;
-            border: 2px solid rgba(224,64,251,0.5);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 2.1rem;
-            background: rgba(224,64,251,0.1);
-            box-shadow: 0 0 30px rgba(224,64,251,0.22);
-        }
-        .card-body {
-            background: #ffffff; padding: 20px 22px;
-            flex: 1 1 auto;
-            display: flex; flex-direction: column;
-        }
-        /* Reihenfolge im Kartenfuß: der kleingedruckte Hinweis schließt die
-           Beschreibung ab, danach folgen Preiszeile und CTA. Dadurch ist der
-           Block unter der Preiszeile in allen Karten gleich hoch — Preis und
-           Button liegen innerhalb einer Reihe auf einer Linie, der
-           Ausgleichsraum entsteht darüber. Rein per CSS, ohne Markup-Umbau. */
-        .card-body > p { order: 1; }
-        .card-price    { order: 2; }
-        .card-link     { order: 3; }
-        /* Karten ohne CTA (z. B. „Laufende Überwachung", nicht bestellbar)
-           reservieren die Höhe des fehlenden Links, damit ihre Preiszeile auf
-           der Linie der Nachbarkarten bleibt. Werte = margin-top des Links
-           (10px) + dessen Zeilenhöhe (font-size 0.68rem × line-height 1.6). */
-        .card-body:not(:has(.card-link)) .card-price {
-            margin-bottom: calc(10px + 0.68rem * 1.6);
-        }
-        .card-title {
-            font-family: var(--font-body); font-size: 0.97rem; font-weight: 700;
-            color: var(--accent-magenta); margin-bottom: 10px;
-        }
-        .card-list {
-            list-style: none; margin-bottom: 14px;
-        }
-        .card-list li {
-            font-family: var(--font-mono); font-size: 0.74rem;
-            color: #3a3a5a; padding: 3px 0 3px 14px;
-            position: relative;
-        }
-        .card-list li::before {
-            content: '▸'; position: absolute; left: 0;
-            color: var(--accent-magenta); font-size: 0.68rem;
-        }
-        .card-price {
-            display: inline-flex; align-items: center;
-            align-self: flex-start;
-            margin-top: auto;
-            background: rgba(224,64,251,0.1);
-            color: var(--accent-magenta);
-            border: 1px solid rgba(224,64,251,0.3);
-            padding: 4px 13px; border-radius: 100px;
-            font-family: var(--font-display); font-size: 0.76rem; font-weight: 700;
-            letter-spacing: 0.05em;
+        @media (min-width: 1024px) {
+            .lst__grid {
+                grid-template-columns: repeat(4, 1fr);
+                grid-template-rows: auto auto;
+                grid-template-areas: "c1 c2 c3 c3" "c4 c4 c3 c3";
+                gap: clamp(20px, 2.5vw, 32px);
+                align-items: stretch;
+            }
+            .l-card--3 { transform: translateY(-12px); }
         }
 
-        /* ===== CARD LINK ===== */
+        .l-card {
+            position: relative; display: flex; flex-direction: column;
+            background: linear-gradient(160deg, rgba(26, 26, 53, 0.92), rgba(18, 8, 46, 0.96));
+            background-size: 160% 160%; background-position: 0% 0%;
+            border: 1px solid rgba(0, 212, 255, 0.18); border-radius: 16px;
+            padding: clamp(24px, 3vw, 32px);
+            backdrop-filter: blur(6px);
+            box-shadow: 0 18px 40px -20px rgba(0, 0, 0, 0.65);
+            opacity: 0; animation: lst-card-in 0.6s ease forwards;
+            transition: transform 0.3s ease, box-shadow 0.35s ease, border-color 0.35s ease, background-position 0.6s ease;
+        }
+        .l-card--1 { animation-delay: 0.05s; }
+        .l-card--2 { animation-delay: 0.15s; }
+        .l-card--3 { animation-delay: 0.25s; }
+        .l-card--4 { animation-delay: 0.35s; }
+
+        /* Scroll-gesteuerter Auftritt: die Karten erscheinen, wenn sie ins Bild kommen.
+           Browser ohne Unterstuetzung behalten den Auftritt beim Laden. */
+        /* Der Bereich muss dort liegen, wo die Karte im Blickfeld ist.
+           Frueher stand hier "entry 5% cover 26%" — da war die Animation
+           abgelaufen, solange die Karte noch am unteren Bildrand klebte,
+           also unsichtbar. Jetzt laeuft sie, waehrend die Karte hereinwandert. */
+        @supports (animation-timeline: view()) {
+            .l-card { animation-timeline: view(); animation-fill-mode: both; animation-delay: 0s; }
+            .l-card--1 { animation-range: entry 20% entry 90%; }
+            .l-card--2 { animation-range: entry 28% entry 98%; }
+            .l-card--3 { animation-range: entry 24% entry 94%; }
+            .l-card--4 { animation-range: entry 32% entry 100%; }
+
+            /* Hintergrundlicht des Einstiegs wandert beim Scrollen langsamer
+               als der Inhalt. Das ist der Effekt, den man tatsaechlich bemerkt,
+               ohne dass etwas blinkt oder springt. */
+            /* Zwei Fallstricke, beide einzeln toedlich:
+               1. Langform statt Kurzform: "animation: name linear both" setzt
+                  die Dauer implizit auf 0s, scroll-gesteuerte Animationen
+                  brauchen "auto".
+               2. scroll(root) statt scroll(): scroll() bedeutet
+                  scroll(nearest), und .hero hat overflow:hidden, ist also
+                  selbst ein Scroll-Container. Die Zeitleiste haengt dann an
+                  .hero, das nie scrollt — currentTime bleibt null, die
+                  Animation meldet "running" und bewegt nichts.
+                  Nachgewiesen am 26.08.2026 ueber document.getAnimations(). */
+            .hero__glow {
+                animation-name: hero-parallax;
+                animation-duration: auto;
+                animation-timing-function: linear;
+                animation-fill-mode: both;
+                animation-timeline: scroll(root);
+                animation-range: 0 90vh;
+            }
+            .hero__grid {
+                animation-name: hero-parallax-grid;
+                animation-duration: auto;
+                animation-timing-function: linear;
+                animation-fill-mode: both;
+                animation-timeline: scroll(root);
+                animation-range: 0 90vh;
+            }
+        }
+
+        @keyframes hero-parallax {
+            from { transform: translateY(0) scale(1); opacity: 1; }
+            to   { transform: translateY(70px) scale(1.06); opacity: .55; }
+        }
+
+        @keyframes hero-parallax-grid {
+            from { transform: translateY(0); }
+            to   { transform: translateY(38px); }
+        }
+
+        .l-card::before {
+            content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-magenta) 55%, transparent 85%);
+            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor; mask-composite: exclude;
+            opacity: 0; transition: opacity 0.35s ease; pointer-events: none;
+        }
+        .l-card:hover, .l-card:focus-within {
+            transform: translateY(-4px);
+            box-shadow: 0 26px 50px -18px rgba(0, 212, 255, 0.25);
+            border-color: rgba(0, 212, 255, 0.4);
+            background-position: 100% 100%;
+        }
+        @media (min-width: 1024px) {
+            .l-card--3:hover, .l-card--3:focus-within { transform: translateY(-16px); }
+        }
+        .l-card:hover::before, .l-card:focus-within::before { opacity: 1; }
+
+        .l-card--featured {
+            border-color: rgba(224, 64, 251, 0.35);
+            background: linear-gradient(160deg, rgba(28, 20, 58, 0.95), rgba(18, 8, 46, 0.98));
+            background-size: 160% 160%;
+            box-shadow: 0 24px 56px -20px rgba(123, 47, 247, 0.4);
+        }
+        @media (min-width: 1024px) {
+            .l-card--featured { padding: clamp(28px, 2.6vw, 40px); justify-content: space-between; }
+        }
+        .l-card__badge {
+            position: absolute; top: -14px; right: 24px;
+            background: linear-gradient(120deg, var(--accent-cyan), var(--accent-magenta));
+            color: var(--bg-primary);
+            font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700;
+            letter-spacing: 0.08em; text-transform: uppercase;
+            padding: 6px 14px; border-radius: 999px;
+            box-shadow: 0 8px 18px -6px rgba(224, 64, 251, 0.55);
+        }
+        .l-card__icon { color: var(--accent-cyan); width: 40px; height: 40px; margin-bottom: 16px; }
+        .l-card__icon--featured { color: var(--accent-magenta); }
+        .l-card__icon-svg { width: 100%; height: 100%; }
+        .l-card__icon-accent { color: var(--accent-cyan); stroke: var(--accent-cyan); }
+        .l-card__title { font-family: var(--font-display); font-size: clamp(1.05rem, 1rem + 0.3vw, 1.25rem); color: var(--text-primary); margin: 0 0 18px; line-height: 1.35; }
+        .l-card__price { display: flex; align-items: baseline; gap: 4px; margin: 0; line-height: 1; }
+        .l-card__amount { font-family: var(--font-display); font-size: clamp(2.4rem, 2.1rem + 1.2vw, 3.2rem); color: var(--accent-cyan); font-weight: 700; }
+        .l-card--featured .l-card__amount { color: var(--accent-magenta); }
+        .l-card__currency { font-family: var(--font-mono); font-size: 1.1rem; color: var(--text-muted); }
+        .l-card__effort { font-family: var(--font-mono); font-size: 0.9375rem; color: var(--text-muted); margin: 6px 0 20px; }
+        .l-card__why {
+            font-size: 0.9375rem; line-height: 1.6; color: var(--text-muted);
+            margin: 0 0 22px; padding-left: 14px; border-left: 2px solid rgba(224, 64, 251, 0.45);
+        }
+        .l-card__list { list-style: none; margin: 0 0 24px; padding: 0; flex-grow: 1; }
+        .l-card__li { position: relative; font-size: clamp(0.9375rem, 0.9rem + 0.15vw, 1rem); line-height: 1.55; color: var(--text-muted); padding-left: 22px; margin-bottom: 12px; overflow-wrap: break-word; }
+        .l-card__li::before { content: ""; position: absolute; left: 0; top: 0.55em; width: 7px; height: 7px; border-radius: 50%; background: var(--accent-cyan); }
+        .l-card--featured .l-card__li::before { background: var(--accent-magenta); }
+        .l-card__li--usp {
+            display: flex; align-items: flex-start; gap: 10px;
+            padding: 10px 12px; margin-left: -12px; margin-right: -12px;
+            background: linear-gradient(120deg, rgba(0, 212, 255, 0.14), rgba(123, 47, 247, 0.14));
+            border: 1px solid rgba(0, 212, 255, 0.3); border-radius: 10px; color: var(--text-primary);
+        }
+        .l-card__li--usp::before { content: none; }
+        .l-card__usp-icon { width: 20px; height: 20px; flex-shrink: 0; margin-top: 1px; color: var(--accent-cyan); }
+        .l-card__li--usp strong { font-weight: 700; color: var(--text-primary); }
+
+        .l-btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            min-height: 48px; padding: 0 24px; border-radius: 10px;
+            border: 1px solid var(--accent-cyan); background: rgba(0, 212, 255, 0.06);
+            color: var(--text-primary); font-family: var(--font-body); font-weight: 600; font-size: 1rem;
+            text-decoration: none; text-align: center; margin-top: auto;
+            transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+        }
+        .l-btn:hover, .l-btn:focus-visible {
+            background: linear-gradient(120deg, var(--accent-cyan), var(--accent-purple));
+            color: var(--bg-primary); box-shadow: 0 12px 24px -10px rgba(0, 212, 255, 0.5); transform: translateY(-2px);
+        }
+        .l-btn--featured { border-color: var(--accent-magenta); background: rgba(224, 64, 251, 0.08); }
+        .l-btn--featured:hover, .l-btn--featured:focus-visible {
+            background: linear-gradient(120deg, var(--accent-magenta), var(--accent-purple));
+            color: var(--bg-primary); box-shadow: 0 12px 24px -10px rgba(224, 64, 251, 0.5);
+        }
+        .l-btn:focus-visible { outline: 2px solid var(--accent-cyan); outline-offset: 3px; }
+
+        .lst__foot { text-align: center; color: var(--text-muted); font-family: var(--font-mono); font-size: clamp(0.875rem, 0.85rem + 0.1vw, 0.9375rem); margin: clamp(32px, 5vw, 48px) 0 0; line-height: 1.6; }
+        .lst__more {
+            text-align: center; margin: clamp(28px, 4vw, 40px) 0 0;
+            max-width: 640px; margin-inline: auto;
+        }
+        .lst__more p { color: var(--text-muted); font-size: 0.9375rem; line-height: 1.6; margin: 0 0 16px; }
+        .lst__more-link {
+            display: inline-flex; align-items: center; justify-content: center;
+            min-height: 48px; padding: 0 28px; border-radius: 999px;
+            font-family: var(--font-body); font-weight: 600; font-size: 1rem;
+            text-decoration: none; color: var(--bg-primary);
+            background: linear-gradient(120deg, var(--accent-cyan), var(--accent-magenta));
+            box-shadow: 0 0 24px rgba(0, 212, 255, 0.2);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .lst__more-link:hover { transform: translateY(-2px); box-shadow: 0 0 32px rgba(0, 212, 255, 0.35); }
+
+        @keyframes lst-card-in { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* ===== CARD LINK (geteilt: "Mehr über mich" in #about) ===== */
         .card-link {
             display: inline-flex; align-items: center; gap: 5px;
             align-self: flex-start;
@@ -505,6 +750,86 @@
             transition: gap 0.2s ease, opacity 0.2s;
         }
         .card-link:hover { gap: 9px; opacity: 0.85; }
+
+        /* ===== ABLAUF / TERMINAL (Redesign 2026-08) ===== */
+        /* padding-inline:0, weil die globale "section{padding:96px 6%}"-Regel sonst
+           zusaetzlich zum --grid-pad im .t-container greift (doppelter Rand) */
+        .trm { background: var(--bg-secondary); padding-inline: 0; padding-top: clamp(32px, 5vw, 56px); padding-bottom: clamp(32px, 5vw, 56px); overflow-x: hidden; }
+        .trm .t-container { max-width: var(--grid-max); margin: 0 auto; padding-left: var(--grid-pad); padding-right: var(--grid-pad); box-sizing: border-box; }
+        .trm .t-head { margin-bottom: clamp(20px, 3vw, 28px); }
+        .trm .t-heading {
+            margin: 0 0 10px 0;
+            font-family: var(--font-display), sans-serif;
+            font-size: clamp(1.4rem, 1.1rem + 1vw, 1.9rem);
+            color: var(--text-primary); letter-spacing: 0.02em; line-height: 1.2;
+        }
+        .trm .t-sub {
+            margin: 0; max-width: 640px;
+            font-family: var(--font-body), sans-serif;
+            font-size: clamp(0.95rem, 0.9rem + 0.3vw, 1.05rem);
+            line-height: 1.5; color: var(--text-muted);
+        }
+        .trm .t-window {
+            width: 100%; box-sizing: border-box;
+            background: var(--bg-card); border: 1px solid #00d4ff26; border-radius: 10px;
+            overflow: hidden; box-shadow: 0 20px 45px -28px #000000a0;
+        }
+        .trm .t-titlebar {
+            display: flex; align-items: center; gap: 8px;
+            padding: 10px 18px; box-sizing: border-box;
+            background: var(--bg-secondary); border-bottom: 1px solid #7b2ff733;
+        }
+        .trm .t-icon { width: 14px; height: 14px; flex: 0 0 auto; color: var(--accent-cyan); }
+        .trm .t-title {
+            font-family: var(--font-mono), 'Courier New', monospace;
+            font-size: clamp(12px, 0.4vw + 11px, 13px);
+            letter-spacing: 0.03em; color: var(--text-muted);
+        }
+        .trm .t-body {
+            box-sizing: border-box; width: 100%;
+            padding: clamp(16px, 3vw, 22px) clamp(16px, 3vw, 22px) clamp(18px, 3vw, 24px);
+            overflow-x: auto; display: flex; flex-direction: column; gap: 16px;
+        }
+        .trm .t-block { display: flex; flex-direction: column; gap: 4px; }
+        .trm .t-line {
+            margin: 0;
+            font-family: var(--font-mono), 'Courier New', monospace;
+            font-size: clamp(13px, 0.9vw + 10px, 15px); line-height: 1.55;
+            opacity: 0;
+            animation-name: t-fade-in; animation-duration: 420ms;
+            animation-timing-function: ease-out; animation-fill-mode: forwards;
+        }
+        .trm .t-block .t-line:nth-child(1) { animation-delay: calc(var(--d, 0) * 220ms); }
+        .trm .t-block .t-line:nth-child(2) { animation-delay: calc((var(--d, 0) + 1) * 220ms); }
+        .trm .t-block .t-line:nth-child(3) { animation-delay: calc((var(--d, 0) + 2) * 220ms); }
+        .trm .t-cmd { color: var(--text-primary); white-space: pre; }
+        .trm .t-prompt { color: var(--accent-cyan); margin-right: 0.55em; font-weight: 700; }
+        .trm .t-comment { padding-left: 1.35em; color: var(--text-muted); font-style: italic; white-space: normal; overflow-wrap: anywhere; }
+        .trm .t-comment .t-mark { margin-right: 0.55em; font-style: normal; }
+        .trm .t-result { padding-left: 1.35em; color: var(--text-primary); font-weight: 600; white-space: normal; overflow-wrap: anywhere; }
+        .trm .t-result .t-mark { margin-right: 0.55em; }
+        .trm .t-result.t-warn .t-mark { color: var(--accent-magenta); }
+        .trm .t-result.t-ok .t-mark { color: var(--accent-cyan); }
+        .trm .t-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+        .trm .t-cursor-line { margin: 2px 0 0 0; line-height: 1; }
+        .trm .t-cursor {
+            display: inline-block; width: 0.5em; height: 1em; vertical-align: -0.18em;
+            background: var(--accent-cyan); opacity: 0;
+            animation-name: t-cursor-blink; animation-duration: 1s;
+            animation-timing-function: steps(1, end);
+            animation-delay: 2640ms; animation-iteration-count: infinite;
+        }
+        .trm .t-note { margin: clamp(16px, 2.5vw, 22px) 0 0 0; font-family: var(--font-body), sans-serif; font-size: 0.92rem; color: var(--text-muted); }
+
+        /* Wunsch: einmal durchlaufen, beim Ueberfahren erneut — Trick ist der Wechsel
+           des animation-name. Auf Touch-Geraeten gibt es kein Hover, dort laeuft es
+           einmal beim Laden. */
+        @media (hover: hover) and (pointer: fine) {
+            .trm .t-window:hover .t-line, .trm .t-window:focus-within .t-line { animation-name: t-fade-in-again; }
+        }
+        @keyframes t-fade-in-again { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes t-fade-in { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes t-cursor-blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
 
         /* ===== FAQ ===== */
         #faq {
@@ -680,86 +1005,6 @@
             color: #ff6060;
         }
 
-        /* ===== SERVICE BUNDLES ===== */
-        #bundles { background: var(--bg-secondary); position: relative; overflow: hidden; }
-        #bundles::before {
-            content: ''; position: absolute; inset: 0; pointer-events: none;
-            background-image: radial-gradient(rgba(0,212,255,0.05) 1px, transparent 1px);
-            background-size: 28px 28px;
-        }
-        .bundles-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px; max-width: 1060px; margin: 0 auto;
-            position: relative; z-index: 1;
-        }
-        .bundle-card {
-            background: var(--bg-card);
-            border: 1px solid rgba(255,255,255,0.07);
-            border-radius: 16px; padding: 2rem;
-            display: flex; flex-direction: column; gap: 1.2rem;
-            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
-            position: relative;
-        }
-        .bundle-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 18px 55px rgba(0,0,0,0.4), 0 0 30px rgba(0,212,255,0.1);
-            border-color: rgba(0,212,255,0.25);
-        }
-        .bundle-card.featured {
-            border-color: rgba(0,212,255,0.35);
-            box-shadow: 0 0 40px rgba(0,212,255,0.12);
-        }
-        .bundle-badge {
-            position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
-            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
-            color: #fff; font-family: var(--font-display);
-            font-size: 0.58rem; font-weight: 700; letter-spacing: 0.18em;
-            text-transform: uppercase; padding: 5px 16px; border-radius: 100px;
-            white-space: nowrap;
-        }
-        .bundle-icon { font-size: 2rem; }
-        .bundle-name {
-            font-family: var(--font-display); font-size: 1rem; font-weight: 700;
-            color: var(--accent-cyan); line-height: 1.3;
-        }
-        .bundle-tagline { font-size: 0.82rem; color: var(--text-muted); margin-top: -0.6rem; }
-        .bundle-includes {
-            list-style: none; display: flex; flex-direction: column; gap: 0.55rem;
-            flex: 1;
-        }
-        .bundle-includes li {
-            font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-secondary);
-            padding-left: 16px; position: relative;
-        }
-        .bundle-includes li::before {
-            content: '✓'; position: absolute; left: 0;
-            color: var(--accent-cyan); font-size: 0.7rem; font-weight: 700;
-        }
-        .bundle-pricing {
-            border-top: 1px solid rgba(255,255,255,0.07);
-            padding-top: 1rem;
-            display: flex; flex-direction: column; gap: 4px;
-        }
-        .bundle-price {
-            font-family: var(--font-display); font-size: 1.45rem; font-weight: 700;
-            color: var(--text-primary);
-        }
-        .bundle-cta {
-            display: block; text-align: center;
-            background: rgba(0,212,255,0.08); color: var(--accent-cyan);
-            border: 1px solid rgba(0,212,255,0.3);
-            border-radius: 9px; padding: 10px;
-            font-family: var(--font-display); font-size: 0.72rem; font-weight: 700;
-            letter-spacing: 0.1em; text-transform: uppercase;
-            text-decoration: none; transition: all 0.25s;
-            cursor: pointer;
-        }
-        .bundle-cta:hover {
-            background: rgba(0,212,255,0.18); border-color: var(--accent-cyan);
-            transform: translateY(-2px);
-        }
-
         /* ===== FOOTER ===== */
         footer {
             background: #06060f;
@@ -808,15 +1053,11 @@
 
         /* ===== RESPONSIVE ===== */
         @media (max-width: 960px) {
-            .about-inner { grid-template-columns: 1fr; }
-            .services-wrap .service-card { flex: 0 0 calc(50% - 12px); }
             .faq-grid { grid-template-columns: 1fr; }
             .trust-grid { grid-template-columns: 1fr; }
-            .bundles-grid { grid-template-columns: 1fr; max-width: 520px; }
             .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
         }
         @media (max-width: 640px) {
-            .services-wrap .service-card { flex: 0 0 100%; }
             .nav-links { display: none; }
             .hamburger { display: flex; }
             .nav-links.open {
@@ -1072,9 +1313,6 @@
         @media (prefers-reduced-motion: reduce) {
             /* Dekorative Animations komplett stoppen */
             #construction-banner,
-            .blob,
-            .blob-1, .blob-2, .blob-3,
-            .hero-tag-dot,
             .feed-live-dot {
                 animation: none !important;
             }
@@ -1100,6 +1338,41 @@
                 transition-duration: 0.01ms !important;
                 scroll-behavior: auto !important;
             }
+        }
+
+        /* ─────────────────────────────────────────────────────────
+           A11y · prefers-reduced-motion — Redesign 2026-08 (Hero,
+           Leistungen, Ablauf). Der Fallback oben kuerzt bereits jede
+           Animationsdauer auf 0.01ms, aber Elemente, deren Ruhezustand
+           opacity:0 ist, muessen zusaetzlich sichtbar erzwungen werden —
+           sonst enden sie nach der verkuerzten Animation unsichtbar.
+           ───────────────────────────────────────────────────────── */
+        @media (prefers-reduced-motion: reduce) {
+            .hero__kicker, .hero__title, .hero__subline, .hero__actions, .hero__trust,
+            .hero__radar-sweep,
+            .hero__radar-blip--1, .hero__radar-blip--2, .hero__radar-blip--3,
+            .hero__radar-label--1, .hero__radar-label--2, .hero__radar-label--3 {
+                animation: none !important;
+            }
+            .hero__radar-net-nodes circle { animation: none !important; opacity: 0.55 !important; }
+            .hero__radar-label--1, .hero__radar-label--2, .hero__radar-label--3 { opacity: 1 !important; }
+            .hero__radar-blip--1, .hero__radar-blip--2, .hero__radar-blip--3 { opacity: 0.7; }
+
+            /* Scroll-gesteuerter Parallax muss hier ausdruecklich genannt werden:
+               Der universelle Fallback oben kuerzt animation-duration, aber bei
+               einer Scroll-Zeitleiste wird die Dauer ignoriert (den Fortschritt
+               bestimmt die Scrollposition). Ohne diese Regel liefe die Bewegung
+               genau bei den Leuten weiter, die sie abgeschaltet haben. */
+            .hero__glow, .hero__grid { animation: none !important; transform: none !important; }
+
+            .l-card { opacity: 1; animation: none; transition: none; background-position: 0% 0%; }
+            .l-card::before { transition: none; }
+            .l-card:hover, .l-card:focus-within { transform: none; background-position: 0% 0%; }
+            .l-btn { transition: none; }
+            .l-btn:hover, .l-btn:focus-visible { transform: none; }
+
+            .trm .t-line { opacity: 1 !important; animation: none !important; transform: none !important; }
+            .trm .t-cursor { display: none; }
         }
     </style>
     <!-- Analytics: self-hosted GoatCounter (cookielos, DSGVO-konform, kein Drittanbieter-CDN) -->
@@ -1127,7 +1400,8 @@
     </button>
     <ul class="nav-links" id="nav-links">
         <li><a href="ueber-uns.html">Über uns</a></li>
-        <li><a href="#services">Leistungen</a></li>
+        <li><a href="#leistungen">Leistungen</a></li>
+        <li><a href="leistungen.html">Alle Leistungen</a></li>
         <li><a href="analysen/">Analysen</a></li>
         <li><a href="lernen/">Lernen</a></li>
         <li><a href="#faq">FAQ</a></li>
@@ -1137,88 +1411,79 @@
 </nav>
 
 <!-- ═══ HERO ═══ -->
-<section id="hero">
-    <!-- Background blobs -->
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-    <div class="blob blob-3"></div>
-    <!-- SVG wave lines -->
-    <svg class="wave-overlay" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0,450 C240,320 480,560 720,390 C960,220 1200,480 1440,340" stroke="url(#wg1)" stroke-width="1.5" fill="none"/>
-        <path d="M0,550 C200,400 440,640 680,470 C920,300 1160,540 1440,420" stroke="url(#wg1)" stroke-width="1" fill="none" opacity="0.7"/>
-        <path d="M0,350 C260,230 500,460 740,300 C980,140 1220,400 1440,270" stroke="url(#wg2)" stroke-width="1.2" fill="none" opacity="0.6"/>
-        <path d="M0,650 C300,500 540,740 780,570 C1020,400 1260,620 1440,500" stroke="url(#wg2)" stroke-width="0.8" fill="none" opacity="0.5"/>
-        <path d="M0,220 C200,110 420,320 640,200 C860,80 1080,290 1300,170 C1400,110 1430,200 1440,180" stroke="url(#wg1)" stroke-width="0.8" fill="none" opacity="0.4"/>
-        <defs>
-            <linearGradient id="wg1" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%"   stop-color="#00d4ff"/>
-                <stop offset="50%"  stop-color="#7b2ff7"/>
-                <stop offset="100%" stop-color="#cc00ff"/>
-            </linearGradient>
-            <linearGradient id="wg2" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%"   stop-color="#cc00ff"/>
-                <stop offset="100%" stop-color="#00d4ff"/>
-            </linearGradient>
-        </defs>
-    </svg>
-    <!-- Content -->
-    <div class="hero-content">
-        <div class="hero-tag">
-            <span class="hero-tag-dot"></span>
-            IT-Sicherheit für jeden
-        </div>
-        <h1 class="hero-title">
-            CYBER<br>
-            SECURITY<br>
-            <span class="gradient-word">SOLUTIONS</span>
-        </h1>
-        <p class="hero-subtitle">
-            Professionelle IT-Sicherheit für kleine und mittlere Unternehmen –<br>
-            verständlich erklärt, schnell umgesetzt, fair berechnet.
-        </p>
-        <div class="hero-ctas">
-            <a href="mailto:kontakt@cyber-aspis.de?subject=Kostenloses%20Erstgespräch" class="btn-primary" data-goatcounter-click="hero-erstgespraech">
-                Kostenloses Erstgespräch →
-            </a>
-            <a href="#services" class="btn-secondary">
-                Leistungen ansehen ↓
-            </a>
-        </div>
+<section class="hero">
+  <div class="hero__bg" aria-hidden="true">
+    <div class="hero__glow"></div>
+    <div class="hero__grid"></div>
+    <div class="hero__noise"></div>
+  </div>
+
+  <div class="hero__inner">
+    <div class="hero__content">
+      <p class="hero__kicker">IT-Sicherheit für kleine und mittlere Betriebe</p>
+      <h1 class="hero__title">Wer hat Ihre Website gebaut, und weiß heute jemand, was darin steckt?</h1>
+      <p class="hero__subline">Cyber Aspis prüft die IT-Sicherheit von Betrieben in Hannover und Niedersachsen. Verständlich erklärt, zum Festpreis, mit Bericht in Klartext.</p>
+      <div class="hero__actions">
+        <a class="hero__btn hero__btn--primary" href="#contact" data-goatcounter-click="hero-erstgespraech">Kostenloses Erstgespräch</a>
+        <a class="hero__btn hero__btn--secondary" href="#leistungen">Leistungen ansehen</a>
+      </div>
+      <p class="hero__trust">Festpreise · Bericht in KMU-Sprache · 30 Tage Rückfragen inklusive</p>
     </div>
+
+    <div class="hero__shield" aria-hidden="true">
+      <div class="hero__radar">
+        <!-- Netzebene: die drei Befund-Punkte sitzen als Knoten IM Netz, nicht
+             daneben. Das Radar zeigt damit, was es tatsaechlich tut — Anlagen,
+             die am Netz haengen, und was daran auffaellt. -->
+        <svg class="hero__radar-net" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+          <g class="hero__radar-net-lines">
+            <path d="M50 15 L72 14 M72 14 L90 36 M90 36 L84 29 M84 29 L72 14 M84 29 L79 41 M79 41 L86 55 M86 55 L68 62 M68 62 L62 79 M62 79 L55 90 M55 90 L40 88 M40 88 L32 72 M32 72 L44 63 M44 63 L68 62 M32 72 L18 62 M18 62 L24 49 M24 49 L11 42 M11 42 L13 33 M13 33 L28 24 M28 24 L50 15 M24 49 L44 63 M79 41 L90 36" />
+          </g>
+          <!-- Reihenfolge ist bedeutsam: Der Aufblink-Zeitpunkt haengt am
+               nth-child-Index (siehe animation-delay im CSS) und entspricht dem
+               Winkel des Knotens, damit er genau dann blinkt, wenn der Strahl
+               ihn ueberstreicht. Beim Umsortieren die Delays mitziehen. -->
+          <g class="hero__radar-net-nodes">
+            <circle cx="50" cy="15" r="1.1" /><circle cx="72" cy="14" r="1.1" />
+            <circle cx="90" cy="36" r="1.1" /><circle cx="79" cy="41" r="1.1" />
+            <circle cx="86" cy="55" r="1.1" /><circle cx="68" cy="62" r="1.1" />
+            <circle cx="62" cy="79" r="1.1" /><circle cx="40" cy="88" r="1.1" />
+            <circle cx="44" cy="63" r="1.1" /><circle cx="32" cy="72" r="1.1" />
+            <circle cx="18" cy="62" r="1.1" /><circle cx="24" cy="49" r="1.1" />
+            <circle cx="13" cy="33" r="1.1" /><circle cx="28" cy="24" r="1.1" />
+          </g>
+        </svg>
+        <div class="hero__radar-ring hero__radar-ring--1"></div>
+        <div class="hero__radar-ring hero__radar-ring--2"></div>
+        <div class="hero__radar-ring hero__radar-ring--3"></div>
+        <div class="hero__radar-sweep"></div>
+        <div class="hero__radar-core"></div>
+        <span class="hero__radar-blip hero__radar-blip--1"></span>
+        <span class="hero__radar-blip hero__radar-blip--2"></span>
+        <span class="hero__radar-blip hero__radar-blip--3"></span>
+        <span class="hero__radar-label hero__radar-label--1">Fernzugang offen</span>
+        <span class="hero__radar-label hero__radar-label--2">Kein Mail-Schutz</span>
+        <span class="hero__radar-label hero__radar-label--3">TLS veraltet</span>
+        <div class="hero__radar-icon-wrap">
+          <svg class="hero__radar-icon" viewBox="0 0 100 100">
+            <defs>
+              <linearGradient id="hero-shield-grad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#00d4ff" />
+                <stop offset="1" stop-color="#e040fb" />
+              </linearGradient>
+            </defs>
+            <path d="M50 6 L88 20 V48 C88 74 72 90 50 96 C28 90 12 74 12 48 V20 Z" fill="rgba(13,13,26,0.55)" stroke="url(#hero-shield-grad)" stroke-width="2" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- ═══ ABOUT ═══ -->
 <section id="about">
     <div class="about-inner">
-        <!-- Terminal window -->
-        <div class="terminal">
-            <div class="terminal-bar">
-                <span class="dot dot-r"></span>
-                <span class="dot dot-y"></span>
-                <span class="dot dot-g"></span>
-                <span class="terminal-label">cyber-aspis ~ security-scan</span>
-            </div>
-            <div class="terminal-body">
-                <span class="t-cmd">$ nmap -sV --script vuln target.example.de</span>
-                <span class="t-gap"></span>
-                <span class="t-out">Starting Nmap 7.94 – Scanning target.example.de</span>
-                <span class="t-out">Host: up (0.011s latency)</span>
-                <span class="t-gap"></span>
-                <span class="t-out">PORT    STATE  SERVICE   VERSION</span>
-                <span class="t-out">22/tcp  open   ssh       OpenSSH 8.9</span>
-                <span class="t-out">80/tcp  open   http      nginx 1.22</span>
-                <span class="t-out">443/tcp open   https     nginx 1.22</span>
-                <span class="t-gap"></span>
-                <span class="t-warn">⚠  TLS 1.0 / 1.1 noch aktiv – veraltet</span>
-                <span class="t-warn">⚠  CVE-2023-44487: HTTP/2 Rapid Reset möglich</span>
-                <span class="t-warn">⚠  X-Frame-Options Header fehlt</span>
-                <span class="t-gap"></span>
-                <span class="t-ok">✓  Report erstellt: audit_report_2026.pdf</span>
-                <span class="t-ok">✓  3 kritisch, 4 mittel, 2 niedrig</span>
-                <span class="t-gap"></span>
-                <span class="t-cmd">$ _</span>
-            </div>
-        </div>
+        <!-- Terminal ist umgezogen, siehe Abschnitt "#ablauf" -->
         <!-- Text -->
         <div>
             <p class="about-label">Über uns</p>
@@ -1258,389 +1523,178 @@
     </div>
 </section>
 
-<!-- ═══ SERVICES ═══ -->
-<section id="services">
-    <h2 class="section-title">IT-Security Leistungen</h2>
-    <p style="text-align:center; color:var(--text-muted); font-size:0.95rem; margin-top:-1.5rem; margin-bottom:1rem; max-width:760px; margin-left:auto; margin-right:auto;">
-        Den Sicherheits-Check gibt es in drei Tiefen — von der reinen Fernprüfung bis zum Vor-Ort-Check im Betrieb.
-        Die Nachprüfung nach Behebung ist zu jeder Variante zubuchbar. Alles Weitere baut darauf auf.
-    </p>
-    <p style="text-align:center; color:var(--text-muted); font-size:0.82rem; margin-bottom:3rem; max-width:760px; margin-left:auto; margin-right:auto;">
-        Alle Preise in Euro und netto. Cyber Aspis wendet die Kleinunternehmerregelung nach § 19 UStG an —
-        Umsatzsteuer wird nicht ausgewiesen und nicht berechnet. Anfahrt bis 50 km ist enthalten, darüber 0,30 €/km
-        und die halbe Fahrzeit. <strong>Preise Stand 31.07.2026.</strong>
-    </p>
-    <p style="text-align:center; color:var(--text-muted); font-size:0.82rem; margin-bottom:3rem; max-width:760px; margin-left:auto; margin-right:auto;">
-        <strong>Referenzkunden-Programm:</strong> Die ersten drei Betriebe erhalten 50 % Nachlass auf den Regelpreis
-        der Sicherheits-Checks. Gegenleistung ist eine schriftliche Referenz nach Abschluss und die Zustimmung, als
-        Referenzprojekt genannt zu werden — Betriebsart und Region genügen, ein Name ist nicht erforderlich. Der
-        Nachlass wird auf der Rechnung als eigene Position ausgewiesen. Befristet bis 31.12.2026 oder bis die drei
-        Plätze vergeben sind, je nachdem was zuerst eintritt.
-    </p>
-    <div class="services-wrap">
+<span id="services" aria-hidden="true"></span>
+<!-- ═══ LEISTUNGEN (Redesign 2026-08, ersetzt die alte 15-Karten-#services-Sektion) ═══ -->
+<section id="leistungen" class="lst">
+  <div class="lst__inner">
+    <header class="lst__head">
+      <h2 class="lst__title">Sicherheits-Checks</h2>
+      <p class="lst__sub">Vier Tiefen, ein Festpreis. Alle Preise in Euro, Kleinunternehmerregelung nach § 19 UStG. Umsatzsteuer wird nicht ausgewiesen und nicht berechnet, der angegebene Preis ist der Endpreis. Anfahrt bis 50 km ist enthalten, darüber 0,30 €/km und die halbe Fahrzeit. <strong>Preise Stand 31.07.2026.</strong></p>
+      <p class="lst__ref">✨ <strong>Referenzkunden-Programm:</strong> Die ersten drei Betriebe erhalten 50 % Nachlass auf den Regelpreis der Sicherheits-Checks. Gegenleistung ist eine schriftliche Referenz nach Abschluss und die Zustimmung, als Referenzprojekt genannt zu werden. Betriebsart und Region genügen, ein Name ist nicht erforderlich. Der Nachlass wird auf der Rechnung als eigene Position ausgewiesen. Befristet bis 31.12.2026 oder bis die drei Plätze vergeben sind, je nachdem was zuerst eintritt.</p>
+    </header>
 
-        <div class="service-card">
-            <div class="card-visual">
-                <div class="icon-ring">🔍</div>
-            </div>
-            <div class="card-body">
-                <h3 class="card-title">1a · Quick-Check remote</h3>
-                <ul class="card-list">
-                    <li>Website und TLS-Verschlüsselung</li>
-                    <li>Absender-Absicherung der Domain (SPF, DKIM, DMARC)</li>
-                    <li>Sicherheits-Header</li>
-                    <li>Technische Prüfung eingebundener Drittdienste</li>
-                    <li>Bericht + Nachbesprechung · rund 4,5 Stunden Aufwand</li>
-                </ul>
-                <span class="card-price">400 € Pauschal</span>
-                <a class="card-link" href="#contact" data-goatcounter-click="cta-jetzt-anfragen" onclick="prefillService('1a Quick-Check remote'); return false;">Jetzt anfragen →</a>
-                <p style="font-family:var(--font-mono); font-size:0.66rem; color:#6a6a86; margin-top:10px; line-height:1.5;">
-                    Geprüft wird die Technik. Eine rechtliche Bewertung von Datenschutzerklärungen oder
-                    Einwilligungen ist Rechtsdienstleistung und bleibt Anwälten und Datenschutzberatungen vorbehalten.
-                </p>
-            </div>
-        </div>
+    <div class="lst__grid">
 
-        <div class="service-card">
-            <div class="card-visual">
-                <div class="icon-ring">🗒️</div>
-            </div>
-            <div class="card-body">
-                <h3 class="card-title">1b · Aufnahme &amp; Beratung vor Ort</h3>
-                <ul class="card-list">
-                    <li>Aufnahmegespräch im Betrieb</li>
-                    <li>Sichtprüfung ohne Eingriff in Ihre Systeme</li>
-                    <li>Betrachtung von außen</li>
-                    <li>Schriftliche Zusammenfassung · rund 5 Stunden Aufwand</li>
-                    <li>Wird bei Folgeauftrag binnen 3 Monaten voll angerechnet</li>
-                </ul>
-                <span class="card-price">450 € Pauschal</span>
-                <a class="card-link" href="#contact" onclick="prefillService('1b Aufnahme und Beratung vor Ort'); return false;">Jetzt anfragen →</a>
-            </div>
+      <article class="l-card l-card--1">
+        <div class="l-card__icon">
+          <svg class="l-card__icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M3 12h18"></path>
+            <path d="M12 3c2.5 2.5 4 5.5 4 9s-1.5 6.5-4 9c-2.5-2.5-4-5.5-4-9s1.5-6.5 4-9z"></path>
+          </svg>
         </div>
+        <h3 class="l-card__title">Quick-Check aus der Ferne</h3>
+        <p class="l-card__price">
+          <span class="l-card__amount">400</span><span class="l-card__currency">€</span>
+        </p>
+        <p class="l-card__effort">rund 4,5 Stunden</p>
+        <ul class="l-card__list">
+          <li class="l-card__li">Website und TLS-Verschlüsselung</li>
+          <li class="l-card__li">Absender-Absicherung der Domain (SPF, DKIM, DMARC)</li>
+          <li class="l-card__li">Sicherheits-Header</li>
+          <li class="l-card__li">technische Prüfung eingebundener Drittdienste</li>
+          <li class="l-card__li">Bericht und Nachbesprechung</li>
+        </ul>
+        <a class="l-btn" href="#contact">Anfragen</a>
+      </article>
 
-        <div class="service-card">
-            <div class="card-visual">
-                <div class="icon-ring">🏢</div>
-            </div>
-            <div class="card-body">
-                <h3 class="card-title">1c · Vor-Ort-Check klein</h3>
-                <ul class="card-list">
-                    <li>Alles aus 1b</li>
-                    <li>Netz- und Geräteaufnahme</li>
-                    <li>Router und WLAN</li>
-                    <li>Arbeitsplätze und Netzwerkspeicher</li>
-                    <li>Bericht und Nachbesprechung · rund 9,5 Stunden Aufwand</li>
-                    <li>Für Betriebe bis ca. 5 Arbeitsplätze</li>
-                </ul>
-                <span class="card-price">850 € Pauschal</span>
-                <a class="card-link" href="#contact" onclick="prefillService('1c Vor-Ort-Check klein'); return false;">Jetzt anfragen →</a>
-            </div>
+      <article class="l-card l-card--2">
+        <div class="l-card__icon">
+          <svg class="l-card__icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <rect x="5" y="3" width="14" height="18" rx="1"></rect>
+            <path d="M9 7h1M14 7h1M9 11h1M14 11h1M9 15h1M14 15h1"></path>
+          </svg>
         </div>
+        <h3 class="l-card__title">Vor-Ort-Check klein</h3>
+        <p class="l-card__price">
+          <span class="l-card__amount">850</span><span class="l-card__currency">€</span>
+        </p>
+        <p class="l-card__effort">rund 9,5 Stunden</p>
+        <ul class="l-card__list">
+          <li class="l-card__li">Aufnahmegespräch und Sichtprüfung im Betrieb</li>
+          <li class="l-card__li">Netz- und Geräteaufnahme</li>
+          <li class="l-card__li">Router und WLAN</li>
+          <li class="l-card__li">Arbeitsplätze und Netzwerkspeicher</li>
+          <li class="l-card__li">für Betriebe bis etwa 5 Arbeitsplätze</li>
+        </ul>
+        <a class="l-btn" href="#contact">Anfragen</a>
+      </article>
 
-        <div class="service-card">
-            <div class="card-visual">
-                <div class="icon-ring">✅</div>
-            </div>
-            <div class="card-body">
-                <h3 class="card-title">1e · Nachprüfung nach Behebung</h3>
-                <ul class="card-list">
-                    <li>Verifikation der behobenen Punkte</li>
-                    <li>Kurzbericht · rund 2 Stunden Aufwand</li>
-                    <li>Zu jeder Check-Variante zubuchbar</li>
-                </ul>
-                <span class="card-price">190 € Pauschal</span>
-                <a class="card-link" href="#contact" onclick="prefillService('1e Nachprüfung nach Behebung'); return false;">Jetzt anfragen →</a>
-            </div>
+      <article class="l-card l-card--3 l-card--featured">
+        <span class="l-card__badge">Empfohlen</span>
+        <div class="l-card__icon l-card__icon--featured">
+          <svg class="l-card__icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <rect x="3" y="3" width="12" height="18" rx="1"></rect>
+            <path d="M6 7h1M10 7h1M6 11h1M10 11h1M6 15h1M10 15h1"></path>
+            <path class="l-card__icon-accent" d="M17 12l4 1.5v3c0 2.5-1.7 4-4 5-2.3-1-4-2.5-4-5v-3l4-1.5z"></path>
+          </svg>
         </div>
+        <h3 class="l-card__title">Vor-Ort-Check erweitert</h3>
+        <p class="l-card__price">
+          <span class="l-card__amount">1.250</span><span class="l-card__currency">€</span>
+        </p>
+        <p class="l-card__effort">rund 14 Stunden</p>
+        <p class="l-card__why">Diese Variante prüft mit, was bei einer reinen IT-Prüfung niemand anschaut: die Technik, die im Gebäude am Netz hängt. Brandmelde- und Einbruchmeldeanlagen, die Fernwartungszugänge der Errichter, die Zutrittskontrolle. Aus der eigenen Praxis in der Gefahrenmeldetechnik.</p>
+        <ul class="l-card__list">
+          <li class="l-card__li">alles aus dem kleinen Vor-Ort-Check</li>
+          <li class="l-card__li l-card__li--usp">
+            <svg class="l-card__usp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <path d="M4 21V9l8-5 8 5v12"></path>
+              <path d="M9 21v-6h6v6"></path>
+            </svg>
+            <strong>Gebäude- und Sicherheitstechnik am Netz</strong>
+          </li>
+          <li class="l-card__li">Fernwartungszugänge</li>
+          <li class="l-card__li">mobile Geräte</li>
+          <li class="l-card__li">eigener Server</li>
+        </ul>
+        <a class="l-btn l-btn--featured" href="#contact">Anfragen</a>
+      </article>
 
-        <div class="service-card">
-            <div class="card-visual">
-                <div class="icon-ring">🔧</div>
-            </div>
-            <div class="card-body">
-                <h3 class="card-title">Härtungs-Tag</h3>
-                <ul class="card-list">
-                    <li>Router- und WLAN-Härtung, Gäste-Netz trennen</li>
-                    <li>Absender-Absicherung der Domain einrichten</li>
-                    <li>Zwei-Faktor-Anmeldung aktivieren</li>
-                    <li>Alte Fernwartungs- und Benutzerzugänge schließen</li>
-                    <li>Datensicherung prüfen und Rückspielung testen</li>
-                    <li>8 Stunden, weitere Stunden 95 €/h</li>
-                </ul>
-                <span class="card-price">720 € Pauschal</span>
-                <a class="card-link" href="#contact" onclick="prefillService('Härtungs-Tag'); return false;">Jetzt anfragen →</a>
-                <p style="font-family:var(--font-mono); font-size:0.66rem; color:#6a6a86; margin-top:10px; line-height:1.5;">
-                    Bei diesem Termin wird aktiv in Ihre Systeme eingegriffen. Umfang, Reihenfolge und die
-                    Haftung dafür werden vor Beginn schriftlich im Angebot festgelegt; Eingriffe erfolgen nur
-                    nach Ihrer ausdrücklichen Freigabe und werden mit Vorher-Nachher-Stand dokumentiert.
-                </p>
-            </div>
+      <article class="l-card l-card--4">
+        <div class="l-card__icon">
+          <svg class="l-card__icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <path d="M20 12a8 8 0 1 1-2.34-5.66"></path>
+            <path d="M20 4v5h-5"></path>
+            <path class="l-card__icon-accent" d="M9 12l2 2 4-4"></path>
+          </svg>
         </div>
-
-        <div class="service-card">
-            <div class="card-visual">
-                <div class="icon-ring">👥</div>
-            </div>
-            <div class="card-body">
-                <h3 class="card-title">Sicherheits-Unterweisung für das Team</h3>
-                <ul class="card-list">
-                    <li>Gefälschte Rechnungen und geänderte Bankverbindungen</li>
-                    <li>Die Chef-Masche: angebliche Eilüberweisung</li>
-                    <li>Phishing in Alltagssprache, echte Beispiele</li>
-                    <li>Passwörter und Zwei-Faktor-Anmeldung praktisch</li>
-                    <li>2 Stunden vor Ort, gesamtes Team</li>
-                </ul>
-                <span class="card-price">290 € · ab 10 Teilnehmenden 49 €/Person</span>
-                <a class="card-link" href="#contact" onclick="prefillService('Sicherheits-Unterweisung'); return false;">Jetzt anfragen →</a>
-            </div>
-        </div>
-
-        <div class="service-card">
-            <div class="card-visual">
-                <div class="icon-ring">🔁</div>
-            </div>
-            <div class="card-body">
-                <h3 class="card-title">Jahres-Check</h3>
-                <ul class="card-list">
-                    <li>Einmal jährlich, gleicher Umfang wie beim ersten Mal</li>
-                    <li>Erinnerung durch Cyber Aspis</li>
-                    <li>Bericht zeigt Verbesserungen und Verschlechterungen</li>
-                    <li>Kein Abo, keine Reaktionszeiten, keine Bereitschaft</li>
-                </ul>
-                <span class="card-price">Regelpreis des Checks abzüglich 15 %</span>
-                <a class="card-link" href="#contact" onclick="prefillService('Jahres-Check'); return false;">Jetzt anfragen →</a>
-            </div>
-        </div>
-
-        <div class="service-card">
-            <div class="card-visual">
-                <div class="icon-ring">🛡️</div>
-            </div>
-            <div class="card-body">
-                <h3 class="card-title">Vulnerability Assessment</h3>
-                <ul class="card-list">
-                    <li>OWASP Top-10 Prüfung</li>
-                    <li>SSL/TLS-Analyse (testssl.sh)</li>
-                    <li>OSINT-Recherche</li>
-                    <li>Wiederholungs-Scan nach 30 Tagen</li>
-                </ul>
-                <span class="card-price">720 € (8 h) · 1.440 € (16 h)</span>
-                <a class="card-link" href="services/vulnerability-assessment.html">Mehr erfahren →</a>
-            </div>
-        </div>
-
-        <div class="service-card">
-            <div class="card-visual">
-                <div class="icon-ring">💾</div>
-            </div>
-            <div class="card-body">
-                <h3 class="card-title">Backup-Strategie Setup</h3>
-                <ul class="card-list">
-                    <li>3-2-1-Backup-Konzept</li>
-                    <li>Tool-Auswahl und Einrichtung</li>
-                    <li>Recovery-Test (live)</li>
-                    <li>30 Tage Support</li>
-                    <li>Bis 8 Stunden, darüber 95 €/h</li>
-                </ul>
-                <span class="card-price">720 € Paketpreis</span>
-                <a class="card-link" href="#contact" onclick="prefillService('Backup-Strategie Setup'); return false;">Jetzt anfragen →</a>
-            </div>
-        </div>
-
-        <div class="service-card">
-            <div class="card-visual">
-                <div class="icon-ring">📋</div>
-            </div>
-            <div class="card-body">
-                <h3 class="card-title">Security-Policy Beratung</h3>
-                <ul class="card-list">
-                    <li>Gap-Analyse</li>
-                    <li>Richtlinien-Entwicklung</li>
-                    <li>Mitarbeiter-Schulungskonzept</li>
-                    <li>Umsetzungs-Roadmap</li>
-                </ul>
-                <span class="card-price">95 €/Stunde</span>
-                <a class="card-link" href="#contact" onclick="prefillService('Security-Policy Beratung'); return false;">Jetzt anfragen →</a>
-            </div>
-        </div>
-
-        <div class="service-card">
-            <div class="card-visual">
-                <div class="icon-ring">🤖</div>
-            </div>
-            <div class="card-body">
-                <h3 class="card-title">AI-Quick-Check</h3>
-                <ul class="card-list">
-                    <li>Für selbst gehostete KI (Ollama, Open-WebUI, vLLM, LocalAI)</li>
-                    <li>Container-Exposure und Auth-Layer</li>
-                    <li>Prompt-Injection- und Sysprompt-Leak-Tests</li>
-                    <li>KI-Modell-Audit: welches Modell läuft, ist ein Wechsel möglich</li>
-                    <li>Rund 5 Stunden Aufwand</li>
-                    <li>Optional: erweiterte Jailbreak-Analyse 595 €</li>
-                </ul>
-                <span class="card-price">450 € Pauschal</span>
-                <a class="card-link" href="#contact" onclick="prefillService('AI-Quick-Check'); return false;">Jetzt anfragen →</a>
-            </div>
-        </div>
-
-        <div class="service-card">
-            <div class="card-visual">
-                <div class="icon-ring">⌨️</div>
-            </div>
-            <div class="card-body">
-                <h3 class="card-title">AI-Coding-Quick-Check</h3>
-                <ul class="card-list">
-                    <li>Für Teams mit Claude Code, Cursor, Windsurf, Copilot</li>
-                    <li>Settings-Härtung und Datei-Zugriffssperren</li>
-                    <li>Code-Context-Leak-Tests</li>
-                    <li>Secret-in-Context-Audit</li>
-                    <li>Modell-Wechselbarkeit ohne Vendor-Lock</li>
-                    <li>Rund 3,5 Stunden Aufwand</li>
-                </ul>
-                <span class="card-price">320 € Pauschal</span>
-                <a class="card-link" href="#contact" onclick="prefillService('AI-Coding-Quick-Check'); return false;">Jetzt anfragen →</a>
-            </div>
-        </div>
-
-        <div class="service-card">
-            <div class="card-visual">
-                <div class="icon-ring">📑</div>
-            </div>
-            <div class="card-body">
-                <h3 class="card-title">Technische Datenschutz-Prüfung</h3>
-                <ul class="card-list">
-                    <li>Technische und organisatorische Maßnahmen nach Art. 32 DSGVO</li>
-                    <li>Verschlüsselung und Zugriffskontrolle</li>
-                    <li>Protokollierung und Wiederherstellbarkeit</li>
-                    <li>Löschkonzept in der technischen Umsetzung</li>
-                </ul>
-                <span class="card-price">899 € Paketpreis</span>
-                <a class="card-link" href="services/compliance-audit.html">Mehr erfahren →</a>
-                <p style="font-family:var(--font-mono); font-size:0.66rem; color:#6a6a86; margin-top:10px; line-height:1.5;">
-                    Ausdrücklich keine Rechtsberatung. Die rechtliche Bewertung von Datenschutzerklärungen,
-                    Verarbeitungsverzeichnissen oder Einwilligungen ist Rechtsdienstleistung und bleibt Anwälten
-                    und Datenschutzberatungen vorbehalten. Cyber Aspis prüft die Technik und benennt
-                    Auffälligkeiten, bewertet sie aber nicht rechtlich.
-                </p>
-            </div>
-        </div>
-
-        <div class="service-card">
-            <div class="card-visual">
-                <div class="icon-ring">🚨</div>
-            </div>
-            <div class="card-body">
-                <h3 class="card-title">Notfall-Unterstützung</h3>
-                <ul class="card-list">
-                    <li>Während oder nach einem Sicherheitsvorfall</li>
-                    <li>Reaktion innerhalb von 24 Stunden an Werktagen</li>
-                    <li>Abrechnung nach tatsächlichem Aufwand</li>
-                </ul>
-                <span class="card-price">149 €/Stunde</span>
-                <a class="card-link" href="#contact" onclick="prefillService('Notfall-Unterstützung'); return false;">Jetzt anfragen →</a>
-                <p style="font-family:var(--font-mono); font-size:0.66rem; color:#6a6a86; margin-top:10px; line-height:1.5;">
-                    Bewusst keine 24/7-Bereitschaft. Cyber Aspis wird im Nebenerwerb betrieben; eine
-                    durchgehende Erreichbarkeit kann nicht zugesagt werden.
-                </p>
-            </div>
-        </div>
-
-        <div class="service-card">
-            <div class="card-visual">
-                <div class="icon-ring">📡</div>
-            </div>
-            <div class="card-body">
-                <h3 class="card-title">Laufende Überwachung — in Vorbereitung</h3>
-                <ul class="card-list">
-                    <li>Derzeit nicht bestellbar, kein Preis, keine Reaktionszeit</li>
-                    <li>Interessenten können sich vormerken lassen</li>
-                    <li>Ein Angebot erfolgt erst, wenn die Leistung zuverlässig erbracht werden kann</li>
-                </ul>
-                <span class="card-price">In Vorbereitung</span>
-                <p style="font-family:var(--font-mono); font-size:0.66rem; color:#6a6a86; margin-top:10px; line-height:1.5;">
-                    „Laufende Überwachung ist in Vorbereitung. Ich biete sie erst an, wenn ich sie zuverlässig
-                    leisten kann. Ein Bereitschaftsversprechen, das im Ernstfall nicht hält, nützt Ihnen nichts."
-                </p>
-            </div>
-        </div>
+        <h3 class="l-card__title">Nachprüfung nach Behebung</h3>
+        <p class="l-card__price">
+          <span class="l-card__amount">190</span><span class="l-card__currency">€</span>
+        </p>
+        <p class="l-card__effort">rund 2 Stunden</p>
+        <ul class="l-card__list">
+          <li class="l-card__li">Verifikation der behobenen Punkte</li>
+          <li class="l-card__li">Kurzbericht</li>
+          <li class="l-card__li">zu jeder Variante zubuchbar</li>
+        </ul>
+        <a class="l-btn" href="#contact">Anfragen</a>
+      </article>
 
     </div>
+
+    <p class="lst__foot">Anfahrt bis 50 km enthalten · Bericht in KMU-Sprache · 30 Tage Rückfragen inklusive</p>
+
+    <div class="lst__more">
+      <p>Weitere Leistungen wie Härtungs-Tag, Team-Unterweisung, Jahres-Check, Vulnerability Assessment, Backup-Strategie, Security-Policy-Beratung, die beiden AI-Checks und die Kombinations-Pakete finden Sie auf der Übersichtsseite.</p>
+      <a class="lst__more-link" href="leistungen.html">Alle Leistungen im Überblick</a>
+    </div>
+  </div>
 </section>
 
-<!-- ═══ SERVICE BUNDLES ═══ -->
-<section id="bundles">
-    <h2 class="section-title">Kombinations-Pakete</h2>
-    <p style="text-align:center; color:var(--text-muted); font-size:0.95rem; margin-top:-1.5rem; margin-bottom:1rem;">
-        Mehrere Leistungen kombiniert zu einem Festpreis.
-    </p>
-    <p style="text-align:center; color:var(--text-muted); font-size:0.82rem; margin-bottom:3rem;">
-        Alle Preise netto, Kleinunternehmerregelung nach § 19 UStG. <strong>Preise Stand 31.07.2026.</strong>
-    </p>
-    <div class="bundles-grid">
+<!-- ═══ ABLAUF / TERMINAL (Redesign 2026-08, neuer Standort des alten nmap-Terminals) ═══ -->
+<section id="ablauf" class="trm" aria-labelledby="trm-heading">
+  <div class="t-container">
 
-        <!-- Bundle 1: Starter -->
-        <div class="bundle-card">
-            <div class="bundle-icon">🚀</div>
-            <div class="bundle-name">Security Starter</div>
-            <div class="bundle-tagline">Ideal für die erste Absicherung</div>
-            <ul class="bundle-includes">
-                <li>Sicherheits-Check 1a (Quick-Check remote)</li>
-                <li>Bericht + Nachbesprechung</li>
-                <li>Backup-Strategie Setup (3-2-1-Konzept)</li>
-                <li>Recovery-Test (live)</li>
-                <li>30 Tage Support inklusive</li>
-            </ul>
-            <div class="bundle-pricing">
-                <span class="bundle-price">950 €</span>
-            </div>
-            <a href="#contact" class="bundle-cta" data-goatcounter-click="bundle-starter" onclick="prefillService('Paket Security Starter'); return false;">
-                Paket anfragen →
-            </a>
+    <header class="t-head">
+      <h2 class="t-heading" id="trm-heading">So läuft eine Prüfung ab</h2>
+      <p class="t-sub">Vier Schritte aus dem Quick-Check aus der Ferne. Der Befehl, darunter was er bedeutet, darunter was dabei herauskam.</p>
+    </header>
+
+    <div class="t-window">
+      <div class="t-titlebar">
+        <svg class="t-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+          <path d="M4 4.6 L8.4 8 L4 11.4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <line x1="9.2" y1="11.4" x2="13" y2="11.4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+        <span class="t-title">quick-check · kunde-beispiel.de</span>
+      </div>
+
+      <div class="t-body">
+
+        <div class="t-block" style="--d:0">
+          <p class="t-line t-cmd"><span class="t-prompt" aria-hidden="true">$</span>testssl.sh --quiet kunde-beispiel.de</p>
+          <p class="t-line t-comment"><span class="t-mark" aria-hidden="true">#</span>Prüft, ob die Verschlüsselung der Website aktuell ist</p>
+          <p class="t-line t-result t-warn"><span class="t-mark" aria-hidden="true">⚠</span><span class="t-sr-only">Warnung: </span>TLS 1.0 aktiv, seit 2021 veraltet</p>
         </div>
 
-        <!-- Bundle 2: KMU Shield (featured) -->
-        <div class="bundle-card featured">
-            <div class="bundle-badge">⭐ Empfohlen</div>
-            <div class="bundle-icon">🛡️</div>
-            <div class="bundle-name">KMU Shield</div>
-            <div class="bundle-tagline">Für Unternehmen mit sensiblen Daten</div>
-            <ul class="bundle-includes">
-                <li>Vulnerability Assessment (OWASP Top-10, SSL/TLS, OSINT)</li>
-                <li>Wiederholungs-Scan nach 30 Tagen</li>
-                <li>Sicherheits-Check 1c (Vor-Ort-Check klein)</li>
-                <li>Security-Policy Beratung (4 Stunden)</li>
-                <li>Gap-Analyse & Richtlinien-Entwicklung</li>
-                <li>Umsetzungs-Roadmap</li>
-            </ul>
-            <div class="bundle-pricing">
-                <span class="bundle-price">1.250 €</span>
-            </div>
-            <a href="#contact" class="bundle-cta" data-goatcounter-click="bundle-kmu-shield" onclick="prefillService('Paket KMU Shield'); return false;">
-                Paket anfragen →
-            </a>
+        <div class="t-block" style="--d:3">
+          <p class="t-line t-cmd"><span class="t-prompt" aria-hidden="true">$</span>dig +short TXT kunde-beispiel.de | grep spf</p>
+          <p class="t-line t-comment"><span class="t-mark" aria-hidden="true">#</span>Prüft, ob Fremde in Ihrem Namen Mails verschicken können</p>
+          <p class="t-line t-result t-warn"><span class="t-mark" aria-hidden="true">⚠</span><span class="t-sr-only">Warnung: </span>Kein SPF-Eintrag gefunden</p>
         </div>
 
-        <!-- Bundle 3: Rundum sicher -->
-        <div class="bundle-card">
-            <div class="bundle-icon">🔒</div>
-            <div class="bundle-name">Rundum sicher</div>
-            <div class="bundle-tagline">Check, Umsetzung und Wiederholung</div>
-            <ul class="bundle-includes">
-                <li>Sicherheits-Check 1c (Vor-Ort-Check klein)</li>
-                <li>Härtungs-Tag: Umsetzung der wichtigsten Maßnahmen</li>
-                <li>Sicherheits-Unterweisung für das Team</li>
-                <li>Jahres-Check im Folgejahr zum Vorzugspreis vorgemerkt</li>
-            </ul>
-            <div class="bundle-pricing">
-                <span class="bundle-price">1.590 €</span>
-            </div>
-            <a href="#contact" class="bundle-cta" data-goatcounter-click="bundle-rundum-sicher" onclick="prefillService('Paket Rundum sicher'); return false;">
-                Paket anfragen →
-            </a>
+        <div class="t-block" style="--d:6">
+          <p class="t-line t-cmd"><span class="t-prompt" aria-hidden="true">$</span>curl -sI https://kunde-beispiel.de</p>
+          <p class="t-line t-comment"><span class="t-mark" aria-hidden="true">#</span>Prüft die Schutzeinstellungen des Webservers</p>
+          <p class="t-line t-result t-warn"><span class="t-mark" aria-hidden="true">⚠</span><span class="t-sr-only">Warnung: </span>X-Frame-Options fehlt, Seite in fremdem Rahmen einbettbar</p>
         </div>
 
+        <div class="t-block" style="--d:9">
+          <p class="t-line t-cmd"><span class="t-prompt" aria-hidden="true">$</span>aspis-report --format pdf</p>
+          <p class="t-line t-comment"><span class="t-mark" aria-hidden="true">#</span>Erstellt den Bericht in verständlicher Sprache</p>
+          <p class="t-line t-result t-ok"><span class="t-mark" aria-hidden="true">✓</span><span class="t-sr-only">Ergebnis: </span>3 kritisch · 4 mittel · 2 niedrig</p>
+        </div>
+
+        <p class="t-cursor-line" aria-hidden="true"><span class="t-cursor"></span></p>
+
+      </div>
     </div>
+
+    <p class="t-note">Kein Eingriff in Ihre Systeme. Geprüft wird von außen, wie ein Angreifer es sähe.</p>
+
+  </div>
 </section>
 
 <!-- ═══ FAQ ═══ -->
@@ -1823,6 +1877,7 @@
                         <option value="1a Quick-Check remote">1a · Quick-Check remote (400 €)</option>
                         <option value="1b Aufnahme und Beratung vor Ort">1b · Aufnahme &amp; Beratung vor Ort (450 €)</option>
                         <option value="1c Vor-Ort-Check klein">1c · Vor-Ort-Check klein (850 €)</option>
+                        <option value="1d Vor-Ort-Check erweitert">1d · Vor-Ort-Check erweitert (1.250 €)</option>
                         <option value="1e Nachprüfung nach Behebung">1e · Nachprüfung nach Behebung (190 €)</option>
                         <option value="Härtungs-Tag">Härtungs-Tag (720 €)</option>
                         <option value="Sicherheits-Unterweisung">Sicherheits-Unterweisung für das Team (290 €)</option>
@@ -1891,7 +1946,7 @@
         <p>(2) Verzögerungen durch fehlende Mitwirkung gehen nicht zu Lasten des Auftragnehmers.</p>
 
         <h3>§ 4 Vergütung &amp; Zahlungsbedingungen</h3>
-        <p>(1) Die vereinbarte Vergütung ergibt sich aus dem jeweiligen Angebot. Preise zzgl. gesetzlicher MwSt., sofern diese anfällt.</p>
+        <p>(1) Die vereinbarte Vergütung ergibt sich aus dem jeweiligen Angebot. Cyber Aspis wendet die Kleinunternehmerregelung nach § 19 UStG an; Umsatzsteuer wird nicht ausgewiesen und nicht berechnet. Der angegebene Preis ist der Endpreis. Entfällt die Kleinunternehmereigenschaft, wird die gesetzliche Umsatzsteuer zusätzlich geschuldet.</p>
         <p>(2) <strong>Zahlungsplan:</strong> 50 % bei Auftragserteilung, 50 % bei Lieferung. Zahlungsfrist: 14 Tage nach Rechnungsdatum.</p>
         <p>(3) Bei Zahlungsverzug sind Verzugszinsen in gesetzlicher Höhe (§ 288 BGB) fällig.</p>
 
