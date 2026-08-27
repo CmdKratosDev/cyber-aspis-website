@@ -353,6 +353,13 @@
             margin: 0 0 16px; padding-left: 14px; overflow-wrap: break-word;
             border-left: 2px solid rgba(224,64,251,0.45);
         }
+        .pcard__why strong { color: var(--text-primary); font-weight: 600; }
+        .pcard__why a {
+            display: inline-block; margin-top: 6px;
+            color: var(--accent-magenta); text-decoration: none;
+            border-bottom: 1px solid rgba(224,64,251,0.45); padding-bottom: 1px;
+        }
+        .pcard__why a:hover, .pcard__why a:focus-visible { border-bottom-color: var(--accent-magenta); }
         .pcard__zielgruppe {
             font-size: 0.85rem; line-height: 1.65; color: var(--text-muted);
             margin-bottom: 14px; overflow-wrap: break-word;
@@ -618,9 +625,11 @@
                 <p class="pcard__price--big"><span class="pcard__amount">1.250</span><span class="pcard__currency">€</span></p>
                 <p class="pcard__effort">rund 14 Stunden</p>
                 <p class="pcard__why">
-                    Prüft zusätzlich, was eine reine IT-Prüfung auslässt: Gebäude- und
-                    Sicherheitstechnik am Netz. Diese Tiefe kann im DACH-Solo-Markt praktisch
-                    kein Wettbewerber fachlich beurteilen.
+                    Nimmt zusätzlich auf, welche Gebäudetechnik bei Ihnen am Netz hängt, und
+                    benennt das Risiko: Brandmelde- und Einbruchmeldeanlagen,
+                    Fernwartungszugänge der Errichter, Zutrittskontrolle.
+                    <strong>Geprüft wird die Netzanbindung, nicht die Anlage selbst.</strong>
+                    <a href="services/gebaeudetechnik.html">Was das genau heißt</a>
                 </p>
                 <ul class="pcard__list">
                     <li>Alles aus dem kleinen Vor-Ort-Check</li>

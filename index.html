@@ -614,15 +614,24 @@
             .l-card--3 { grid-area: c3; }
             .l-card--4 { grid-area: c4; }
         }
+        /* Die hervorgehobene Karte ist doppelt BREIT, nicht doppelt hoch.
+           Vorher spannte sie ueber 2x2 Felder, hatte damit die vierfache
+           Flaeche einer normalen Karte bei etwa doppeltem Inhalt und stand
+           gemessen 515 px leer. Ihre fuenf Punkte sind laut SERVICES.md:50
+           der vollstaendige Leistungsumfang — es gibt nichts, womit sich die
+           Flaeche ehrlich fuellen liesse, also muss die Flaeche kleiner werden.
+           Die vierte Karte sitzt mittig darunter: zwei Spalten statt vier,
+           damit sie nicht ihrerseits horizontal leer wirkt (bei voller Breite
+           nutzte ihr Text nur 33 % davon). Leerraum jetzt 12 px pro Karte. */
         @media (min-width: 1024px) {
             .lst__grid {
                 grid-template-columns: repeat(4, 1fr);
                 grid-template-rows: auto auto;
-                grid-template-areas: "c1 c2 c3 c3" "c4 c4 c3 c3";
+                grid-template-areas: "c1 c2 c3 c3" ". c4 c4 .";
                 gap: clamp(20px, 2.5vw, 32px);
                 align-items: stretch;
             }
-            .l-card--3 { transform: translateY(-12px); }
+            .l-card--3 { --lift: -12px; }
         }
 
         .l-card {
@@ -634,7 +643,11 @@
             backdrop-filter: blur(6px);
             box-shadow: 0 18px 40px -20px rgba(0, 0, 0, 0.65);
             opacity: 0; animation: lst-card-in 0.6s ease forwards;
-            transition: transform 0.3s ease, box-shadow 0.35s ease, border-color 0.35s ease, background-position 0.6s ease;
+            /* --lift statt transform in der Transition: Der Versatz steckt im
+               Keyframe (siehe Kommentar bei @keyframes lst-card-in), also muss
+               die Variable weich laufen, nicht die Eigenschaft. Dank @property
+               kennt der Browser ihren Typ und kann sie interpolieren. */
+            transition: --lift 0.3s ease, box-shadow 0.35s ease, border-color 0.35s ease, background-position 0.6s ease;
         }
         .l-card--1 { animation-delay: 0.05s; }
         .l-card--2 { animation-delay: 0.15s; }
@@ -703,13 +716,13 @@
             opacity: 0; transition: opacity 0.35s ease; pointer-events: none;
         }
         .l-card:hover, .l-card:focus-within {
-            transform: translateY(-4px);
+            --lift: -4px;
             box-shadow: 0 26px 50px -18px rgba(0, 212, 255, 0.25);
             border-color: rgba(0, 212, 255, 0.4);
             background-position: 100% 100%;
         }
         @media (min-width: 1024px) {
-            .l-card--3:hover, .l-card--3:focus-within { transform: translateY(-16px); }
+            .l-card--3:hover, .l-card--3:focus-within { --lift: -16px; }
         }
         .l-card:hover::before, .l-card:focus-within::before { opacity: 1; }
 
@@ -720,7 +733,10 @@
             box-shadow: 0 24px 56px -20px rgba(123, 47, 247, 0.4);
         }
         @media (min-width: 1024px) {
-            .l-card--featured { padding: clamp(28px, 2.6vw, 40px); justify-content: space-between; }
+            /* space-between ist raus: Es war der Notbehelf gegen den Leerraum
+               der 2x2-Karte und hat ihn nur umverteilt, naemlich als Luecken
+               zwischen die Elemente. Die Ursache liegt im Raster, nicht hier. */
+            .l-card--featured { padding: clamp(28px, 2.6vw, 40px); }
         }
         .l-card__badge {
             position: absolute; top: -14px; right: 24px;
@@ -745,6 +761,14 @@
             font-size: 0.9375rem; line-height: 1.6; color: var(--text-muted);
             margin: 0 0 22px; padding-left: 14px; border-left: 2px solid rgba(224, 64, 251, 0.45);
         }
+        .l-card__why strong { color: var(--text-primary); font-weight: 600; }
+        .l-card__why-link {
+            display: inline-block; margin-top: 6px;
+            color: var(--accent-magenta); text-decoration: none;
+            border-bottom: 1px solid rgba(224, 64, 251, 0.45);
+            padding-bottom: 1px;
+        }
+        .l-card__why-link:hover, .l-card__why-link:focus-visible { border-bottom-color: var(--accent-magenta); }
         .l-card__list { list-style: none; margin: 0 0 24px; padding: 0; flex-grow: 1; }
         .l-card__li { position: relative; font-size: clamp(0.9375rem, 0.9rem + 0.15vw, 1rem); line-height: 1.55; color: var(--text-muted); padding-left: 22px; margin-bottom: 12px; overflow-wrap: break-word; }
         .l-card__li::before { content: ""; position: absolute; left: 0; top: 0.55em; width: 7px; height: 7px; border-radius: 50%; background: var(--accent-cyan); }
@@ -795,7 +819,27 @@
         }
         .lst__more-link:hover { transform: translateY(-2px); box-shadow: 0 0 32px rgba(0, 212, 255, 0.35); }
 
-        @keyframes lst-card-in { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+        /* 🔴 Der Versatz laeuft ueber die Variable --lift und NICHT ueber eine
+           eigene transform-Regel. Grund: Eine Animation mit animation-fill-mode
+           haelt ihren Keyframe-Wert fest, und Animationen schlagen in der
+           Kaskade normale Autorendeklarationen. Ein danebenstehendes
+           "transform: translateY(-12px)" kommt deshalb NIE an — gemessen am
+           26.08.2026: berechneter Wert war translateY(24px) aus dem Keyframe,
+           obwohl die Regel -12px verlangte. Dasselbe galt fuer saemtliche
+           Hover-Huebe der Karten. Wer hier einen Versatz braucht, setzt --lift. */
+        @property --lift {
+            syntax: '<length>';
+            inherits: false;
+            initial-value: 0px;
+        }
+        /* Rueckfallwert 0px ist Absicht, nicht Zierde: Ohne ihn waere der
+           Keyframe in einem Browser ohne @property ungueltig, und mit ihm
+           faellt auch die Einblendung aus — die Karten blieben unsichtbar,
+           weil ihr Ruhezustand opacity:0 ist. */
+        @keyframes lst-card-in {
+            from { opacity: 0; transform: translateY(calc(24px + var(--lift, 0px))); }
+            to   { opacity: 1; transform: translateY(var(--lift, 0px)); }
+        }
 
         /* ===== CARD LINK (geteilt: "Mehr über mich" in #about) ===== */
         .card-link {
@@ -1425,7 +1469,10 @@
 
             .l-card { opacity: 1; animation: none; transition: none; background-position: 0% 0%; }
             .l-card::before { transition: none; }
-            .l-card:hover, .l-card:focus-within { transform: none; background-position: 0% 0%; }
+            /* --lift statt transform, weil der Versatz seit 26.08.2026 ueber die
+               Variable laeuft. "transform: none" traefe hier ins Leere, genau
+               wie es die Ausgangsregel getan hat. */
+            .l-card:hover, .l-card:focus-within { --lift: 0px; transform: none; background-position: 0% 0%; }
             .l-btn { transition: none; }
             .l-btn:hover, .l-btn:focus-visible { transform: none; }
 
@@ -1652,7 +1699,7 @@
           <span class="l-card__amount">1.250</span><span class="l-card__currency">€</span>
         </p>
         <p class="l-card__effort">rund 14 Stunden</p>
-        <p class="l-card__why">Diese Variante prüft mit, was bei einer reinen IT-Prüfung niemand anschaut: die Technik, die im Gebäude am Netz hängt. Brandmelde- und Einbruchmeldeanlagen, die Fernwartungszugänge der Errichter, die Zutrittskontrolle. Aus der eigenen Praxis in der Gefahrenmeldetechnik.</p>
+        <p class="l-card__why">Diese Variante nimmt auf, welche Gebäudetechnik bei Ihnen am Netz hängt, und benennt das Risiko: Brandmelde- und Einbruchmeldeanlagen, Fernwartungszugänge der Errichter, Zutrittskontrolle. <strong>Geprüft wird die Netzanbindung, nicht die Anlage selbst.</strong> <a class="l-card__why-link" href="services/gebaeudetechnik.html">Was das genau heißt</a></p>
         <ul class="l-card__list">
           <li class="l-card__li">alles aus dem kleinen Vor-Ort-Check</li>
           <li class="l-card__li l-card__li--usp">
