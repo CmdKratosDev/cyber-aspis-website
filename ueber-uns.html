@@ -458,8 +458,8 @@
         /* ===== RESPONSIVE ===== */
         @media (max-width: 960px) {
             .audience-grid { grid-template-columns: 1fr; max-width: 480px; }
-        }
-        @media (max-width: 640px) {
+            /* Burger-Menü ab 960px statt 640px — gleiche acht Menüeinträge
+               wie auf der Startseite, gleicher Überlauf. Siehe index.html. */
             .nav-links { display: none; }
             .hamburger { display: flex; }
             .nav-links.open {
@@ -469,6 +469,8 @@
                 padding: 20px 6%; gap: 1rem;
                 border-bottom: 1px solid rgba(224,64,251,0.18);
             }
+        }
+        @media (max-width: 640px) {
             section { padding: 56px 5%; }
             .service-hero { padding: 56px 5% 64px; }
             footer { flex-direction: column; text-align: center; }

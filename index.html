@@ -606,32 +606,27 @@
         @media (min-width: 640px) {
             .lst__grid {
                 grid-template-columns: repeat(2, 1fr);
-                grid-template-areas: "c1 c2" "c3 c3" "c4 c4";
+                grid-template-areas: "c1 c2" "c4 c4";
                 gap: 24px;
             }
             .l-card--1 { grid-area: c1; }
             .l-card--2 { grid-area: c2; }
-            .l-card--3 { grid-area: c3; }
             .l-card--4 { grid-area: c4; }
         }
-        /* Die hervorgehobene Karte ist doppelt BREIT, nicht doppelt hoch.
-           Vorher spannte sie ueber 2x2 Felder, hatte damit die vierfache
-           Flaeche einer normalen Karte bei etwa doppeltem Inhalt und stand
-           gemessen 515 px leer. Ihre fuenf Punkte sind laut SERVICES.md:50
-           der vollstaendige Leistungsumfang — es gibt nichts, womit sich die
-           Flaeche ehrlich fuellen liesse, also muss die Flaeche kleiner werden.
-           Die vierte Karte sitzt mittig darunter: zwei Spalten statt vier,
-           damit sie nicht ihrerseits horizontal leer wirkt (bei voller Breite
-           nutzte ihr Text nur 33 % davon). Leerraum jetzt 12 px pro Karte. */
+        /* Karte 3 (1d, "Vor-Ort-Check erweitert") ist zurueckgestellt, siehe
+           tech-debt.md -- die c3-Flaeche und die dazugehoerigen .l-card--3-
+           Regeln (Lift, Delay, Animation-Range weiter unten) bleiben bewusst
+           im Stylesheet stehen, unbenutzt, damit die Karte bei Freigabe ohne
+           Raster-Neubau zurueckkommt. Fuer die drei verbliebenen, gleich
+           gewichteten Karten reicht ab hier ein einfaches 3-Spalten-Raster
+           in einer Reihe, kein grid-template-areas mit Sonderflaeche mehr. */
         @media (min-width: 1024px) {
             .lst__grid {
-                grid-template-columns: repeat(4, 1fr);
-                grid-template-rows: auto auto;
-                grid-template-areas: "c1 c2 c3 c3" ". c4 c4 .";
+                grid-template-columns: repeat(3, 1fr);
+                grid-template-areas: "c1 c2 c4";
                 gap: clamp(20px, 2.5vw, 32px);
                 align-items: stretch;
             }
-            .l-card--3 { --lift: -12px; }
         }
 
         .l-card {
@@ -695,6 +690,19 @@
                 animation-fill-mode: both;
                 animation-timeline: scroll(root);
                 animation-range: 0 90vh;
+            }
+        }
+
+        /* Druck: keine Scroll-Timeline vorhanden, .l-card bliebe sonst bei
+           opacity: 0 (Grundzustand) stehen. @supports allein reicht nicht,
+           weil es unabhaengig vom Medientyp gilt -- Chrome/Edge drucken mit
+           aktiver Timeline-Unterstuetzung trotzdem opacity: 0. Gleicher Fund
+           wie bei .pcard in leistungen.html, 22 leere Karten gemessen. */
+        @media print {
+            .l-card {
+                opacity: 1 !important;
+                animation: none !important;
+                transform: none !important;
             }
         }
 
@@ -1158,8 +1166,11 @@
             .faq-grid { grid-template-columns: 1fr; }
             .trust-grid { grid-template-columns: 1fr; }
             .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
-        }
-        @media (max-width: 640px) {
+            /* Burger-Menü ab 960px statt 640px: Seit Commit d6d8435 hat die
+               Leiste acht Einträge ("Alle Leistungen" kam hinzu) und passt
+               darunter nicht mehr. Gemessen 03.09.2026 bei 768px Ansichts-
+               fenster: ul#nav-links ist 703px breit, rechte Kante bei 879 —
+               126px Überlauf, die Seite ließ sich seitlich schieben. */
             .nav-links { display: none; }
             .hamburger { display: flex; }
             .nav-links.open {
@@ -1169,6 +1180,8 @@
                 padding: 20px 6%; gap: 1rem;
                 border-bottom: 1px solid rgba(224,64,251,0.18);
             }
+        }
+        @media (max-width: 640px) {
             section { padding: 64px 5%; }
             footer { flex-direction: column; text-align: center; }
         }
@@ -1634,7 +1647,7 @@
   <div class="lst__inner">
     <header class="lst__head">
       <h2 class="lst__title">Sicherheits-Checks</h2>
-      <p class="lst__sub">Vier Tiefen, ein Festpreis. Alle Preise in Euro, Kleinunternehmerregelung nach § 19 UStG. Umsatzsteuer wird nicht ausgewiesen und nicht berechnet, der angegebene Preis ist der Endpreis. Anfahrt bis 50 km ist enthalten, darüber 0,30 €/km und die halbe Fahrzeit. <strong>Preise Stand 31.07.2026.</strong></p>
+      <p class="lst__sub">Drei Tiefen, ein Festpreis. Alle Preise in Euro, Kleinunternehmerregelung nach § 19 UStG. Umsatzsteuer wird nicht ausgewiesen und nicht berechnet, der angegebene Preis ist der Endpreis. Anfahrt bis 50 km ist enthalten, darüber 0,30 €/km und die halbe Fahrzeit. <strong>Preise Stand 31.07.2026.</strong></p>
       <p class="lst__ref">✨ <strong>Referenzkunden-Programm:</strong> Die ersten drei Betriebe erhalten 50 % Nachlass auf den Regelpreis der Sicherheits-Checks. Gegenleistung ist eine schriftliche Referenz nach Abschluss und die Zustimmung, als Referenzprojekt genannt zu werden. Betriebsart und Region genügen, ein Name ist nicht erforderlich. Der Nachlass wird auf der Rechnung als eigene Position ausgewiesen. Befristet bis 31.12.2026 oder bis die drei Plätze vergeben sind, je nachdem was zuerst eintritt.</p>
     </header>
 
@@ -1685,37 +1698,6 @@
         <a class="l-btn" href="#contact">Anfragen</a>
       </article>
 
-      <article class="l-card l-card--3 l-card--featured">
-        <span class="l-card__badge">Empfohlen</span>
-        <div class="l-card__icon l-card__icon--featured">
-          <svg class="l-card__icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-            <rect x="3" y="3" width="12" height="18" rx="1"></rect>
-            <path d="M6 7h1M10 7h1M6 11h1M10 11h1M6 15h1M10 15h1"></path>
-            <path class="l-card__icon-accent" d="M17 12l4 1.5v3c0 2.5-1.7 4-4 5-2.3-1-4-2.5-4-5v-3l4-1.5z"></path>
-          </svg>
-        </div>
-        <h3 class="l-card__title">Vor-Ort-Check erweitert</h3>
-        <p class="l-card__price">
-          <span class="l-card__amount">1.250</span><span class="l-card__currency">€</span>
-        </p>
-        <p class="l-card__effort">rund 14 Stunden</p>
-        <p class="l-card__why">Diese Variante nimmt auf, welche Gebäudetechnik bei Ihnen am Netz hängt, und benennt das Risiko: Brandmelde- und Einbruchmeldeanlagen, Fernwartungszugänge der Errichter, Zutrittskontrolle. <strong>Geprüft wird die Netzanbindung, nicht die Anlage selbst.</strong> <a class="l-card__why-link" href="services/gebaeudetechnik.html">Was das genau heißt</a></p>
-        <ul class="l-card__list">
-          <li class="l-card__li">alles aus dem kleinen Vor-Ort-Check</li>
-          <li class="l-card__li l-card__li--usp">
-            <svg class="l-card__usp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-              <path d="M4 21V9l8-5 8 5v12"></path>
-              <path d="M9 21v-6h6v6"></path>
-            </svg>
-            <strong>Gebäude- und Sicherheitstechnik am Netz</strong>
-          </li>
-          <li class="l-card__li">Fernwartungszugänge</li>
-          <li class="l-card__li">mobile Geräte</li>
-          <li class="l-card__li">eigener Server</li>
-        </ul>
-        <a class="l-btn l-btn--featured" href="#contact">Anfragen</a>
-      </article>
-
       <article class="l-card l-card--4">
         <div class="l-card__icon">
           <svg class="l-card__icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
@@ -1742,7 +1724,7 @@
     <p class="lst__foot">Anfahrt bis 50 km enthalten · Bericht in KMU-Sprache · 30 Tage Rückfragen inklusive</p>
 
     <div class="lst__more">
-      <p>Weitere Leistungen wie Härtungs-Tag, Team-Unterweisung, Jahres-Check, Vulnerability Assessment, Backup-Strategie, Security-Policy-Beratung, die beiden AI-Checks und die Kombinations-Pakete finden Sie auf der Übersichtsseite.</p>
+      <p>Weitere Leistungen wie Team-Unterweisung, Jahres-Check, Vulnerability Assessment, Backup-Strategie, Security-Policy-Beratung, die beiden AI-Checks und die Kombinations-Pakete finden Sie auf der Übersichtsseite.</p>
       <a class="lst__more-link" href="leistungen.html">Alle Leistungen im Überblick</a>
     </div>
   </div>
@@ -1982,9 +1964,7 @@
                         <option value="1a Quick-Check remote">1a · Quick-Check remote (400 €)</option>
                         <option value="1b Aufnahme und Beratung vor Ort">1b · Aufnahme &amp; Beratung vor Ort (450 €)</option>
                         <option value="1c Vor-Ort-Check klein">1c · Vor-Ort-Check klein (850 €)</option>
-                        <option value="1d Vor-Ort-Check erweitert">1d · Vor-Ort-Check erweitert (1.250 €)</option>
                         <option value="1e Nachprüfung nach Behebung">1e · Nachprüfung nach Behebung (190 €)</option>
-                        <option value="Härtungs-Tag">Härtungs-Tag (720 €)</option>
                         <option value="Sicherheits-Unterweisung">Sicherheits-Unterweisung für das Team (290 €)</option>
                         <option value="Jahres-Check">Jahres-Check (Regelpreis −15 %)</option>
                         <option value="Vulnerability Assessment">Vulnerability Assessment (ab 720 €)</option>
@@ -1996,7 +1976,6 @@
                         <option value="Notfall-Unterstützung">Notfall-Unterstützung (149 €/h)</option>
                         <option value="Paket Security Starter">📦 Paket Security Starter (950 €)</option>
                         <option value="Paket KMU Shield">📦 Paket KMU Shield (1.250 €)</option>
-                        <option value="Paket Rundum sicher">📦 Paket Rundum sicher (1.590 €)</option>
                         <option value="Vormerkung Laufende Überwachung">Laufende Überwachung — nur vormerken lassen</option>
                         <option value="Sonstiges">Sonstiges / Ich bin unsicher</option>
                     </select>
