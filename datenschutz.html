@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="/assets/favicon.png">
     <title>Datenschutzerklärung – Cyber Aspis IT-Security</title>
-    <meta name="description" content="Datenschutzerklärung von Cyber Aspis IT-Security — Verantwortlicher, Datenverarbeitung, Reichweitenmessung und Ihre Rechte gemäß DSGVO.">
+    <meta name="description" content="Datenschutzerklärung von Cyber Aspis IT-Security — Verantwortlicher, Datenverarbeitung auf der Website, Information nach Art. 14 DSGVO bei Ansprache per Brief und Telefon, Ihre Rechte.">
     <meta name="robots" content="noindex, follow">
 
     <!-- ═══ OpenGraph ═══ -->
@@ -364,7 +364,7 @@
         </div>
         <h1>Datenschutzerklärung</h1>
         <p class="service-hero-subtitle">
-            Wie Cyber Aspis IT-Security personenbezogene Daten bei Nutzung dieser Website verarbeitet.
+            Wie Cyber Aspis IT-Security personenbezogene Daten verarbeitet — bei Nutzung dieser Website und bei der Ansprache von Unternehmen per Brief und Telefon (<a href="#werbung">Punkt 8</a>).
         </p>
     </div>
 </div>
@@ -377,6 +377,8 @@
         <h3>1. Verantwortlicher</h3>
         <p>
             Georgios Papagiannis · Cyber Aspis IT-Security<br>
+            Peiner Straße 77 · 30519 Hannover<br>
+            Telefon: +49 511 56356965<br>
             E-Mail: <a href="mailto:kontakt@cyber-aspis.de">kontakt@cyber-aspis.de</a>
         </p>
 
@@ -384,7 +386,7 @@
         <p>
             Diese Website setzt keine Tracking-Cookies und bindet keine werblichen Drittanbieter-Inhalte ein. Zur anonymen Reichweitenmessung wird eine selbst gehostete, cookielose Analytics-Lösung eingesetzt (GoatCounter, siehe Punkt 6).
             Alle Schriftarten (Fonts) werden lokal vom eigenen Server ausgeliefert — es findet keine Verbindung zu Google-Servern statt.
-            Mit Ausnahme der unter Punkt 7 beschriebenen API-Aufrufe für den Threat-Intelligence-Feed werden keine Daten an Dritte übermittelt.
+            Beim Besuch der Website werden keine personenbezogenen Daten an Dritte übermittelt; die unter Punkt 7 beschriebenen Datenquellen ruft mein Server ab, nicht Ihr Browser.
         </p>
 
         <h3>3. Kontaktaufnahme per E-Mail</h3>
@@ -414,23 +416,27 @@
             GoatCounter verwendet <strong>keine Cookies</strong> und speichert keine dauerhafte, personenbezogene Kennung. Zur Unterscheidung von Aufrufen innerhalb einer Sitzung wird im Arbeitsspeicher aus Website-Kennung, Browser-Kennung (User-Agent) und IP-Adresse eine zufällige, nicht zurückrechenbare Kennung erzeugt. IP-Adresse und User-Agent werden dabei <strong>zu keinem Zeitpunkt dauerhaft gespeichert</strong>, die Zuordnung wird nach 8 Stunden verworfen. Gespeichert werden ausschließlich anonyme Aggregatdaten: aufgerufene Seite, Referrer, Browsertyp, ungefährer Standort (Land, aus der IP abgeleitet) und Bildschirmgröße.
         </p>
         <p>
-            Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einer datensparsamen, anonymen Reichweitenmessung ohne Personenbezug). Da keine personenbezogenen Daten gespeichert werden, ist eine Einwilligung nicht erforderlich.
+            Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einer datensparsamen, anonymen Reichweitenmessung ohne Personenbezug).
         </p>
         <p>
-            Darüber hinaus verwendet diese Website keine Tracking-Cookies. Der einzige im Browser gespeicherte Wert ist ein lokales Flag (<code>ca-banner-closed</code> im localStorage), das Ihre Einstellung zum Info-Banner speichert. Es enthält keine personenbezogenen Daten.
+            <strong>Widerspruchsrecht:</strong> Sie können dieser Reichweitenmessung nach Art. 21 Abs. 1 DSGVO jederzeit formlos widersprechen; eine Nachricht an <a href="mailto:kontakt@cyber-aspis.de">kontakt@cyber-aspis.de</a> genügt. Da keine personenbezogene Kennung gespeichert wird, ist die wirksamste Umsetzung, <code>stats.cyber-aspis.de</code> in Ihrem Browser zu blockieren; die Website funktioniert dann unverändert. Auf Wunsch bestätige ich Ihnen den Verzicht schriftlich.
+        </p>
+        <p>
+            Darüber hinaus verwendet diese Website keine Tracking-Cookies. Im Browser gespeichert werden nur ein Flag für das Info-Banner (<code>ca-banner-closed</code>, localStorage), die zwischengespeicherten Feed-Daten aus Punkt 7 (<code>ca-feed-cisa</code>, <code>ca-feed-hn</code>, sessionStorage) sowie, nur auf der Seite „Checkliste Lieferkette", Ihr Ankreuz-Stand (<code>aspis-scc-…</code>, localStorage). Das Banner-Flag und Ihr Ankreuz-Stand sind für die von Ihnen ausgelöste Funktion unbedingt erforderlich (§ 25 Abs. 2 Nr. 2 TDDDG). Auch der Feed-Zwischenspeicher ist für die von Ihnen aufgerufene Anzeige der Bedrohungslage erforderlich (§ 25 Abs. 2 Nr. 2 TDDDG): Er hält die bereits abgerufenen Inhalte für Ihren Besuch vor, wird nach 5 Minuten ungültig und mit dem Schließen des Tabs gelöscht. Alle drei Werte verlassen Ihren Browser nicht und lassen sich jederzeit über die Browser-Einstellungen entfernen; die Seite funktioniert dann unverändert.
         </p>
 
         <h3>7. Externe API-Aufrufe – Threat Intelligence Feed</h3>
         <p>
-            Die Seite ruft beim Laden automatisch Daten von zwei externen Diensten ab,
-            um den Abschnitt „Aktuelle Bedrohungslage" zu befüllen:
+            Der Abschnitt „Aktuelle Bedrohungslage" zeigt Daten zweier externer Dienste. Beide Datenquellen
+            ruft mein Server ab; Ihr Browser verbindet sich dabei ausschließlich mit cyber-aspis.de,
+            Ihre IP-Adresse wird an keinen der beiden Anbieter übermittelt:
         </p>
         <p>
             <strong>CISA Known Exploited Vulnerabilities (KEV)</strong><br>
             Anbieter: U.S. Cybersecurity and Infrastructure Security Agency (CISA), USA<br>
             URL: <code>https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json</code><br>
             Verarbeitete Daten: Öffentliche Schwachstellendaten (keine personenbezogenen Daten).
-            Bei diesem Abruf wird Ihre IP-Adresse an die Server der CISA übermittelt.
+            Der Abruf erfolgt über meinen Server, nicht aus Ihrem Browser.
             Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der Darstellung
             aktueller Sicherheitsinformationen für Besucher einer IT-Security-Website).
         </p>
@@ -439,20 +445,47 @@
             Anbieter: Algolia, Inc., 55 2nd St., 4th Floor, San Francisco, CA 94105, USA<br>
             URL: <code>https://hn.algolia.com/api/v1/search?...</code><br>
             Verarbeitete Daten: Öffentliche News-Metadaten (keine personenbezogenen Daten).
-            Bei diesem Abruf wird Ihre IP-Adresse an die Server von Algolia übermittelt.
+            Der Abruf erfolgt über meinen Server, nicht aus Ihrem Browser.
             Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der Darstellung
             tagesaktueller Security-Nachrichten).
         </p>
         <p>
-            Die abgerufenen Daten werden ausschließlich im <code>sessionStorage</code> Ihres Browsers
-            für maximal 5 Minuten zwischengespeichert und bei Tab-Schließung automatisch gelöscht.
-            Es werden keine personenbezogenen Daten an Dritte übertragen.
+            Die abgerufenen Daten legt die Seite im <code>sessionStorage</code> Ihres Browsers ab; sie werden
+            spätestens alle 5 Minuten neu geholt und spätestens beim Schließen des Tabs gelöscht. Zusätzlich
+            behandelt der Browser-Cache die Antworten bis zu 10 Minuten lang als aktuell. Die Daten enthalten
+            keine personenbezogenen Daten; mein Server gibt beim Abruf keine Kennungen Ihres Browsers an die Anbieter weiter.
             Datenschutzerklärungen der Anbieter:
             <a href="https://www.cisa.gov/privacy-policy" target="_blank" rel="noopener noreferrer">cisa.gov/privacy-policy</a>
             und <a href="https://www.algolia.com/policies/privacy/" target="_blank" rel="noopener noreferrer">algolia.com/policies/privacy</a>.
         </p>
 
-        <p class="legal-meta"><em>Stand: Juli 2026</em></p>
+        <h3 id="werbung">8. Erstansprache von Unternehmen per Brief und Telefon (Information nach Art. 14 DSGVO)</h3>
+        <p>
+            Ich schreibe gelegentlich Unternehmen in der Region Hannover per Brief an, um mein Angebot vorzustellen, und fasse, sofern im Brief angekündigt, einmal telefonisch nach.
+            Dafür verarbeite ich Name, Funktion, geschäftliche Anschrift und geschäftliche Telefonnummer der jeweiligen Ansprechperson (in der Regel Geschäftsführung oder Inhaber)
+            sowie eine Notiz in meiner Kontaktverwaltung, welcher öffentlich erkennbare Anlass zur Ansprache geführt hat und wann sie erfolgt ist.
+        </p>
+        <p>
+            <strong>Herkunft der Daten:</strong> öffentlich zugängliche Quellen, nämlich das Impressum der Unternehmenswebsite,
+            öffentliche Handelsregisterauskünfte (z.&nbsp;B. über northdata.de) sowie öffentliche Berufs- und Branchenverzeichnisse.
+            Welche Quelle im Einzelfall genutzt wurde, steht in jedem Brief.<br>
+            <strong>Zweck:</strong> Geschäftsanbahnung im geschäftlichen Bereich (B2B-Direktwerbung), einschließlich eines einmaligen telefonischen Nachfassens und der dazugehörigen Notiz in meiner Kontaktverwaltung.<br>
+            <strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. f DSGVO. Das berechtigte Interesse liegt in der Ansprache potenzieller Geschäftskunden; Direktwerbung ist nach Erwägungsgrund 47 DSGVO ein anerkanntes berechtigtes Interesse.<br>
+            <strong>Empfänger:</strong> Außer meinem E-Mail- und Hosting-Dienstleister, der die Daten weisungsgebunden als Auftragsverarbeiter verarbeitet, gebe ich die Daten nicht weiter. Eine Übermittlung in Drittländer findet nicht statt.<br>
+            <strong>Speicherdauer:</strong> Meldet sich das Unternehmen nicht zurück, lösche ich die Daten spätestens sechs Monate nach dem Anschreiben.
+            Ausgenommen sind Name, Anschrift und der dokumentierte Anlass der Ansprache; diese bewahre ich zur Verteidigung gegen mögliche Rechtsansprüche bis zum Ablauf der Verjährungsfristen auf (Art. 6 Abs. 1 lit. f, Art. 17 Abs. 3 lit. e DSGVO).
+            Kommt es zu einem Geschäftskontakt, verarbeite ich Ihre Daten zur Vertragsanbahnung und -erfüllung nach Art. 6 Abs. 1 lit. b DSGVO; für E-Mail-Anfragen gilt Punkt 3.
+        </p>
+        <p>
+            <strong>Widerspruch (Art. 21 Abs. 2 DSGVO):</strong> Sie können dieser Verarbeitung jederzeit und ohne Angabe von Gründen widersprechen, formlos per E-Mail an
+            <a href="mailto:kontakt@cyber-aspis.de">kontakt@cyber-aspis.de</a> oder telefonisch unter der im Brief genannten Nummer.
+            Bei Widerspruch verarbeite ich Ihre Daten nicht weiter für Werbezwecke. Name, Anschrift und der dokumentierte Anlass bleiben ausschließlich
+            zur Verteidigung gegen mögliche Rechtsansprüche und zur Vermeidung einer erneuten Ansprache gespeichert (Art. 17 Abs. 3 lit. e, Art. 21 Abs. 3 DSGVO);
+            alle übrigen Angaben lösche ich unverzüglich.
+            Nach einem Widerspruch erhalten Sie von mir weder Post noch einen Anruf. Ihre weiteren Rechte stehen unter Punkt 5.
+        </p>
+
+        <p class="legal-meta"><em>Stand: September 2026</em></p>
 
     </div>
 </section>

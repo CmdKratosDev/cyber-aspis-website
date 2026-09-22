@@ -1501,7 +1501,7 @@
 
 <!-- ═══ REFERENZKUNDEN-BANNER ═══ -->
 <div id="construction-banner">
-    ✨&nbsp;&nbsp;Referenzkunden-Programm: die ersten drei Betriebe erhalten 50 % Nachlass auf die Sicherheits-Checks gegen eine schriftliche Referenz. Befristet bis 31.12.2026.
+    ✨&nbsp;&nbsp;Referenzkunden-Programm: die ersten drei Betriebe erhalten 50 % Nachlass auf die Sicherheits-Checks gegen eine schriftliche Referenz. Befristet bis 30.06.2027 oder bis die drei Plätze vergeben sind.
     <button id="close-banner" aria-label="Banner schließen">✕</button>
 </div>
 
@@ -1647,8 +1647,8 @@
   <div class="lst__inner">
     <header class="lst__head">
       <h2 class="lst__title">Sicherheits-Checks</h2>
-      <p class="lst__sub">Drei Tiefen, ein Festpreis. Alle Preise in Euro, Kleinunternehmerregelung nach § 19 UStG. Umsatzsteuer wird nicht ausgewiesen und nicht berechnet, der angegebene Preis ist der Endpreis. Anfahrt bis 50 km ist enthalten, darüber 0,30 €/km und die halbe Fahrzeit. <strong>Preise Stand 31.07.2026.</strong></p>
-      <p class="lst__ref">✨ <strong>Referenzkunden-Programm:</strong> Die ersten drei Betriebe erhalten 50 % Nachlass auf den Regelpreis der Sicherheits-Checks. Gegenleistung ist eine schriftliche Referenz nach Abschluss und die Zustimmung, als Referenzprojekt genannt zu werden. Betriebsart und Region genügen, ein Name ist nicht erforderlich. Der Nachlass wird auf der Rechnung als eigene Position ausgewiesen. Befristet bis 31.12.2026 oder bis die drei Plätze vergeben sind, je nachdem was zuerst eintritt.</p>
+      <p class="lst__sub">Zwei Tiefen plus Nachprüfung, jede zum Festpreis. Alle Preise in Euro, Kleinunternehmerregelung nach § 19 UStG. Umsatzsteuer wird nicht ausgewiesen und nicht berechnet, der angegebene Preis ist der Endpreis. Anfahrt bis 50 km ist enthalten, darüber 0,30 €/km für Hin- und Rückweg und die halbe Fahrzeit zu 95 €/Stunde. <strong>Preise Stand 21.09.2026.</strong></p>
+      <p class="lst__ref">✨ <strong>Referenzkunden-Programm:</strong> Die ersten drei Betriebe erhalten 50 % Nachlass auf den Regelpreis der Sicherheits-Checks. Gegenleistung ist eine schriftliche Referenz nach Abschluss und die Zustimmung, als Referenzprojekt genannt zu werden. Betriebsart und Region genügen, ein Name ist nicht erforderlich. Der Nachlass wird auf der Rechnung als eigene Position ausgewiesen. Befristet bis 30.06.2027 oder bis die drei Plätze vergeben sind, je nachdem was zuerst eintritt. Den aktuellen Stand der freien Plätze finden Sie in der <a href="leistungen.html#hero-leistungen">Leistungsübersicht</a>.</p>
     </header>
 
     <div class="lst__grid">
@@ -1736,7 +1736,7 @@
 
     <header class="t-head">
       <h2 class="t-heading" id="trm-heading">So läuft eine Prüfung ab</h2>
-      <p class="t-sub">Vier Schritte aus dem Quick-Check aus der Ferne. Der Befehl, darunter was er bedeutet, darunter was dabei herauskam.</p>
+      <p class="t-sub">Beispielhafter Ablauf mit erfundenen Werten: vier Schritte aus dem Quick-Check aus der Ferne. Der Befehl, darunter was er bedeutet, darunter was dabei herauskommen kann.</p>
     </header>
 
     <div class="t-window">
@@ -1843,8 +1843,8 @@
 <section id="testimonials" aria-labelledby="testimonials-heading">
     <h2 id="testimonials-heading" class="section-title">Kundenstimmen</h2>
     <div class="testimonials-notice">
-        <p>Die ersten Beta-Audits laufen derzeit. Kundenstimmen erscheinen hier nach Abschluss der Projekte —
-        ausschließlich echte Stimmen, mit expliziter Einwilligung der Kunden (Art. 6 Abs. 1 lit. a DSGVO).</p>
+        <p>Kundenstimmen erscheinen hier, sobald die ersten Projekte abgeschlossen sind —
+        ausschließlich echte Stimmen, mit ausdrücklicher Einwilligung der Kunden (Art. 6 Abs. 1 lit. a DSGVO).</p>
     </div>
 </section>
 
@@ -1968,13 +1968,13 @@
                         <option value="Sicherheits-Unterweisung">Sicherheits-Unterweisung für das Team (290 €)</option>
                         <option value="Jahres-Check">Jahres-Check (Regelpreis −15 %)</option>
                         <option value="Vulnerability Assessment">Vulnerability Assessment (ab 720 €)</option>
-                        <option value="Backup-Strategie Setup">Backup-Strategie Setup (720 €)</option>
+                        <option value="Vormerkung Backup-Strategie Setup">Backup-Strategie Setup — in Vorbereitung, nur vormerken lassen</option>
                         <option value="Security-Policy Beratung">Security-Policy Beratung (95 €/h)</option>
                         <option value="AI-Quick-Check">AI-Quick-Check (450 €)</option>
                         <option value="AI-Coding-Quick-Check">AI-Coding-Quick-Check (320 €)</option>
                         <option value="Technische Datenschutz-Prüfung">Technische Datenschutz-Prüfung (899 €)</option>
                         <option value="Notfall-Unterstützung">Notfall-Unterstützung (149 €/h)</option>
-                        <option value="Paket Security Starter">📦 Paket Security Starter (950 €)</option>
+                        <option value="Vormerkung Paket Security Starter">📦 Paket Security Starter — in Vorbereitung, nur vormerken lassen</option>
                         <option value="Paket KMU Shield">📦 Paket KMU Shield (1.250 €)</option>
                         <option value="Vormerkung Laufende Überwachung">Laufende Überwachung — nur vormerken lassen</option>
                         <option value="Sonstiges">Sonstiges / Ich bin unsicher</option>
@@ -2283,14 +2283,24 @@
     }
 
     // --- HackerNews Algolia ---
-    // Relevanz-Suche statt search_by_date: die alte Multi-Wort-Query fand fast nur
-    // Jahre alte Stories. Fenster: letzte 7 Tage, min. 10 Punkte.
+    // Relevanz-Suche ("search"), nicht search_by_date: die lieferte Weltpolitik und
+    // Retro-Computing (DA-Pass 8). Fenster: letzte 7 Tage, min. 10 Punkte.
+    // Der Aufruf laeuft ueber den eigenen Proxy (nginx /api/hn/<seit>), damit
+    // keine Besucher-IP an Algolia (USA) geht; die Abfrage ist serverseitig fest,
+    // nur der Zeitstempel kommt von hier. Zusaetzlich filtert fetchHN nach
+    // Sicherheits-Stichwoertern, weil "security" auch "Security Council" trifft.
     var HN_KEY = 'ca-feed-hn';
+    // Zwei Stufen: harte Sicherheitsbegriffe zuerst, dann alles mit "security",
+    // das nicht Weltpolitik oder Finanzen ist (DA-Pass 9, 4).
+    var HN_STARK = /vulnerab|cve-|breach|exploit|ransomware|zero.?day|zero.?click|\brce\b|hack|malware|phish|backdoor|pwned|infosec|leak/i;
+    var HN_SCHWACH = /security|cyber|patch|attack/i;
+    var HN_AUSSCHLUSS = /security council|securities|social security/i;
 
     function hnUrl() {
-        var since = Math.floor(Date.now() / 1000) - 7 * 86400;
-        return 'https://hn.algolia.com/api/v1/search?tags=story&query=security' +
-               '&numericFilters=created_at_i%3E' + since + ',points%3E10&hitsPerPage=5';
+        // Auf volle Stunde gerundet, damit die URL innerhalb einer Stunde gleich
+        // bleibt und Browser-Cache (expires 10m) wie Algolia-CDN greifen koennen.
+        var since = Math.floor(Date.now() / 1000 / 3600) * 3600 - 7 * 86400;
+        return '/api/hn/' + since;
     }
 
     function fetchHN(callback) {
@@ -2299,7 +2309,22 @@
         fetch(hnUrl())
             .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
             .then(function(json) {
-                var items = (json.hits || []).slice(0, 5);
+                var hits = json.hits || [];
+                var ok = hits.filter(function(h) { return !HN_AUSSCHLUSS.test(h.title || ''); });
+                var stark = ok.filter(function(h) { return HN_STARK.test(h.title || ''); });
+                var schwach = ok.filter(function(h) { return stark.indexOf(h) < 0 && HN_SCHWACH.test(h.title || ''); });
+                var treffer = stark.concat(schwach);
+                // Lieber drei echte Security-Treffer zeigen als mit Fremdthemen auffuellen;
+                // nur unter drei wird aus der Relevanzliste ergaenzt (DA-Pass 9, 4).
+                var items = treffer.slice(0, 5);
+                if (items.length < 3) {
+                    // Auffuellen nur aus "ok", sonst kaeme zurueck, was der Ausschluss
+                    // gerade aussortiert hat (DA-Pass 10, 3).
+                    items = items.concat(ok.filter(function(h) { return treffer.indexOf(h) < 0; })).slice(0, 3);
+                }
+                // Leere Liste ist kein Erfolg: sonst 5 Minuten lang eine leere Kachel
+                // mit Zeitstempel statt des Fehlerpfads (DA-Pass 10, 4).
+                if (!items.length) { callback(new Error('keine Treffer'), null); return; }
                 cacheSet(HN_KEY, items);
                 callback(null, items);
             })
