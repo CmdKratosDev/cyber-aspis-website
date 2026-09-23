@@ -319,9 +319,6 @@
             footer { flex-direction: column; text-align: center; }
         }
     </style>
-    <!-- Analytics: self-hosted GoatCounter (cookielos, DSGVO-konform, kein Drittanbieter-CDN) -->
-    <script data-goatcounter="https://stats.cyber-aspis.de/count"
-            async src="https://stats.cyber-aspis.de/count.js"></script>
 </head>
 <body>
 
@@ -384,7 +381,7 @@
 
         <h3>2. Erhebung und Verarbeitung personenbezogener Daten</h3>
         <p>
-            Diese Website setzt keine Tracking-Cookies und bindet keine werblichen Drittanbieter-Inhalte ein. Zur anonymen Reichweitenmessung wird eine selbst gehostete, cookielose Analytics-Lösung eingesetzt (GoatCounter, siehe Punkt 6).
+            Diese Website setzt keine Tracking-Cookies und bindet keine werblichen Drittanbieter-Inhalte ein. Es wird derzeit keine Reichweitenmessung eingesetzt (siehe Punkt 6).
             Alle Schriftarten (Fonts) werden lokal vom eigenen Server ausgeliefert — es findet keine Verbindung zu Google-Servern statt.
             Beim Besuch der Website werden keine personenbezogenen Daten an Dritte übermittelt; die unter Punkt 7 beschriebenen Datenquellen ruft mein Server ab, nicht Ihr Browser.
         </p>
@@ -398,8 +395,12 @@
 
         <h3>4. Server-Logfiles</h3>
         <p>
-            Der Hosting-Anbieter (Hostinger) erhebt automatisch Server-Logfiles beim Aufruf der Website. Diese enthalten: IP-Adresse, Browsertyp, Betriebssystem, Referrer-URL, Datum und Uhrzeit.
+            Beim Aufruf der Website erhebt der Webserver (nginx) automatisch ein Zugriffsprotokoll. Verantwortlich dafür bin ich, nicht der Hosting-Anbieter — Hostinger stellt lediglich die Infrastruktur (den virtuellen Server) bereit, auf dem der Webserver läuft.
+            Erfasst werden: IP-Adresse (inklusive einer eventuell vorgeschalteten Weiterleitungs-Adresse, X-Forwarded-For), Zeitpunkt des Zugriffs, aufgerufene Seite, Statuscode, übertragene Datenmenge, Referrer-URL und Browserkennung (User-Agent).
             Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an Betrieb und Sicherheit der Website).
+        </p>
+        <p>
+            Das Protokoll wird automatisch begrenzt: Es werden maximal drei Dateien à 10 MB vorgehalten, ältere Einträge werden beim Erreichen dieser Grenze überschrieben (Log-Rotation). Ein festes Löschdatum gibt es dadurch nicht — wie lange ein einzelner Eintrag vorgehalten wird, hängt vom Zugriffsaufkommen ab. Beim Neuaufsetzen des Webserver-Containers geht das Protokoll vollständig verloren.
         </p>
 
         <h3>5. Ihre Rechte</h3>
@@ -408,21 +409,12 @@
             Beschwerden können Sie bei der zuständigen Datenschutzbehörde einreichen.
         </p>
 
-        <h3>6. Reichweitenmessung (GoatCounter, cookielos, selbst gehostet)</h3>
+        <h3>6. Reichweitenmessung</h3>
         <p>
-            Zur anonymen Reichweitenmessung nutzt diese Website <strong>GoatCounter</strong>, eine quelloffene Analytics-Software, die auf einem eigenen Server unter <code>stats.cyber-aspis.de</code> betrieben wird. Es findet keine Datenübertragung an Dritte oder ins Ausland statt.
+            Diese Website setzt derzeit kein Werkzeug zur Reichweitenmessung oder Analyse des Nutzerverhaltens ein. Es findet keine Auswertung von Seitenaufrufen, Verweisen oder Besucherzahlen statt.
         </p>
         <p>
-            GoatCounter verwendet <strong>keine Cookies</strong> und speichert keine dauerhafte, personenbezogene Kennung. Zur Unterscheidung von Aufrufen innerhalb einer Sitzung wird im Arbeitsspeicher aus Website-Kennung, Browser-Kennung (User-Agent) und IP-Adresse eine zufällige, nicht zurückrechenbare Kennung erzeugt. IP-Adresse und User-Agent werden dabei <strong>zu keinem Zeitpunkt dauerhaft gespeichert</strong>, die Zuordnung wird nach 8 Stunden verworfen. Gespeichert werden ausschließlich anonyme Aggregatdaten: aufgerufene Seite, Referrer, Browsertyp, ungefährer Standort (Land, aus der IP abgeleitet) und Bildschirmgröße.
-        </p>
-        <p>
-            Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einer datensparsamen, anonymen Reichweitenmessung ohne Personenbezug).
-        </p>
-        <p>
-            <strong>Widerspruchsrecht:</strong> Sie können dieser Reichweitenmessung nach Art. 21 Abs. 1 DSGVO jederzeit formlos widersprechen; eine Nachricht an <a href="mailto:kontakt@cyber-aspis.de">kontakt@cyber-aspis.de</a> genügt. Da keine personenbezogene Kennung gespeichert wird, ist die wirksamste Umsetzung, <code>stats.cyber-aspis.de</code> in Ihrem Browser zu blockieren; die Website funktioniert dann unverändert. Auf Wunsch bestätige ich Ihnen den Verzicht schriftlich.
-        </p>
-        <p>
-            Darüber hinaus verwendet diese Website keine Tracking-Cookies. Im Browser gespeichert werden nur ein Flag für das Info-Banner (<code>ca-banner-closed</code>, localStorage), die zwischengespeicherten Feed-Daten aus Punkt 7 (<code>ca-feed-cisa</code>, <code>ca-feed-hn</code>, sessionStorage) sowie, nur auf der Seite „Checkliste Lieferkette", Ihr Ankreuz-Stand (<code>aspis-scc-…</code>, localStorage). Das Banner-Flag und Ihr Ankreuz-Stand sind für die von Ihnen ausgelöste Funktion unbedingt erforderlich (§ 25 Abs. 2 Nr. 2 TDDDG). Auch der Feed-Zwischenspeicher ist für die von Ihnen aufgerufene Anzeige der Bedrohungslage erforderlich (§ 25 Abs. 2 Nr. 2 TDDDG): Er hält die bereits abgerufenen Inhalte für Ihren Besuch vor, wird nach 5 Minuten ungültig und mit dem Schließen des Tabs gelöscht. Alle drei Werte verlassen Ihren Browser nicht und lassen sich jederzeit über die Browser-Einstellungen entfernen; die Seite funktioniert dann unverändert.
+            Diese Website verwendet keine Tracking-Cookies. Im Browser gespeichert werden nur ein Flag für das Info-Banner (<code>ca-banner-closed</code>, localStorage), die zwischengespeicherten Feed-Daten aus Punkt 7 (<code>ca-feed-cisa</code>, <code>ca-feed-hn</code>, sessionStorage) sowie, nur auf der Seite „Checkliste Lieferkette", Ihr Ankreuz-Stand (<code>aspis-scc-…</code>, localStorage). Das Banner-Flag und Ihr Ankreuz-Stand sind für die von Ihnen ausgelöste Funktion unbedingt erforderlich (§ 25 Abs. 2 Nr. 2 TDDDG). Auch der Feed-Zwischenspeicher ist für die von Ihnen aufgerufene Anzeige der Bedrohungslage erforderlich (§ 25 Abs. 2 Nr. 2 TDDDG): Er hält die bereits abgerufenen Inhalte für Ihren Besuch vor, wird nach 5 Minuten ungültig und mit dem Schließen des Tabs gelöscht. Alle drei Werte verlassen Ihren Browser nicht und lassen sich jederzeit über die Browser-Einstellungen entfernen; die Seite funktioniert dann unverändert.
         </p>
 
         <h3>7. Externe API-Aufrufe – Threat Intelligence Feed</h3>

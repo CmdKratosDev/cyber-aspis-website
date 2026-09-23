@@ -1493,9 +1493,6 @@
             .trm .t-cursor { display: none; }
         }
     </style>
-    <!-- Analytics: self-hosted GoatCounter (cookielos, DSGVO-konform, kein Drittanbieter-CDN) -->
-    <script data-goatcounter="https://stats.cyber-aspis.de/count"
-            async src="https://stats.cyber-aspis.de/count.js"></script>
 </head>
 <body>
 
@@ -1542,7 +1539,7 @@
       <h1 class="hero__title">Wer hat Ihre Website gebaut, und weiß heute jemand, was darin steckt?</h1>
       <p class="hero__subline">Cyber Aspis prüft die IT-Sicherheit von Betrieben in Hannover und Niedersachsen. Verständlich erklärt, zum Festpreis, mit Bericht in Klartext.</p>
       <div class="hero__actions">
-        <a class="hero__btn hero__btn--primary" href="#contact" data-goatcounter-click="hero-erstgespraech">Kostenloses Erstgespräch</a>
+        <a class="hero__btn hero__btn--primary" href="#contact">Kostenloses Erstgespräch</a>
         <a class="hero__btn hero__btn--secondary" href="#leistungen">Leistungen ansehen</a>
       </div>
       <p class="hero__trust">Festpreise · Bericht in KMU-Sprache · 30 Tage Rückfragen inklusive</p>
@@ -1913,11 +1910,11 @@
             <div class="contact-list">
                 <div>
                     <span class="contact-lbl">Telefon</span>
-                    <a href="tel:+4951156356965" class="contact-val" data-goatcounter-click="kontakt-telefon">+49 511 56356965</a>
+                    <a href="tel:+4951156356965" class="contact-val">+49 511 56356965</a>
                 </div>
                 <div>
                     <span class="contact-lbl">E-Mail</span>
-                    <a href="mailto:kontakt@cyber-aspis.de" class="contact-val" data-goatcounter-click="kontakt-mail">kontakt@cyber-aspis.de</a>
+                    <a href="mailto:kontakt@cyber-aspis.de" class="contact-val">kontakt@cyber-aspis.de</a>
                 </div>
                 <div>
                     <span class="contact-lbl">Social</span>
@@ -2163,9 +2160,6 @@
             .then(function (res) {
                 if (!res.ok) throw new Error('HTTP ' + res.status);
                 showStatus('success', '✓ Ihre Anfrage wurde erfolgreich übermittelt! Ich melde mich innerhalb von 24 Stunden.');
-                if (window.goatcounter && window.goatcounter.count) {
-                    window.goatcounter.count({ path: 'kontakt-formular-gesendet', title: 'Kontaktformular abgeschickt', event: true });
-                }
                 form.reset();
             })
             .catch(function () {
