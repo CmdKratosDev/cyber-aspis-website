@@ -381,7 +381,7 @@
 
         <h3>2. Erhebung und Verarbeitung personenbezogener Daten</h3>
         <p>
-            Diese Website setzt keine Tracking-Cookies und bindet keine werblichen Drittanbieter-Inhalte ein. Es wird derzeit keine Reichweitenmessung eingesetzt (siehe Punkt 6).
+            Diese Website setzt keine Tracking-Cookies und bindet keine werblichen Drittanbieter-Inhalte ein. Es wird kein clientseitiges Analysewerkzeug eingesetzt (kein Skript, kein Zählpixel, keine Cookies); eine datensparsame Nutzungsstatistik aus den Server-Logfiles ist unter Punkt 6 beschrieben.
             Alle Schriftarten (Fonts) werden lokal vom eigenen Server ausgeliefert — es findet keine Verbindung zu Google-Servern statt.
             Beim Besuch der Website werden keine personenbezogenen Daten an Dritte übermittelt; die unter Punkt 7 beschriebenen Datenquellen ruft mein Server ab, nicht Ihr Browser.
         </p>
@@ -398,10 +398,10 @@
         <p>
             Beim Aufruf der Website erhebt der Webserver (nginx) automatisch ein Zugriffsprotokoll. Verantwortlich dafür bin ich; Hostinger stellt als Auftragsverarbeiter (Art. 28 DSGVO) lediglich die technische Infrastruktur (den virtuellen Server) bereit, auf dem der Webserver läuft. Die Server stehen in Deutschland.
             Die Website läuft hinter einem vorgeschalteten Proxy auf demselben Server. Erfasst werden: die Adresse dieses Proxys sowie die von ihm übermittelte IP-Adresse Ihres Browsers (X-Forwarded-For), Zeitpunkt des Zugriffs, aufgerufene Seite, Statuscode, übertragene Datenmenge, Referrer-URL und Browserkennung (User-Agent).
-            Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an Betrieb und Sicherheit der Website).
+            Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an Betrieb und Sicherheit der Website sowie an einer datensparsamen Nutzungsstatistik, siehe Punkt 6).
         </p>
         <p>
-            Das Protokoll wird automatisch begrenzt: Es werden maximal drei Dateien à 10 MB vorgehalten, ältere Einträge werden beim Erreichen dieser Grenze überschrieben (Log-Rotation). Die Einträge werden spätestens nach sieben Tagen gelöscht, bei hohem Aufkommen früher, weil die Protokolldateien auf insgesamt 30 MB begrenzt sind. Beim Neuaufsetzen des Webserver-Containers geht das Protokoll vollständig verloren.
+            Das Protokoll wird täglich ausgewertet (siehe Punkt 6) und anschließend geleert. Die Einträge werden spätestens nach sieben Tagen gelöscht, bei hohem Aufkommen früher, weil die Protokolldateien auf insgesamt 30 MB (drei Dateien à 10 MB) begrenzt sind. Beim Neuaufsetzen des Webserver-Containers geht das Protokoll vollständig verloren.
         </p>
 
         <h3>5. Ihre Rechte</h3>
@@ -410,15 +410,15 @@
             Beschwerden können Sie bei der zuständigen Datenschutzbehörde einreichen.
         </p>
 
-        <h3>6. Reichweitenmessung</h3>
+        <h3>6. Nutzungsstatistik</h3>
         <p>
-            Diese Website setzt derzeit kein Werkzeug zur Reichweitenmessung oder Analyse des Nutzerverhaltens ein. Die in Abschnitt 4 beschriebenen Server-Logfiles werden ausschließlich zu Betriebs- und Sicherheitszwecken genutzt; ein Analysewerkzeug ist nicht im Einsatz.
+            Diese Website setzt kein clientseitiges Analysewerkzeug ein: kein Skript, kein Zählpixel, keine Cookies. Im Browser wird für Statistikzwecke nichts gespeichert oder ausgelesen.
         </p>
         <p>
-            Bevor die Server-Logfiles aus Abschnitt 4 gelöscht werden, erstelle ich wöchentlich eine zusammengefasste Statistik daraus: Aufrufe je Seite und Herkunft der Zugriffe, Letztere nur als Domain. Diese Statistik enthält keine IP-Adressen, Browserkennungen oder sonstigen Personenbezug. Zweck ist der Betrieb und die Bewertung meines eigenen Angebots.
+            Bevor die Server-Logfiles aus Abschnitt 4 geleert werden, erstelle ich daraus täglich eine zusammengefasste Statistik: Aufrufe je Seite und je Tag sowie die Herkunft der Zugriffe. Die Herkunft wird nur für große Plattformen und Suchmaschinen (z. B. linkedin.com, google.com) als Domain festgehalten; alle übrigen Herkünfte werden als „sonstige“ zusammengefasst. Die Statistik enthält keine IP-Adressen und keine Browserkennungen. Zweck ist der Betrieb und die Bewertung meines eigenen Angebots. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einer datensparsamen Nutzungsstatistik).
         </p>
         <p>
-            Aus einer früher eingesetzten Reichweitenmessung liegen zusammengefasste Zahlen ohne Personenbezug vor.
+            Aus einer bis September 2026 eingesetzten, selbst betriebenen Reichweitenmessung liegen nur zusammengefasste Zahlen vor; einzelne Seitenaufrufe wurden dort nicht gespeichert.
         </p>
         <p>
             Diese Website verwendet keine Tracking-Cookies. Im Browser gespeichert werden nur ein Flag für das Info-Banner (<code>ca-banner-closed</code>, localStorage), die zwischengespeicherten Feed-Daten aus Punkt 7 (<code>ca-feed-cisa</code>, <code>ca-feed-hn</code>, sessionStorage) sowie, nur auf der Seite „Checkliste Lieferkette", Ihr Ankreuz-Stand (<code>aspis-scc-…</code>, localStorage). Das Banner-Flag und Ihr Ankreuz-Stand sind für die von Ihnen ausgelöste Funktion unbedingt erforderlich (§ 25 Abs. 2 Nr. 2 TDDDG). Auch der Feed-Zwischenspeicher ist für die von Ihnen aufgerufene Anzeige der Bedrohungslage erforderlich (§ 25 Abs. 2 Nr. 2 TDDDG): Er hält die bereits abgerufenen Inhalte für Ihren Besuch vor, wird nach 5 Minuten ungültig und mit dem Schließen des Tabs gelöscht. Alle drei Werte verlassen Ihren Browser nicht und lassen sich jederzeit über die Browser-Einstellungen entfernen; die Seite funktioniert dann unverändert.
