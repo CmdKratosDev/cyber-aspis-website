@@ -2,6 +2,53 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
+/**
+ * Erlaubte Werte des Formularfelds "service" (select#cf-service in index.html).
+ * Muss mit den <option value="...">-Werten dort uebereinstimmen.
+ */
+const CONTACT_SERVICE_WHITELIST = [
+    '1a Quick-Check remote',
+    '1b Aufnahme und Beratung vor Ort',
+    '1c Vor-Ort-Check klein',
+    '1e Nachprüfung nach Behebung',
+    'Sicherheits-Unterweisung',
+    'Jahres-Check',
+    'Vulnerability Assessment',
+    'Penetrationstest',
+    'Backup-Strategie Setup',
+    'Security-Policy Beratung',
+    'AI-Quick-Check',
+    'AI-Coding-Quick-Check',
+    'Technische Datenschutz-Prüfung',
+    'Notfall-Unterstützung',
+    'Paket Security Starter',
+    'Paket KMU Shield',
+    'Vormerkung Laufende Überwachung',
+    'Sonstiges',
+];
+
+/**
+ * Normalisiert den Formularwert "service" gegen die Whitelist.
+ * '' (und der vom Frontend gesendete Platzhalter 'Nicht angegeben') bleiben '',
+ * unbekannte Werte werden zu 'Sonstiges' (kein Abweisen, damit keine Anfrage verloren geht).
+ */
+function normalizeService(mixed $raw): string
+{
+    if (!is_string($raw)) {
+        return '';
+    }
+    $value = trim($raw);
+    if ($value === '' || $value === 'Nicht angegeben') {
+        return '';
+    }
+    return in_array($value, CONTACT_SERVICE_WHITELIST, true) ? $value : 'Sonstiges';
+}
+
+// Test-Hook: CLI-Skript kann die Funktion laden, ohne den Handler auszufuehren.
+if (PHP_SAPI === 'cli' && defined('CONTACT_PHP_TEST_MODE')) {
+    return;
+}
+
 require __DIR__ . '/vendor/autoload.php';
 
 header('Content-Type: application/json');
@@ -26,7 +73,7 @@ if (!empty($body['website'])) {
 
 $name    = trim($body['name']    ?? '');
 $email   = trim($body['email']   ?? '');
-$service = trim($body['service'] ?? '');
+$service = normalizeService($body['service'] ?? '');
 $message = trim($body['message'] ?? '');
 
 if ($name === '' || $email === '' || $message === '') {
