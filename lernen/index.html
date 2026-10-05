@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../assets/favicon.png">
-    <title>Lernen — Kostenlose Praxis-Hilfen für KMU | Cyber Aspis IT-Security</title>
+    <title>Praxis-Hilfen für KMU: Aushänge, Checklisten, Vorlagen | Cyber Aspis IT-Security</title>
     <meta name="description" content="Kostenlose Aushänge, ein Beispiel-Report und eine Selbstaudit-Checkliste für kleine und mittlere Unternehmen — zum Download, ohne Anmeldung.">
 
     <!-- ═══ OpenGraph ═══ -->
     <meta property="og:type"        content="website">
     <meta property="og:url"         content="https://cyber-aspis.de/lernen/">
-    <meta property="og:title"       content="Lernen — Kostenlose Praxis-Hilfen für KMU | Cyber Aspis IT-Security">
+    <meta property="og:title"       content="Praxis-Hilfen für KMU: Aushänge, Checklisten, Vorlagen | Cyber Aspis IT-Security">
     <meta property="og:description" content="Kostenlose Aushänge, ein Beispiel-Report und eine Selbstaudit-Checkliste für kleine und mittlere Unternehmen — zum Download, ohne Anmeldung.">
     <meta property="og:image"       content="https://cyber-aspis.de/assets/og-image.png">
     <meta property="og:image:width"  content="1200">
@@ -20,7 +20,7 @@
 
     <!-- ═══ Twitter / X Card ═══ -->
     <meta name="twitter:card"        content="summary_large_image">
-    <meta name="twitter:title"       content="Lernen — Kostenlose Praxis-Hilfen für KMU | Cyber Aspis IT-Security">
+    <meta name="twitter:title"       content="Praxis-Hilfen für KMU: Aushänge, Checklisten, Vorlagen | Cyber Aspis IT-Security">
     <meta name="twitter:description" content="Kostenlose Aushänge, ein Beispiel-Report und eine Selbstaudit-Checkliste für kleine und mittlere Unternehmen — zum Download, ohne Anmeldung.">
     <meta name="twitter:image"       content="https://cyber-aspis.de/assets/og-image.png">
 
@@ -34,7 +34,7 @@
       "@type": "BreadcrumbList",
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "Startseite", "item": "https://cyber-aspis.de/" },
-        { "@type": "ListItem", "position": 2, "name": "Lernen", "item": "https://cyber-aspis.de/lernen/" }
+        { "@type": "ListItem", "position": 2, "name": "Praxis-Hilfen", "item": "https://cyber-aspis.de/lernen/" }
       ]
     }
     </script>
@@ -130,9 +130,10 @@
         .dl-cta { display: inline-flex; align-items: center; gap: 6px; margin-top: 0.4rem; font-family: var(--font-display); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-cyan); text-decoration: none; transition: gap 0.2s ease, opacity 0.2s; }
         .dl-cta:hover { gap: 10px; opacity: 0.85; }
         .dl-body-article { padding-top: 1.8rem; }
-        .dl-more { margin: -1.4rem 0 3rem; font-size: 0.9rem; color: var(--text-muted); line-height: 1.7; }
-        .dl-more a { color: var(--accent-cyan); text-decoration: none; font-weight: 600; }
-        .dl-more a:hover { text-decoration: underline; }
+        .dl-feature { display: grid; grid-template-columns: 300px 1fr; margin-bottom: 3rem; }
+        .dl-feature .dl-thumb { height: auto; min-height: 240px; }
+        .dl-feature .dl-body { justify-content: center; }
+        .dl-tag.dl-tag-paid { background: rgba(224,64,251,0.1); border-color: rgba(224,64,251,0.32); color: var(--accent-magenta); }
 
         /* ===== CTA ===== */
         .lernen-cta { padding: 24px 6% 88px; }
@@ -160,6 +161,7 @@
             .service-hero { padding: 56px 5% 52px; }
             .downloads { padding: 48px 5% 24px; }
             .dl-grid { grid-template-columns: 1fr; }
+            .dl-feature { grid-template-columns: 1fr; }
             .lernen-cta { padding: 16px 5% 64px; }
             .lernen-cta-inner { padding: 2rem 1.5rem; }
             footer { flex-direction: column; text-align: center; }
@@ -183,7 +185,7 @@
         <li><a href="../ueber-uns.html">Über uns</a></li>
         <li><a href="../index.html#services">Leistungen</a></li>
         <li><a href="../analysen/">Analysen</a></li>
-        <li><a href="index.html" class="nav-current">Lernen</a></li>
+        <li><a href="index.html" class="nav-current">Praxis-Hilfen</a></li>
         <li><a href="../index.html#faq">FAQ</a></li>
         <li><a href="../index.html#threat-feed">Intel</a></li>
         <li><a href="../index.html#contact">Kontakt</a></li>
@@ -194,7 +196,7 @@
 <div class="breadcrumb-strip" aria-label="Seitenpfad">
     <ol class="breadcrumb">
         <li><a href="../index.html">Startseite</a></li>
-        <li>Lernen</li>
+        <li>Praxis-Hilfen</li>
     </ol>
 </div>
 
@@ -260,7 +262,18 @@
 
         </div>
 
-        <p class="dl-more">Für den Betrieb gibt es die Aushänge auch zum Ausfüllen am Rechner, zusammen mit KI-Nutzungsrichtlinie und Merkblatt: <a href="vorlagen-paket.html">Vorlagen-Paket ansehen &rarr;</a></p>
+        <h2 class="downloads-cat">Für den Betrieb: Vorlagen-Paket</h2>
+        <div class="dl-card dl-feature">
+            <div class="dl-thumb">
+                <img src="downloads/vorlagen-paket-vorschau.png" alt="Vorschau: die sechs Dateien des Vorlagen-Pakets" loading="lazy">
+            </div>
+            <div class="dl-body">
+                <span class="dl-tag dl-tag-paid">29 € · Kauf über Digistore24</span>
+                <h3 class="dl-title">Sicherheits-Vorlagen für kleine Betriebe</h3>
+                <p class="dl-desc">KI-Nutzungsrichtlinie und Merkblatt für die Geschäftsführung als Word-Dateien zum Anpassen, dazu eine Notfall-Kontaktliste und die drei Aushänge oben als PDFs, am Rechner ausfüllbar. Sechs Dateien zum Herunterladen.</p>
+                <a class="dl-cta" href="vorlagen-paket.html">Vorlagen-Paket ansehen &rarr;</a>
+            </div>
+        </div>
 
         <h2 class="downloads-cat">Zum Nachlesen</h2>
         <div class="dl-grid dl-grid-2">
